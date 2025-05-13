@@ -1,0 +1,774 @@
+> 2025-04-22 09:10:12.480 +02:00 [Information] Starting Web Host
+> 2025-04-22 09:10:14.025 +02:00 [Information] User profile is available. Using '"C:\Users\jborras\AppData\Local\ASP.NET\DataProtection-Keys"' as key repository and Windows DPAPI to encrypt keys at rest.
+> 2025-04-22 09:10:14.519 +02:00 [Warning] Overriding address(es) '"https://localhost:6001, http://localhost:6000"'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+> 2025-04-22 09:10:14.590 +02:00 [Information] Now listening on: "http://localhost:6000"
+> 2025-04-22 09:10:14.599 +02:00 [Information] Now listening on: "https://localhost:6001"
+> 2025-04-22 09:10:14.601 +02:00 [Information] Application started. Press Ctrl+C to shut down.
+> 2025-04-22 09:10:14.603 +02:00 [Information] Hosting environment: "Development"
+> 2025-04-22 09:10:14.607 +02:00 [Information] Content root path: "C:\Repos\WF.Mimetic - v1\src\Presentation\WF.Mimetic.UI.Server"
+> 2025-04-22 09:10:19.136 +02:00 [Information] Request starting "HTTP/1.1" "GET" "https"://"localhost""""/_framework/debug/ws-proxy""?browser=ws%3A%2F%2F127.0.0.1%3A53050%2Fdevtools%2Fbrowser%2Fea744d1b-f412-4e42-bd90-4481b79982e0" - null null
+> 2025-04-22 09:10:19.773 +02:00 [Information] Request finished "HTTP/1.1" "GET" "https"://"localhost""""/_framework/debug/ws-proxy""?browser=ws%3A%2F%2F127.0.0.1%3A53050%2Fdevtools%2Fbrowser%2Fea744d1b-f412-4e42-bd90-4481b79982e0" - 302 0 null 744.8239ms
+> 2025-04-22 09:10:20.193 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.html""" - null null
+> 2025-04-22 09:10:20.506 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.html""" - 200 null "text/html;charset=utf-8" 322.6091ms
+> 2025-04-22 09:10:20.533 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/_framework/aspnetcore-browser-refresh.js""" - null null
+> 2025-04-22 09:10:20.533 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.js""" - null null
+> 2025-04-22 09:10:20.534 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/swagger-ui-bundle.js""" - null null
+> 2025-04-22 09:10:20.534 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/swagger-ui.css""" - null null
+> 2025-04-22 09:10:20.542 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.css""" - null null
+> 2025-04-22 09:10:20.552 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/swagger-ui-standalone-preset.js""" - null null
+> 2025-04-22 09:10:20.565 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.js""" - 200 null "application/javascript;charset=utf-8" 32.1536ms
+> 2025-04-22 09:10:20.580 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/_framework/aspnetcore-browser-refresh.js""" - 200 13776 "application/javascript; charset=utf-8" 48.2949ms
+> 2025-04-22 09:10:20.599 +02:00 [Information] The file "/swagger-ui-bundle.js" was not modified
+> 2025-04-22 09:10:20.599 +02:00 [Information] The file "/swagger-ui.css" was not modified
+> 2025-04-22 09:10:20.600 +02:00 [Information] The file "/index.css" was not modified
+> 2025-04-22 09:10:20.603 +02:00 [Information] The file "/swagger-ui-standalone-preset.js" was not modified
+> 2025-04-22 09:10:20.614 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/swagger-ui-bundle.js""" - 304 null "text/javascript" 81.9544ms
+> 2025-04-22 09:10:20.614 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/swagger-ui.css""" - 304 null "text/css" 82.797ms
+> 2025-04-22 09:10:20.615 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.css""" - 304 null "text/css" 75.0028ms
+> 2025-04-22 09:10:20.617 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/swagger-ui-standalone-preset.js""" - 304 null "text/javascript" 66.872ms
+> 2025-04-22 09:10:20.683 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/_vs/browserLink""" - null null
+> 2025-04-22 09:10:20.766 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/_vs/browserLink""" - 200 null "text/javascript; charset=UTF-8" 85.2809ms
+> 2025-04-22 09:10:20.851 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/v1/swagger.json""" - null null
+> 2025-04-22 09:10:21.095 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/v1/swagger.json""" - 200 null "application/json;charset=utf-8" 252.9723ms
+> 2025-04-22 09:11:19.834 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 09:11:20.817 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:11:20.839 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:11:21.347 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 09:11:21.415 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 588.1526ms
+> 2025-04-22 09:11:21.417 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:11:21.471 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 1684.7046ms
+> 2025-04-22 09:41:36.769 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 09:41:36.775 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:41:36.780 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 11.0658ms
+> 2025-04-22 09:41:36.801 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 09:41:36.808 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:41:36.857 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:41:36.859 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:41:36.874 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 09:41:36.877 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 16.0032ms
+> 2025-04-22 09:41:36.880 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:41:36.886 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 86.0568ms
+> 2025-04-22 09:41:48.372 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 09:41:48.376 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:41:48.378 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 6.1788ms
+> 2025-04-22 09:41:48.383 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 09:41:48.391 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:41:48.486 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:41:48.488 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:41:48.499 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 09:41:48.500 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 10.8714ms
+> 2025-04-22 09:41:48.502 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:41:48.506 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 123.2934ms
+> 2025-04-22 09:43:14.439 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 09:43:14.448 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:43:14.449 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 10.0741ms
+> 2025-04-22 09:43:14.474 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 09:43:14.479 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:43:14.506 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:43:14.508 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:43:14.524 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 09:43:14.527 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 13.0708ms
+> 2025-04-22 09:43:14.528 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:43:14.531 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 57.055ms
+> 2025-04-22 09:43:38.256 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 09:43:38.265 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:43:38.270 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 13.7329ms
+> 2025-04-22 09:43:38.275 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 09:43:38.280 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:43:38.297 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:43:38.303 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:43:38.320 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 09:43:38.321 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 15.2705ms
+> 2025-04-22 09:43:38.322 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:43:38.324 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 48.5966ms
+> 2025-04-22 09:44:00.734 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 09:44:00.742 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:00.743 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 10.5476ms
+> 2025-04-22 09:44:00.746 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 09:44:00.752 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:00.769 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:00.771 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:44:00.778 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 09:44:00.779 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 5.4004ms
+> 2025-04-22 09:44:00.780 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:00.782 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 35.6466ms
+> 2025-04-22 09:44:02.584 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - null null
+> 2025-04-22 09:44:02.590 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:02.592 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - 204 null null 8.3438ms
+> 2025-04-22 09:44:02.594 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - "application/json" null
+> 2025-04-22 09:44:02.600 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:02.613 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:02.627 +02:00 [Information] Route matched with "{action = \"Get\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Categories.CategoryReadDto] Get(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:44:02.696 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Categories.CategoryReadDto"'.
+> 2025-04-22 09:44:02.702 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)" in 73.5771ms
+> 2025-04-22 09:44:02.705 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:02.707 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - 200 708 "application/json; charset=utf-8" 112.9115ms
+> 2025-04-22 09:44:02.712 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - null null
+> 2025-04-22 09:44:02.714 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - null null
+> 2025-04-22 09:44:02.712 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - null null
+> 2025-04-22 09:44:02.720 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:02.723 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:02.725 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - 204 null null 13.1691ms
+> 2025-04-22 09:44:02.726 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - 204 null null 12.3374ms
+> 2025-04-22 09:44:02.724 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:02.732 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - "application/json" null
+> 2025-04-22 09:44:02.732 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - "application/json" null
+> 2025-04-22 09:44:02.744 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - 204 null null 31.6961ms
+> 2025-04-22 09:44:02.747 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - "application/json" null
+> 2025-04-22 09:44:02.747 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:02.748 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:02.753 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 09:44:02.764 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:02.769 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:44:02.783 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:02.786 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:44:02.795 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:02.797 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 09:44:02.797 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 09:44:02.799 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 12.2141ms
+> 2025-04-22 09:44:02.801 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 09:44:02.802 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:02.805 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 6.438ms
+> 2025-04-22 09:44:02.807 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - 200 209 "application/json; charset=utf-8" 74.7155ms
+> 2025-04-22 09:44:02.808 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 09:44:02.814 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 44.3144ms
+> 2025-04-22 09:44:02.808 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:02.817 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 09:44:02.819 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - 200 210 "application/json; charset=utf-8" 72.1786ms
+> 2025-04-22 09:44:02.821 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - 200 210 "application/json; charset=utf-8" 89.4404ms
+> 2025-04-22 11:47:03.170 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a002""" - null null
+> 2025-04-22 11:47:03.174 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 11:47:03.176 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a002""" - 204 null null 5.8303ms
+> 2025-04-22 11:47:03.179 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a002""" - "application/json" null
+> 2025-04-22 11:47:03.187 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 11:47:03.202 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 11:47:03.203 +02:00 [Information] Route matched with "{action = \"Get\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Categories.CategoryReadDto] Get(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 11:47:03.211 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Categories.CategoryReadDto"'.
+> 2025-04-22 11:47:03.212 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)" in 7.8844ms
+> 2025-04-22 11:47:03.214 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 11:47:03.215 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a002""" - 200 709 "application/json; charset=utf-8" 37.0947ms
+> 2025-04-22 11:47:03.220 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a012""" - null null
+> 2025-04-22 11:47:03.220 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - null null
+> 2025-04-22 11:47:03.221 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a032""" - null null
+> 2025-04-22 11:47:03.227 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 11:47:03.230 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 11:47:03.232 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 11:47:03.233 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a012""" - 204 null null 13.1882ms
+> 2025-04-22 11:47:03.233 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - 204 null null 13.3454ms
+> 2025-04-22 11:47:03.235 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a032""" - 204 null null 13.7445ms
+> 2025-04-22 11:47:03.236 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - "application/json" null
+> 2025-04-22 11:47:03.236 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a012""" - "application/json" null
+> 2025-04-22 11:47:03.240 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a032""" - "application/json" null
+> 2025-04-22 11:47:03.248 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 11:47:03.249 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 11:47:03.252 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 11:47:03.258 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 11:47:03.258 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 11:47:03.262 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 11:47:03.263 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 3.28ms
+> 2025-04-22 11:47:03.264 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 11:47:03.266 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a012""" - 200 210 "application/json; charset=utf-8" 29.8293ms
+> 2025-04-22 11:47:03.424 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 11:47:03.425 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 11:47:03.428 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 11:47:03.429 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 2.5739ms
+> 2025-04-22 11:47:03.429 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 11:47:03.431 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - 200 210 "application/json; charset=utf-8" 195.5494ms
+> 2025-04-22 11:47:03.444 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 11:47:03.445 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 11:47:03.451 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 11:47:03.453 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 6.2012ms
+> 2025-04-22 11:47:03.455 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 11:47:03.456 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a032""" - 200 210 "application/json; charset=utf-8" 216.2051ms
+> 2025-04-22 11:47:38.605 +02:00 [Information] Starting Web Host
+> 2025-04-22 11:47:39.543 +02:00 [Information] User profile is available. Using '"C:\Users\jborras\AppData\Local\ASP.NET\DataProtection-Keys"' as key repository and Windows DPAPI to encrypt keys at rest.
+> 2025-04-22 11:47:39.759 +02:00 [Warning] Overriding address(es) '"https://localhost:6001, http://localhost:6000"'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+> 2025-04-22 11:47:39.790 +02:00 [Information] Now listening on: "http://localhost:6000"
+> 2025-04-22 11:47:39.791 +02:00 [Information] Now listening on: "https://localhost:6001"
+> 2025-04-22 11:47:39.792 +02:00 [Information] Application started. Press Ctrl+C to shut down.
+> 2025-04-22 11:47:39.793 +02:00 [Information] Hosting environment: "Development"
+> 2025-04-22 11:47:39.794 +02:00 [Information] Content root path: "C:\Repos\WF.Mimetic - v1\src\Presentation\WF.Mimetic.UI.Server"
+> 2025-04-22 11:47:41.071 +02:00 [Information] Request starting "HTTP/1.1" "GET" "https"://"localhost""""/_framework/debug/ws-proxy""?browser=ws%3A%2F%2F127.0.0.1%3A53513%2Fdevtools%2Fbrowser%2Fde6ac01e-ca4b-48b4-92e2-67c6b7764e2b" - null null
+> 2025-04-22 11:47:41.475 +02:00 [Information] Request finished "HTTP/1.1" "GET" "https"://"localhost""""/_framework/debug/ws-proxy""?browser=ws%3A%2F%2F127.0.0.1%3A53513%2Fdevtools%2Fbrowser%2Fde6ac01e-ca4b-48b4-92e2-67c6b7764e2b" - 302 0 null 415.5782ms
+> 2025-04-22 11:47:41.668 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.html""" - null null
+> 2025-04-22 11:47:41.832 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.html""" - 200 null "text/html;charset=utf-8" 163.6903ms
+> 2025-04-22 11:47:41.842 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/_framework/aspnetcore-browser-refresh.js""" - null null
+> 2025-04-22 11:47:41.844 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.js""" - null null
+> 2025-04-22 11:47:41.855 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.js""" - 200 null "application/javascript;charset=utf-8" 11.1223ms
+> 2025-04-22 11:47:41.863 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/_framework/aspnetcore-browser-refresh.js""" - 200 13776 "application/javascript; charset=utf-8" 21.1912ms
+> 2025-04-22 11:47:41.897 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/_vs/browserLink""" - null null
+> 2025-04-22 11:47:41.963 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/_vs/browserLink""" - 200 null "text/javascript; charset=UTF-8" 66.2564ms
+> 2025-04-22 11:47:42.109 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/v1/swagger.json""" - null null
+> 2025-04-22 11:47:42.266 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/v1/swagger.json""" - 200 null "application/json;charset=utf-8" 157.7147ms
+> 2025-04-22 12:07:49.402 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - null null
+> 2025-04-22 12:07:49.410 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:49.413 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - 204 null null 11.4445ms
+> 2025-04-22 12:07:49.415 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - "application/json" null
+> 2025-04-22 12:07:49.485 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:50.976 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:51.004 +02:00 [Information] Route matched with "{action = \"Get\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Categories.CategoryReadDto] Get(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:07:51.793 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Categories.CategoryReadDto"'.
+> 2025-04-22 12:07:51.871 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)" in 857.7914ms
+> 2025-04-22 12:07:51.873 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:51.923 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - 200 708 "application/json; charset=utf-8" 2508.237ms
+> 2025-04-22 12:07:51.924 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - null null
+> 2025-04-22 12:07:51.924 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - null null
+> 2025-04-22 12:07:51.934 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:51.924 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - null null
+> 2025-04-22 12:07:51.939 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - 204 null null 15.7624ms
+> 2025-04-22 12:07:51.940 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:51.941 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - "application/json" null
+> 2025-04-22 12:07:51.941 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:51.947 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - 204 null null 23.3242ms
+> 2025-04-22 12:07:51.949 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - "application/json" null
+> 2025-04-22 12:07:51.948 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - 204 null null 24.4355ms
+> 2025-04-22 12:07:51.950 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - "application/json" null
+> 2025-04-22 12:07:51.955 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:51.961 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:51.966 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:52.009 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:52.019 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:07:52.030 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:52.032 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:07:52.039 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:52.041 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:07:52.072 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 12:07:52.075 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 32.145ms
+> 2025-04-22 12:07:52.077 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:52.080 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 12:07:52.080 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - 200 210 "application/json; charset=utf-8" 129.3393ms
+> 2025-04-22 12:07:52.082 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 47.6391ms
+> 2025-04-22 12:07:52.086 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:52.087 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - 200 210 "application/json; charset=utf-8" 138.5056ms
+> 2025-04-22 12:07:52.241 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 12:07:52.243 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 222.1981ms
+> 2025-04-22 12:07:52.245 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:52.247 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - 200 209 "application/json; charset=utf-8" 305.5865ms
+> 2025-04-22 12:07:53.479 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 12:07:53.482 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:53.483 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 4.8833ms
+> 2025-04-22 12:07:53.485 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 12:07:53.490 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:07:53.598 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:53.605 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:07:53.640 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 12:07:53.647 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 39.7098ms
+> 2025-04-22 12:07:53.648 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:07:53.650 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 165.4111ms
+> 2025-04-22 12:10:07.922 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 12:10:07.929 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:10:07.930 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 7.5084ms
+> 2025-04-22 12:10:07.935 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 12:10:07.940 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:10:07.962 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:10:07.963 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:10:07.971 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 12:10:07.972 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 7.8212ms
+> 2025-04-22 12:10:07.974 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:10:07.976 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 42.0924ms
+> 2025-04-22 12:10:32.345 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 12:10:32.348 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:10:32.349 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 5.0729ms
+> 2025-04-22 12:10:32.351 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 12:10:32.355 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:10:32.375 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:10:32.376 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:10:32.384 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 12:10:32.386 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 7.5649ms
+> 2025-04-22 12:10:32.388 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:10:32.389 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 38.5638ms
+> 2025-04-22 12:13:11.351 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 12:13:11.360 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:13:11.362 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 11.7516ms
+> 2025-04-22 12:13:11.370 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 12:13:11.376 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:13:11.397 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:13:11.405 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:13:11.450 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 12:13:11.454 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 46.0541ms
+> 2025-04-22 12:13:11.455 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:13:11.456 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 86.5309ms
+> 2025-04-22 12:13:14.363 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 12:13:14.367 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:13:14.368 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 4.9517ms
+> 2025-04-22 12:13:14.371 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 12:13:14.374 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:13:14.392 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:13:14.393 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:13:14.400 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 12:13:14.402 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 7.2509ms
+> 2025-04-22 12:13:14.403 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:13:14.405 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 33.6644ms
+> 2025-04-22 12:22:14.208 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 12:22:14.225 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:22:14.227 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 19.4937ms
+> 2025-04-22 12:22:14.242 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 12:22:14.246 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:22:14.267 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:22:14.269 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:22:14.278 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 12:22:14.280 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 9.5045ms
+> 2025-04-22 12:22:14.282 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:22:14.284 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 42.186ms
+> 2025-04-22 12:22:47.551 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 12:22:47.559 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:22:47.560 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 9.5412ms
+> 2025-04-22 12:22:47.575 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 12:22:47.579 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 12:22:47.613 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:22:47.616 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 12:22:47.625 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 12:22:47.627 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 7.3131ms
+> 2025-04-22 12:22:47.628 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 12:22:47.630 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 55.2584ms
+> 2025-04-22 15:44:14.800 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 15:44:14.806 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:44:14.808 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 8.6724ms
+> 2025-04-22 15:44:14.812 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 15:44:14.817 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:44:14.846 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:44:14.847 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:44:14.856 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 15:44:14.858 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 9.6476ms
+> 2025-04-22 15:44:14.860 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:44:14.861 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 49.7147ms
+> 2025-04-22 15:48:19.165 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - null null
+> 2025-04-22 15:48:19.172 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:19.173 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - 204 null null 9.9791ms
+> 2025-04-22 15:48:19.179 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - "application/json" null
+> 2025-04-22 15:48:19.184 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:19.202 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:19.203 +02:00 [Information] Route matched with "{action = \"Get\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Categories.CategoryReadDto] Get(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:19.213 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Categories.CategoryReadDto"'.
+> 2025-04-22 15:48:19.215 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)" in 9.1498ms
+> 2025-04-22 15:48:19.216 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:19.218 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a001""" - 200 708 "application/json; charset=utf-8" 38.6809ms
+> 2025-04-22 15:48:19.221 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - null null
+> 2025-04-22 15:48:19.222 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - null null
+> 2025-04-22 15:48:19.222 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - null null
+> 2025-04-22 15:48:19.229 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:19.232 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:19.235 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - 204 null null 14.1545ms
+> 2025-04-22 15:48:19.236 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - 204 null null 14.9183ms
+> 2025-04-22 15:48:19.240 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - "application/json" null
+> 2025-04-22 15:48:19.234 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:19.242 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - "application/json" null
+> 2025-04-22 15:48:19.254 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:19.255 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - 204 null null 31.9371ms
+> 2025-04-22 15:48:19.257 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - "application/json" null
+> 2025-04-22 15:48:19.258 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:19.267 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:19.274 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:19.276 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:19.278 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:19.279 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:19.282 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:19.283 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 4.564ms
+> 2025-04-22 15:48:19.283 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:19.284 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:19.286 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 5.2279ms
+> 2025-04-22 15:48:19.287 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - 200 209 "application/json; charset=utf-8" 47.3588ms
+> 2025-04-22 15:48:19.289 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:19.295 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a021""" - 200 210 "application/json; charset=utf-8" 52.8189ms
+> 2025-04-22 15:48:19.444 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:19.446 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:19.454 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:19.456 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 7.321ms
+> 2025-04-22 15:48:19.457 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:19.459 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a031""" - 200 210 "application/json; charset=utf-8" 201.8293ms
+> 2025-04-22 15:48:21.401 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a002""" - null null
+> 2025-04-22 15:48:21.405 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:21.406 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a002""" - 204 null null 5.9159ms
+> 2025-04-22 15:48:21.409 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a002""" - "application/json" null
+> 2025-04-22 15:48:21.412 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:21.430 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:21.431 +02:00 [Information] Route matched with "{action = \"Get\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Categories.CategoryReadDto] Get(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:21.439 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Categories.CategoryReadDto"'.
+> 2025-04-22 15:48:21.441 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)" in 8.516ms
+> 2025-04-22 15:48:21.443 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:21.444 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a002""" - 200 709 "application/json; charset=utf-8" 35.4084ms
+> 2025-04-22 15:48:21.447 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - null null
+> 2025-04-22 15:48:21.448 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a032""" - null null
+> 2025-04-22 15:48:21.447 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a012""" - null null
+> 2025-04-22 15:48:21.452 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:21.454 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:21.457 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:21.458 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - 204 null null 10.4727ms
+> 2025-04-22 15:48:21.461 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a032""" - "application/json" null
+> 2025-04-22 15:48:21.460 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - "application/json" null
+> 2025-04-22 15:48:21.462 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a012""" - "application/json" null
+> 2025-04-22 15:48:21.459 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a032""" - 204 null null 11.1904ms
+> 2025-04-22 15:48:21.460 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a012""" - 204 null null 12.2837ms
+> 2025-04-22 15:48:21.476 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:21.478 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:21.480 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:21.498 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:21.499 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:21.499 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:21.500 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:21.505 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:21.507 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 5.0646ms
+> 2025-04-22 15:48:21.508 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:21.509 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:21.510 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 4.8633ms
+> 2025-04-22 15:48:21.511 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a032""" - 200 210 "application/json; charset=utf-8" 50.0845ms
+> 2025-04-22 15:48:21.513 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:21.516 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a012""" - 200 210 "application/json; charset=utf-8" 55.2118ms
+> 2025-04-22 15:48:21.672 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:21.674 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:21.682 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:21.683 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 7.3034ms
+> 2025-04-22 15:48:21.685 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:21.687 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - 200 210 "application/json; charset=utf-8" 226.4438ms
+> 2025-04-22 15:48:22.825 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a003""" - null null
+> 2025-04-22 15:48:22.828 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:22.829 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a003""" - 204 null null 3.6547ms
+> 2025-04-22 15:48:22.831 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a003""" - "application/json" null
+> 2025-04-22 15:48:22.835 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:22.854 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:22.856 +02:00 [Information] Route matched with "{action = \"Get\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Categories.CategoryReadDto] Get(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:22.864 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Categories.CategoryReadDto"'.
+> 2025-04-22 15:48:22.866 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)" in 7.7328ms
+> 2025-04-22 15:48:22.867 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:22.869 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a003""" - 200 709 "application/json; charset=utf-8" 38.1287ms
+> 2025-04-22 15:48:22.872 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a013""" - null null
+> 2025-04-22 15:48:22.873 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a033""" - null null
+> 2025-04-22 15:48:22.873 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a023""" - null null
+> 2025-04-22 15:48:22.876 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:22.878 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:22.881 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:22.884 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a013""" - "application/json" null
+> 2025-04-22 15:48:22.883 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a033""" - 204 null null 10.1119ms
+> 2025-04-22 15:48:22.884 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a033""" - "application/json" null
+> 2025-04-22 15:48:22.884 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a023""" - 204 null null 11.998ms
+> 2025-04-22 15:48:22.882 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a013""" - 204 null null 9.8306ms
+> 2025-04-22 15:48:22.886 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a023""" - "application/json" null
+> 2025-04-22 15:48:22.888 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:22.894 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:22.904 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:22.915 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:22.916 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:22.922 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:22.923 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 5.0426ms
+> 2025-04-22 15:48:22.924 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:22.925 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:22.927 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:22.928 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a013""" - 200 210 "application/json; charset=utf-8" 44.3008ms
+> 2025-04-22 15:48:22.932 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:22.934 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 4.2609ms
+> 2025-04-22 15:48:22.936 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:22.937 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a033""" - 200 210 "application/json; charset=utf-8" 52.9845ms
+> 2025-04-22 15:48:23.086 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:23.087 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:23.096 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 15:48:23.098 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 9.1907ms
+> 2025-04-22 15:48:23.099 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:23.101 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a023""" - 200 210 "application/json; charset=utf-8" 215.146ms
+> 2025-04-22 15:48:24.066 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a111""" - null null
+> 2025-04-22 15:48:24.071 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:24.072 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a111""" - 204 null null 6.907ms
+> 2025-04-22 15:48:24.075 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a111""" - "application/json" null
+> 2025-04-22 15:48:24.078 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:48:24.095 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:24.096 +02:00 [Information] Route matched with "{action = \"Get\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Categories.CategoryReadDto] Get(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:48:24.103 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Categories.CategoryReadDto"'.
+> 2025-04-22 15:48:24.105 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)" in 6.9003ms
+> 2025-04-22 15:48:24.107 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.Get (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:48:24.108 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category/3fa85f64-5717-4562-b3fc-2c963f66a111""" - 200 73 "application/json; charset=utf-8" 33.5943ms
+> 2025-04-22 15:54:32.548 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 15:54:32.555 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:54:32.556 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 8.0293ms
+> 2025-04-22 15:54:32.562 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 15:54:32.566 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 15:54:32.586 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:54:32.588 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 15:54:32.595 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 15:54:32.596 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.8826ms
+> 2025-04-22 15:54:32.598 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 15:54:32.600 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 38.9163ms
+> 2025-04-22 16:24:45.982 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 16:24:45.988 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:45.990 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 10.6161ms
+> 2025-04-22 16:24:45.992 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 16:24:45.997 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.015 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.016 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:46.025 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:24:46.027 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 7.8315ms
+> 2025-04-22 16:24:46.028 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.029 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 37.0448ms
+> 2025-04-22 16:24:46.043 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:24:46.055 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:24:46.043 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:24:46.043 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:24:46.056 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.045 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:24:46.071 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.073 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.086 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 42.7593ms
+> 2025-04-22 16:24:46.087 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 43.5206ms
+> 2025-04-22 16:24:46.073 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 30.6348ms
+> 2025-04-22 16:24:46.083 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.068 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.057 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:24:46.063 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:24:46.080 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:24:46.099 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 55.0645ms
+> 2025-04-22 16:24:46.100 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 45.3553ms
+> 2025-04-22 16:24:46.102 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.104 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.107 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.112 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 54.7415ms
+> 2025-04-22 16:24:46.112 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 49.3496ms
+> 2025-04-22 16:24:46.127 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.128 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:46.134 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:24:46.136 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 5.8418ms
+> 2025-04-22 16:24:46.137 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.137 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:24:46.138 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 58.7592ms
+> 2025-04-22 16:24:46.141 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.168 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.169 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:46.178 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:24:46.180 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 8.0273ms
+> 2025-04-22 16:24:46.182 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.183 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:24:46.185 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 47.4383ms
+> 2025-04-22 16:24:46.188 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.205 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.206 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:46.213 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:24:46.214 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.2626ms
+> 2025-04-22 16:24:46.216 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.216 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:24:46.217 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 34.0167ms
+> 2025-04-22 16:24:46.220 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.238 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.240 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:46.246 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:24:46.247 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.0558ms
+> 2025-04-22 16:24:46.248 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.249 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:24:46.251 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 34.3631ms
+> 2025-04-22 16:24:46.253 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.272 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.273 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:46.281 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:24:46.283 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.9616ms
+> 2025-04-22 16:24:46.284 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.284 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:24:46.286 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 37.0079ms
+> 2025-04-22 16:24:46.288 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.308 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.309 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:46.316 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:24:46.318 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 7.4591ms
+> 2025-04-22 16:24:46.319 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.319 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:24:46.321 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 36.527ms
+> 2025-04-22 16:24:46.323 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:46.341 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.342 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:46.349 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:24:46.350 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.3605ms
+> 2025-04-22 16:24:46.352 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:46.353 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 33.5869ms
+> 2025-04-22 16:24:58.932 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - null null
+> 2025-04-22 16:24:58.937 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:58.938 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - 204 null null 6.4262ms
+> 2025-04-22 16:24:58.944 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - "application/json" null
+> 2025-04-22 16:24:58.948 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:24:58.970 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:58.973 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:24:58.983 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 16:24:58.986 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 9.8288ms
+> 2025-04-22 16:24:58.988 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:24:58.989 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a011""" - 200 209 "application/json; charset=utf-8" 45.9493ms
+> 2025-04-22 16:25:00.828 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 16:25:00.831 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.831 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 3.6967ms
+> 2025-04-22 16:25:00.833 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 16:25:00.837 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.857 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:00.859 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:00.867 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:00.869 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 8.2963ms
+> 2025-04-22 16:25:00.871 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:00.872 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 39.2681ms
+> 2025-04-22 16:25:00.876 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:00.877 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:00.877 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:00.877 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:00.877 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:00.877 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:00.877 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:00.879 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.881 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.883 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.894 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 16.9717ms
+> 2025-04-22 16:25:00.886 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.888 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.890 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.893 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 16.7067ms
+> 2025-04-22 16:25:00.892 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.895 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:00.895 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 18.0687ms
+> 2025-04-22 16:25:00.898 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 20.9896ms
+> 2025-04-22 16:25:00.898 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 21.5548ms
+> 2025-04-22 16:25:00.899 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 22.0233ms
+> 2025-04-22 16:25:00.902 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 25.7278ms
+> 2025-04-22 16:25:00.905 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.934 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:00.936 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:00.942 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:00.943 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 5.8699ms
+> 2025-04-22 16:25:00.944 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:00.945 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:00.947 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.948 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 53.4269ms
+> 2025-04-22 16:25:00.964 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:00.965 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:00.972 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:00.973 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 5.7258ms
+> 2025-04-22 16:25:00.974 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:00.975 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:00.978 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:00.979 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 35.2065ms
+> 2025-04-22 16:25:00.995 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:00.996 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:01.004 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:01.006 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.1755ms
+> 2025-04-22 16:25:01.007 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:01.007 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.010 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:01.010 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 36.293ms
+> 2025-04-22 16:25:01.026 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.027 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:01.034 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:01.036 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.2416ms
+> 2025-04-22 16:25:01.037 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:01.038 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.041 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:01.041 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 34.4751ms
+> 2025-04-22 16:25:01.057 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.058 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:01.065 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:01.066 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 5.6911ms
+> 2025-04-22 16:25:01.067 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:01.068 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.070 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:01.071 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 34.4155ms
+> 2025-04-22 16:25:01.086 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.087 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:01.093 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:01.094 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 5.7279ms
+> 2025-04-22 16:25:01.095 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:01.096 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.102 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:01.103 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 35.6588ms
+> 2025-04-22 16:25:01.118 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.120 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:01.128 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:01.130 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 8.1386ms
+> 2025-04-22 16:25:01.132 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:01.135 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 40.149ms
+> 2025-04-22 16:25:39.859 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - null null
+> 2025-04-22 16:25:39.864 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:39.865 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - 204 null null 6.053ms
+> 2025-04-22 16:25:39.867 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - "application/json" null
+> 2025-04-22 16:25:39.874 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:39.896 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:39.897 +02:00 [Information] Route matched with "{action = \"GetById\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto] GetById(System.Guid)" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:39.905 +02:00 [Information] Executing "ObjectResult", writing value of type '"WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineReadDto"'.
+> 2025-04-22 16:25:39.907 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)" in 8.5788ms
+> 2025-04-22 16:25:39.909 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetById (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:39.911 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines/3fa85f64-5717-4562-b3fc-2c963f66a022""" - 200 210 "application/json; charset=utf-8" 44.2295ms
+> 2025-04-22 16:25:41.642 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - null null
+> 2025-04-22 16:25:41.645 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.646 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/Category""" - 204 null null 4.1435ms
+> 2025-04-22 16:25:41.648 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - "application/json" null
+> 2025-04-22 16:25:41.654 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.670 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.671 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Category\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:41.678 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Categories.CategoryQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:41.680 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)" in 7.1239ms
+> 2025-04-22 16:25:41.682 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Categories.CategoryController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.684 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/Category""" - 200 2804 "application/json; charset=utf-8" 36.3465ms
+> 2025-04-22 16:25:41.690 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:41.691 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:41.690 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:41.690 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:41.690 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:41.691 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:41.697 +02:00 [Information] Request starting "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - null null
+> 2025-04-22 16:25:41.703 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.705 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.716 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 25.7833ms
+> 2025-04-22 16:25:41.722 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 29.2984ms
+> 2025-04-22 16:25:41.707 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.709 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.711 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.713 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.715 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.722 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:41.733 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 42.3842ms
+> 2025-04-22 16:25:41.734 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 43.1525ms
+> 2025-04-22 16:25:41.734 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 43.9393ms
+> 2025-04-22 16:25:41.735 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 43.9652ms
+> 2025-04-22 16:25:41.736 +02:00 [Information] Request finished "HTTP/2" "OPTIONS" "https"://"localhost:6001""""/api/v0/Pipelines""" - 204 null null 38.5776ms
+> 2025-04-22 16:25:41.738 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.768 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.769 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:41.776 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:41.777 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 5.9304ms
+> 2025-04-22 16:25:41.779 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:41.780 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.782 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.783 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 60.5045ms
+> 2025-04-22 16:25:41.800 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.801 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:41.808 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:41.809 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 5.7643ms
+> 2025-04-22 16:25:41.810 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:41.811 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.814 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.814 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 35.4408ms
+> 2025-04-22 16:25:41.833 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.835 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:41.847 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:41.849 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 9.6646ms
+> 2025-04-22 16:25:41.850 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:41.850 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.854 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.856 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 45.3449ms
+> 2025-04-22 16:25:41.872 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.873 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:41.881 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:41.882 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.5911ms
+> 2025-04-22 16:25:41.883 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:41.884 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.887 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.888 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 38.49ms
+> 2025-04-22 16:25:41.905 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.906 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:41.913 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:41.915 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.6391ms
+> 2025-04-22 16:25:41.916 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:41.917 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.919 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.920 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 37.0657ms
+> 2025-04-22 16:25:41.936 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.937 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:41.944 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:41.946 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 7.3301ms
+> 2025-04-22 16:25:41.947 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - "application/json" null
+> 2025-04-22 16:25:41.948 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.951 +02:00 [Information] CORS policy execution successful.
+> 2025-04-22 16:25:41.951 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 35.4952ms
+> 2025-04-22 16:25:41.967 +02:00 [Information] Executing endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.968 +02:00 [Information] Route matched with "{action = \"GetAll\", controller = \"Pipelines\", page = \"\"}". Executing controller action with signature "System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto]] GetAll()" on controller "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController" ("WF.Mimetic.UI.Server").
+> 2025-04-22 16:25:41.975 +02:00 [Information] Executing "ObjectResult", writing value of type '"System.Collections.Generic.List`1[[WF.Mimetic.Application.DTO.Flows.Pipelines.PipelineQueryDto, WF.Mimetic.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'.
+> 2025-04-22 16:25:41.976 +02:00 [Information] Executed action "WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)" in 6.5544ms
+> 2025-04-22 16:25:41.978 +02:00 [Information] Executed endpoint '"WF.Mimetic.UI.Server.Controllers.Flows.PipelinesController.GetAll (WF.Mimetic.UI.Server)"'
+> 2025-04-22 16:25:41.979 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/api/v0/Pipelines""" - 200 2251 "application/json; charset=utf-8" 32.0382ms

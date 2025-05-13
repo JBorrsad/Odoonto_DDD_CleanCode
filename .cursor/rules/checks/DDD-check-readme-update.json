@@ -1,0 +1,16 @@
+{
+  "name": "DDD-check-readme-update",
+  "category": "check",
+  "description": "Verificar actualización del README después de cambios en la capa",
+  "doc": "../../docs/DDD_Core_Guide.md",
+  "filePattern": "src/**/*.cs",
+  "afterCommit": true,
+  "check": [
+    {
+      "pattern": ".*",
+      "message": "Después de hacer cambios en una capa, actualiza la sección TODO y lo implementado en el README.md de la capa",
+      "severity": "warning",
+      "advice": "Revisa el archivo README.md en la carpeta de la capa modificada y actualiza la sección TODO y la sección de implementación completada para reflejar los cambios realizados."
+    }
+  ]
+} 

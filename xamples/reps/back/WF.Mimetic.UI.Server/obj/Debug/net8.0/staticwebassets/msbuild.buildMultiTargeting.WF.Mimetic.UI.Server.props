@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\WF.Mimetic.UI.Server.props" />
+</Project>

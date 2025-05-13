@@ -1,27 +1,14 @@
 {
-  "name": "domain_entity",
-  "description": "Reglas para entidades de dominio DDD",
-  "patterns": [
-    ".*[Ee]ntity\\.cs$",
-    ".*/Models/.+\\.cs$",
-    ".*/Domain/.*/Models/.+\\.cs$",
-    ".*Domain.*Model.*\\.cs$"
+  "id": "DDD-tpl-domain_entity",
+  "description": "Plantilla para entidades de dominio siguiendo principios DDD",
+  "placeholders": [
+    {"name": "namespace", "description": "Namespace completo para la entidad"},
+    {"name": "entity_name", "description": "Nombre de la entidad"},
+    {"name": "entity_description", "description": "Descripción de la entidad"},
+    {"name": "properties", "description": "Propiedades de la entidad", "multiline": true},
+    {"name": "validation_methods", "description": "Métodos de validación", "multiline": true},
+    {"name": "business_methods", "description": "Métodos de negocio", "multiline": true}
   ],
-  "keywords": [
-    "entidad",
-    "entity",
-    "modelo de dominio",
-    "domain model"
-  ],
-  "documentation": "../docs/domain_entity.mdc",
-  "example_file": "../DDD_Ejemplos_Codigo/1_Domain_Entity.cs",
-  "templates": [
-    {
-      "name": "Entidad de Dominio b\u00e1sica",
-      "description": "Plantilla para una entidad DDD con propiedades encapsuladas y m\u00e9todos de comportamiento",
-      "code": "namespace TuProyecto.Domain.Models.<Modulo>;\n\nusing System;\nusing TuProyecto.Domain.Core.Models;\nusing TuProyecto.Domain.Core.Models.Exceptions;\n\npublic class <Entidad> : Entity\n{\n    public string Name { get; private set; }\n\n    // Constructor privado - solo accesible desde el m\u00e9todo factory\n    private <Entidad>(Guid id) : base(id)\n    {\n        Name = null;\n    }\n\n    // M\u00e9todo factory est\u00e1tico para crear instancias v\u00e1lidas\n    public static <Entidad> Create(Guid id)\n    {\n        if (id.Equals(Guid.Empty))\n        {\n            throw new InvalidValueException(\"The <Entidad> id can't be empty.\");\n        }\n\n        <Entidad> entity = new <Entidad>(id);\n        entity.UpdateEditDate();\n        return entity;\n    }\n\n    // M\u00e9todo de comportamiento con validaciones\n    public void SetName(string name)\n    {\n        if (string.IsNullOrWhiteSpace(name))\n        {\n            throw new InvalidValueException(\"The <Entidad> name can't be null/empty.\");\n        }\n\n        Name = name;\n        UpdateEditDate();\n    }\n}"
-    }
-  ],
-  "category": "template",
-  "doc": "../../docs/DDD_Core_Guide.md"
+  "template": "using System;\nusing System.Collections.Generic;\nusing Odoonto.Domain.Core.Models;\nusing Odoonto.Domain.Core.Models.Exceptions;\nusing Odoonto.Domain.Models.ValueObjects;\n\nnamespace {{namespace}}\n{\n    /// <summary>\n    /// {{entity_description}}\n    /// </summary>\n    public class {{entity_name}} : Entity\n    {\n        // Propiedades con getters públicos y setters privados\n        {{properties}}\n\n        // Constructor privado - solo accesible desde método factory\n        private {{entity_name}}(Guid id) : base(id)\n        {\n            // Inicialización de colecciones y propiedades por defecto\n        }\n\n        // Método factory para crear instancias válidas\n        public static {{entity_name}} Create(Guid id)\n        {\n            if (id == Guid.Empty)\n            {\n                throw new InvalidValueException(\"El identificador no puede estar vacío.\");\n            }\n\n            var entity = new {{entity_name}}(id);\n            entity.UpdateEditDate();\n            return entity;\n        }\n\n        // Métodos de validación\n        {{validation_methods}}\n        \n        // Métodos de negocio\n        {{business_methods}}\n    }\n}",
+  "filePattern": "src/Domain/Odoonto.Domain/Models/{{entity_name_plural}}/{{entity_name}}.cs"
 }

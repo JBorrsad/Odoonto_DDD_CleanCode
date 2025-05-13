@@ -4,5 +4,6 @@
   "templates_dir": "./templates",
   "checks_dir": "./checks",
   "docs_dir": "../../docs",
-  "examples_dir": "../../DDD_Ejemplos_Codigo"
+  "examples_dir": "../../DDD_Ejemplos_Codigo",
+  "readme_maintenance": "Siempre que se realicen cambios en una capa, se debe actualizar el archivo README.md de esa capa, especialmente las secciones de TODO y de Implementación Completada."
 }

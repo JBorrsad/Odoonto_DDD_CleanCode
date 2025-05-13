@@ -88,6 +88,10 @@ globs:
 - Make small, focused commits
 - Use meaningful branch names
 
+## TODO
+En cada archivo readme de cada capa, tienes que poner en el archivo readme.md los archivos o las entidades que faltan por hacer. 
+tienes que basarte en el esquema de entidades que hay en los documentos para hacerlo. cuando hagas algo, borra del readme el todo correspondiente. 
+
 
 
 
