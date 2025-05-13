@@ -1,0 +1,1329 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Server\\WF.Mimetic.UI.Server.csproj": {}
+  },
+  "projects": {
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application.Sidecars\\WF.Mimetic.Application.Sidecar.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application.Sidecars\\WF.Mimetic.Application.Sidecar.csproj",
+        "projectName": "WF.Mimetic.Application.Sidecar",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application.Sidecars\\WF.Mimetic.Application.Sidecar.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application.Sidecars\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Sidecar\\WF.Mimetic.Domain.Sidecar.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Sidecar\\WF.Mimetic.Domain.Sidecar.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application\\WF.Mimetic.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application\\WF.Mimetic.Application.csproj",
+        "projectName": "WF.Mimetic.Application",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application\\WF.Mimetic.Application.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Client\\WF.Mimetic.UI.Client.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Client\\WF.Mimetic.UI.Client.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Microsoft.AspNetCore.Routing": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Cache\\WF.Mimetic.Data.Cache.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Cache\\WF.Mimetic.Data.Cache.csproj",
+        "projectName": "WF.Mimetic.Data.Cache",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Cache\\WF.Mimetic.Data.Cache.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Cache\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "LiteDB": {
+              "target": "Package",
+              "version": "[5.0.21, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Contexts\\WF.Mimetic.Data.Contexts.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Contexts\\WF.Mimetic.Data.Contexts.csproj",
+        "projectName": "WF.Mimetic.Data.Contexts",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Contexts\\WF.Mimetic.Data.Contexts.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Contexts\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Sidecar\\WF.Mimetic.Data.Sidecar.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Sidecar\\WF.Mimetic.Data.Sidecar.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data\\WF.Mimetic.Data.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data\\WF.Mimetic.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj",
+        "projectName": "WF.Mimetic.Data.Core",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "LiteDB": {
+              "target": "Package",
+              "version": "[5.0.21, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Sidecar\\WF.Mimetic.Data.Sidecar.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Sidecar\\WF.Mimetic.Data.Sidecar.csproj",
+        "projectName": "WF.Mimetic.Data.Sidecar",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Sidecar\\WF.Mimetic.Data.Sidecar.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Sidecar\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Sidecar\\WF.Mimetic.Domain.Sidecar.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Sidecar\\WF.Mimetic.Domain.Sidecar.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data\\WF.Mimetic.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data\\WF.Mimetic.Data.csproj",
+        "projectName": "WF.Mimetic.Data",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data\\WF.Mimetic.Data.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Core\\WF.Mimetic.Data.Core.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj",
+        "projectName": "WF.Mimetic.Domain.Core",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.4.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Sidecar\\WF.Mimetic.Domain.Sidecar.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Sidecar\\WF.Mimetic.Domain.Sidecar.csproj",
+        "projectName": "WF.Mimetic.Domain.Sidecar",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Sidecar\\WF.Mimetic.Domain.Sidecar.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Sidecar\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj",
+        "projectName": "WF.Mimetic.Domain",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Handlebars.Net": {
+              "target": "Package",
+              "version": "[2.1.6, )"
+            },
+            "Handlebars.Net.Extension.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[1.0.3, )"
+            },
+            "Jint": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "Microsoft.AspNetCore.Routing": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.ClearScript.V8": {
+              "target": "Package",
+              "version": "[7.4.5, )"
+            },
+            "Microsoft.ClearScript.V8.Native.win-x64": {
+              "target": "Package",
+              "version": "[7.4.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.ExceptionsHandler\\WF.Mimetic.Infraestructure.ExceptionsHandler.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.ExceptionsHandler\\WF.Mimetic.Infraestructure.ExceptionsHandler.csproj",
+        "projectName": "WF.Mimetic.Infraestructure.ExceptionsHandler",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.ExceptionsHandler\\WF.Mimetic.Infraestructure.ExceptionsHandler.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.ExceptionsHandler\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain.Core\\WF.Mimetic.Domain.Core.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.InversionOfControl\\WF.Mimetic.Infraestructure.InversionOfControl.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.InversionOfControl\\WF.Mimetic.Infraestructure.InversionOfControl.csproj",
+        "projectName": "WF.Mimetic.Infraestructure.InversionOfControl",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.InversionOfControl\\WF.Mimetic.Infraestructure.InversionOfControl.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.InversionOfControl\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application.Sidecars\\WF.Mimetic.Application.Sidecar.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application.Sidecars\\WF.Mimetic.Application.Sidecar.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application\\WF.Mimetic.Application.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application\\WF.Mimetic.Application.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Cache\\WF.Mimetic.Data.Cache.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Cache\\WF.Mimetic.Data.Cache.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Sidecar\\WF.Mimetic.Data.Sidecar.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Sidecar\\WF.Mimetic.Data.Sidecar.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data\\WF.Mimetic.Data.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data\\WF.Mimetic.Data.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Domain\\WF.Mimetic.Domain\\WF.Mimetic.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.Sidecars\\WF.Mimetic.Infraestructure.Sidecar.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.Sidecars\\WF.Mimetic.Infraestructure.Sidecar.csproj",
+        "projectName": "WF.Mimetic.Infraestructure.Sidecar",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.Sidecars\\WF.Mimetic.Infraestructure.Sidecar.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.Sidecars\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application.Sidecars\\WF.Mimetic.Application.Sidecar.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application.Sidecars\\WF.Mimetic.Application.Sidecar.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Client\\WF.Mimetic.UI.Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Client\\WF.Mimetic.UI.Client.csproj",
+        "projectName": "WF.Mimetic.UI.Client",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Client\\WF.Mimetic.UI.Client.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.ExceptionsHandler\\WF.Mimetic.Infraestructure.ExceptionsHandler.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.ExceptionsHandler\\WF.Mimetic.Infraestructure.ExceptionsHandler.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "IdentityModel.OidcClient": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.Authentication": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.Extensions.ApiDescription.Client": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.3, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.Sdk.WebAssembly.Pack": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.3, )",
+              "autoReferenced": true
+            },
+            "NSwag.ApiDescription.Client": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[14.2.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.3.0, )"
+            },
+            "System.Net.Http.Json": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "browser-wasm": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Server\\WF.Mimetic.UI.Server.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Server\\WF.Mimetic.UI.Server.csproj",
+        "projectName": "WF.Mimetic.UI.Server",
+        "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Server\\WF.Mimetic.UI.Server.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Server\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application\\WF.Mimetic.Application.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Application\\WF.Mimetic.Application\\WF.Mimetic.Application.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Contexts\\WF.Mimetic.Data.Contexts.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Data\\WF.Mimetic.Data.Contexts\\WF.Mimetic.Data.Contexts.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.ExceptionsHandler\\WF.Mimetic.Infraestructure.ExceptionsHandler.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.ExceptionsHandler\\WF.Mimetic.Infraestructure.ExceptionsHandler.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.InversionOfControl\\WF.Mimetic.Infraestructure.InversionOfControl.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.InversionOfControl\\WF.Mimetic.Infraestructure.InversionOfControl.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.Sidecars\\WF.Mimetic.Infraestructure.Sidecar.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Infraestructure\\WF.Mimetic.Infraestructure.Sidecars\\WF.Mimetic.Infraestructure.Sidecar.csproj"
+              },
+              "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Client\\WF.Mimetic.UI.Client.csproj": {
+                "projectPath": "C:\\Repos\\WF.Mimetic - v1\\src\\Presentation\\WF.Mimetic.UI.Client\\WF.Mimetic.UI.Client.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "IdentityModel.AspNetCore.OAuth2Introspection": {
+              "target": "Package",
+              "version": "[6.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.Server": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "NSwag.ApiDescription.Client": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[14.2.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
+            "Serilog.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Serilog.Settings.Configuration": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Serilog.Sinks.Console": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Serilog.Sinks.File": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[7.2.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
