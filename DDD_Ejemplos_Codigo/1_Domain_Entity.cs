@@ -1,14 +1,14 @@
 // EJEMPLO DE ENTIDAD DE DOMINIO (Domain Layer)
-// Ruta: src/Domain/TuProyecto.Domain/Models/Categories/Category.cs
+// Ruta: src/Domain/Odoonto.Domain/Models/Categories/Category.cs
 
-namespace TuProyecto.Domain.Models.Categories;
+namespace Odoonto.Domain.Models.Categories;
 
 using System;
 using System.Collections.Generic;
-using TuProyecto.Domain.Core.Models;
-using TuProyecto.Domain.Core.Models.Exceptions;
-using TuProyecto.Domain.Core.Models.SortedLists;
-using TuProyecto.Domain.Models.Flows;
+using Odoonto.Domain.Core.Models;
+using Odoonto.Domain.Core.Models.Exceptions;
+using Odoonto.Domain.Core.Models.SortedLists;
+using Odoonto.Domain.Models.Flows;
 
 /// <summary>
 /// Características clave de una entidad en DDD:

@@ -27,8 +27,8 @@ Es el núcleo de la aplicación, contiene las entidades, reglas de negocio, inte
 
 **Ubicación**: `src/Domain/`
 Subdividida en:
-- `TuProyecto.Domain`: Contiene las entidades principales, interfaces de repositorios y lógica de dominio.
-- `TuProyecto.Domain.Core`: Contiene abstracciones comunes, base para entidades y excepciones.
+- `Odoonto.Domain`: Contiene las entidades principales, interfaces de repositorios y lógica de dominio.
+- `Odoonto.Domain.Core`: Contiene abstracciones comunes, base para entidades y excepciones.
 
 **Responsabilidades**:
 - Definir entidades y agregados (Models)
@@ -41,7 +41,7 @@ Orquesta el flujo de la aplicación, coordina los objetos del dominio y proporci
 
 **Ubicación**: `src/Application/`
 Subdividida en:
-- `TuProyecto.Application`: Contiene servicios, DTOs y mapeadores.
+- `Odoonto.Application`: Contiene servicios, DTOs y mapeadores.
 
 **Responsabilidades**:
 - Definir casos de uso (Services)
@@ -54,8 +54,8 @@ Proporciona implementaciones técnicas para las interfaces del dominio.
 
 **Ubicación**: `src/Infraestructure/`
 Subdividida en:
-- `TuProyecto.Infraestructure.InversionOfControl`: Configura la inyección de dependencias.
-- `TuProyecto.Infraestructure.ExceptionsHandler`: Manejo centralizado de excepciones.
+- `Odoonto.Infraestructure.InversionOfControl`: Configura la inyección de dependencias.
+- `Odoonto.Infraestructure.ExceptionsHandler`: Manejo centralizado de excepciones.
 
 **Responsabilidades**:
 - Configurar inyección de dependencias
@@ -67,9 +67,9 @@ Implementa los repositorios definidos en el dominio y gestiona la persistencia.
 
 **Ubicación**: `src/Data/`
 Subdividida en:
-- `TuProyecto.Data`: Implementaciones de repositorios.
-- `TuProyecto.Data.Core`: Abstracciones para acceso a datos.
-- `TuProyecto.Data.Contexts`: Definición de contextos de base de datos.
+- `Odoonto.Data`: Implementaciones de repositorios.
+- `Odoonto.Data.Core`: Abstracciones para acceso a datos.
+- `Odoonto.Data.Contexts`: Definición de contextos de base de datos.
 
 **Responsabilidades**:
 - Implementar repositorios
@@ -82,8 +82,8 @@ Proporciona la interfaz de usuario y expone APIs.
 
 **Ubicación**: `src/Presentation/`
 Subdividida en:
-- `TuProyecto.UI.Server`: API REST.
-- `TuProyecto.UI.Client`: Cliente (React, Blazor, etc).
+- `Odoonto.UI.Server`: API REST.
+- `Odoonto.UI.Client`: Cliente (React, Blazor, etc).
 
 **Responsabilidades**:
 - Presentar interfaces de usuario
@@ -110,54 +110,54 @@ Reglas de comunicación:
 
 #### Entidades (Models)
 Clases que representan objetos del dominio con identidad y ciclo de vida.
-- Ubicación: `src/Domain/TuProyecto.Domain/Models/`
+- Ubicación: `src/Domain/Odoonto.Domain/Models/`
 - Ejemplos: Category, Product, Customer
 
 #### Interfaces de Repositorios
 Definen métodos para acceder y persistir entidades.
-- Ubicación: `src/Domain/TuProyecto.Domain/Repositories/`
+- Ubicación: `src/Domain/Odoonto.Domain/Repositories/`
 - Ejemplos: ICategoryRepository, IProductRepository
 
 ### 4.2. Capa de Aplicación
 
 #### Servicios de Aplicación
 Implementan casos de uso específicos.
-- Ubicación: `src/Application/TuProyecto.Application/Services/`
+- Ubicación: `src/Application/Odoonto.Application/Services/`
 - Ejemplos: CategoryAppService, ProductAppService
 
 #### DTOs (Data Transfer Objects)
 Objetos para transferencia de datos entre capas.
-- Ubicación: `src/Application/TuProyecto.Application/DTO/`
+- Ubicación: `src/Application/Odoonto.Application/DTO/`
 - Ejemplos: CategoryCreateDto, CategoryReadDto, ProductQueryDto
 
 #### Interfaces de Servicios
 Definen contratos para servicios de aplicación.
-- Ubicación: `src/Application/TuProyecto.Application/Interfaces/`
+- Ubicación: `src/Application/Odoonto.Application/Interfaces/`
 - Ejemplos: ICategoryAppService, IProductAppService
 
 ### 4.3. Capa de Datos
 
 #### Implementaciones de Repositorios
 Implementan interfaces de repositorio definidas en el dominio.
-- Ubicación: `src/Data/TuProyecto.Data/Repositories/`
+- Ubicación: `src/Data/Odoonto.Data/Repositories/`
 - Ejemplos: CategoryRepository, ProductRepository
 
 #### Contextos
 Definen la configuración de la base de datos.
-- Ubicación: `src/Data/TuProyecto.Data.Contexts/Contexts/`
+- Ubicación: `src/Data/Odoonto.Data.Contexts/Contexts/`
 
 ### 4.4. Capa de Infraestructura
 
 #### Inyección de Dependencias
 Configura la resolución de dependencias.
-- Ubicación: `src/Infraestructure/TuProyecto.Infraestructure.InversionOfControl/Inyectors/`
+- Ubicación: `src/Infraestructure/Odoonto.Infraestructure.InversionOfControl/Inyectors/`
 - Ejemplos: ApplicationInyector, DataInyector, DomainInyector
 
 ### 4.5. Capa de Presentación
 
 #### Controladores
 Exponen endpoints API.
-- Ubicación: `src/Presentation/TuProyecto.UI.Server/Controllers/`
+- Ubicación: `src/Presentation/Odoonto.UI.Server/Controllers/`
 - Ejemplos: CategoriesController, ProductsController
 
 ## 5. Reglas para Implementar DDD en Proyectos Nuevos

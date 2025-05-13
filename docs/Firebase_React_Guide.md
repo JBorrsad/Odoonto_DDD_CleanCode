@@ -54,7 +54,7 @@ import axios from "axios";
 import { CategoryDto } from "../models/category.model";
 
 export class CategoryApiService {
-  private readonly baseUrl = "https://your-api.com/api/categories";
+  private readonly baseUrl = "https://api.odoonto.com/api/categories";
 
   async getAll(): Promise<CategoryDto[]> {
     const response = await axios.get(this.baseUrl);
@@ -490,7 +490,7 @@ Beneficios:
 ```typescript
 // Ejemplo de servicio de API
 export class CategoryApiService {
-  private readonly baseUrl = "https://api.tuproyecto.com/api/categories";
+  private readonly baseUrl = "https://api.odoonto.com/api/categories";
 
   async getAll(): Promise<CategoryDto[]> {
     const response = await axios.get(this.baseUrl);
@@ -710,7 +710,7 @@ El frontend se comunica exclusivamente con el backend a través de la API REST:
 ```typescript
 // Ejemplo de servicio API
 export class CategoryService {
-  private readonly baseUrl = "https://api.tuproyecto.com/api/categories";
+  private readonly baseUrl = "https://api.odoonto.com/api/categories";
 
   async getAll() {
     const response = await axios.get(this.baseUrl);
