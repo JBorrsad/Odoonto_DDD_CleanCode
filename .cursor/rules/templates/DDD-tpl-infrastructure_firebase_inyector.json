@@ -1,0 +1,26 @@
+{
+  "name": "infrastructure_firebase_inyector",
+  "description": "Reglas para inyector de dependencias de Firebase",
+  "patterns": [
+    ".*FirebaseInyector\\.cs$",
+    ".*/Infraestructure/.*/Firebase/.+\\.cs$",
+    ".*/Infrastructure/.*/Firebase/.+\\.cs$"
+  ],
+  "keywords": [
+    "inyector firebase",
+    "firebase dependency injection",
+    "configuraci\u00f3n firebase",
+    "firebase inyector"
+  ],
+  "documentation": "../docs/infrastructure_firebase_inyector.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/17_Infrastructure_Firebase_Inyector.cs",
+  "templates": [
+    {
+      "name": "Inyector de Dependencias Firebase",
+      "description": "Plantilla para un inyector de dependencias para Firebase",
+      "code": "namespace TuProyecto.Infraestructure.InversionOfControl.Inyectors;\n\nusing Microsoft.Extensions.Configuration;\nusing Microsoft.Extensions.DependencyInjection;\nusing TuProyecto.Data.Core.Contexts;\nusing TuProyecto.Data.Repositories.Categories;\nusing TuProyecto.Data.Repositories.Flows;\nusing TuProyecto.Domain.Repositories.Categories;\nusing TuProyecto.Domain.Repositories.Flows;\n\n/// <summary>\n/// Configuraci\u00f3n de la inyecci\u00f3n de dependencias para Firebase\n/// </summary>\npublic static class FirebaseInyector\n{\n    /// <summary>\n    /// Registra todos los servicios relacionados con Firebase\n    /// </summary>\n    /// <param name=\"services\">Colecci\u00f3n de servicios de la aplicaci\u00f3n</param>\n    /// <param name=\"configuration\">Configuraci\u00f3n de la aplicaci\u00f3n</param>\n    public static void InjectFirebaseDependencies(this IServiceCollection services, IConfiguration configuration)\n    {\n        // Registra el contexto de Firebase como un singleton para reutilizar la conexi\u00f3n\n        services.AddSingleton<FirebaseDbContext>(provider => \n            new FirebaseDbContext(configuration));\n            \n        // Registra repositorios Firebase para cada entidad\n        RegisterFirebaseRepositories(services);\n    }\n    \n    /// <summary>\n    /// Registra los repositorios espec\u00edficos para Firebase\n    /// </summary>\n    private static void RegisterFirebaseRepositories(IServiceCollection services)\n    {\n        // Repositorios para entidades espec\u00edficas que utilizan Firebase\n        services.AddScoped<ICategoryRepository, CategoryFirebaseRepository>();\n        services.AddScoped<IFlowRepository, FlowFirebaseRepository>();\n        \n        // TODO: Agregar otros repositorios Firebase seg\u00fan sea necesario\n        // services.AddScoped<IOtroRepository, OtroFirebaseRepository>();\n    }\n}"
+    }
+  ],
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md"
+}

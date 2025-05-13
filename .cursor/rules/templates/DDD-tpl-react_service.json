@@ -1,0 +1,27 @@
+{
+  "name": "react_service",
+  "description": "Reglas para servicios de API en React/TypeScript",
+  "patterns": [
+    ".*Service\\.tsx$",
+    ".*Service\\.ts$",
+    ".*/services/.+\\.ts$",
+    ".*/services/.+\\.tsx$"
+  ],
+  "keywords": [
+    "servicio react",
+    "react service",
+    "api service",
+    "http client"
+  ],
+  "documentation": "../docs/react_service.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/19_React_Service.tsx",
+  "templates": [
+    {
+      "name": "Servicio de API para React",
+      "description": "Plantilla para un servicio que maneja la comunicaci\u00f3n con la API REST desde React",
+      "code": "// src/services/<ModuloPlural>/<Entidad>Service.ts\n\nimport axios, { AxiosResponse } from \"axios\";\nimport { I<Entidad>, I<Entidad>CreateDto, I<Entidad>UpdateDto } from \"../models/<ModuloPlural>/<Entidad>Model\";\n\n/**\n * Clase de servicio para gestionar operaciones de API relacionadas con <Entidad>\n */\nexport class <Entidad>Service {\n  private readonly baseUrl: string;\n  \n  constructor() {\n    this.baseUrl = `${process.env.REACT_APP_API_URL || \"http://localhost:5000/api\"}<ModuloPlural>`.toLowerCase();\n  }\n  \n  /**\n   * Obtiene todos los/las <ModuloPlural>\n   */\n  async getAll(): Promise<I<Entidad>[]> {\n    try {\n      const response: AxiosResponse<I<Entidad>[]> = await axios.get(this.baseUrl);\n      \n      // Transforma fechas de string a Date\n      return response.data.map(item => ({\n        ...item,\n        creationDate: new Date(item.creationDate),\n        editDate: new Date(item.editDate)\n      }));\n    } catch (error) {\n      console.error(`Error fetching <ModuloPlural>:`, error);\n      throw error;\n    }\n  }\n  \n  /**\n   * Obtiene un/a <Entidad> por su ID\n   */\n  async getById(id: string): Promise<I<Entidad>> {\n    try {\n      const response: AxiosResponse<I<Entidad>> = await axios.get(`${this.baseUrl}/${id}`);\n      \n      // Transforma fechas de string a Date\n      return {\n        ...response.data,\n        creationDate: new Date(response.data.creationDate),\n        editDate: new Date(response.data.editDate)\n      };\n    } catch (error) {\n      console.error(`Error fetching <Entidad> with id ${id}:`, error);\n      throw error;\n    }\n  }\n  \n  /**\n   * Crea un/a nuevo/a <Entidad>\n   */\n  async create(data: I<Entidad>CreateDto): Promise<string> {\n    try {\n      const response: AxiosResponse<string> = await axios.post(this.baseUrl, data);\n      return response.data; // ID del nuevo <Entidad>\n    } catch (error) {\n      console.error(`Error creating <Entidad>:`, error);\n      throw error;\n    }\n  }\n  \n  /**\n   * Actualiza un/a <Entidad> existente\n   */\n  async update(id: string, data: I<Entidad>UpdateDto): Promise<void> {\n    try {\n      await axios.put(`${this.baseUrl}/${id}`, data);\n    } catch (error) {\n      console.error(`Error updating <Entidad> with id ${id}:`, error);\n      throw error;\n    }\n  }\n  \n  /**\n   * Elimina un/a <Entidad>\n   */\n  async delete(id: string): Promise<void> {\n    try {\n      await axios.delete(`${this.baseUrl}/${id}`);\n    } catch (error) {\n      console.error(`Error deleting <Entidad> with id ${id}:`, error);\n      throw error;\n    }\n  }\n}"
+    }
+  ],
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md"
+}

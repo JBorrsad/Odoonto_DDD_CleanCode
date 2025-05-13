@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "name": "Odoonto DDD Rules",
+  "description": "Reglas para implementaci\u00f3n de Domain-Driven Design en proyectos",
+  "author": "Odoonto Team",
+  "patterns_dir": "./patterns",
+  "global_dir": "./global",
+  "examples_dir": "./DDD_Ejemplos_Codigo",
+  "rules_file": "./rules.json",
+  "examples_config": "./patterns/examples_config.json",
+  "enabled": true,
+  "settings": {
+    "auto_detect": true,
+    "show_examples": true,
+    "validate_patterns": true,
+    "default_language": "es"
+  },
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "DDD-check-entity",
+  "category": "check",
+  "description": "Validar Entity encapsulamiento",
+  "doc": "../../docs/DDD_Core_Guide.md",
+  "filePattern": "src/Domain/**/*.cs",
+  "check": [
+    {
+      "pattern": ":\\s*Entity",
+      "message": "Debe heredar de Entity",
+      "severity": "error",
+      "required": true
+    }
+  ]
+}

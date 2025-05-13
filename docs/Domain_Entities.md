@@ -1,0 +1,168 @@
+> Versión 1.0 · 2025-05-13
+
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Entidades del Dominio
+
+Este documento define las principales entidades del dominio y sus relaciones en el proyecto. Utiliza esta referencia al implementar entidades y sus relaciones.
+
+## Entidades Principales
+
+- **Patient**: Representa la persona atendida, con su información personal y datos clínicos básicos.
+- **Doctor**: Profesional odontológico con control de su identidad y disponibilidad de agenda.
+- **Treatment**: Procedimientos clínicos ofrecidos y facturados por la clínica.
+- **Appointment**: Encuentro programado entre paciente y doctor para realizar tratamientos.
+- **Odontogram**: Mapa dental completo que agrupa el historial de cada diente.
+- **ToothRecord**: Historial clínico de una pieza dental específica.
+- **Lesion**: Catálogo de patologías bucales para registrar en pacientes.
+- **PlannedProcedure**: Elemento de plan dentro de una cita (tratamiento a realizar).
+- **PerformedProcedure**: Registro histórico de un tratamiento completado.
+
+## Value Objects
+
+- **PatientId/DoctorId/TreatmentId/AppointmentId/LesionId**: Identificadores únicos (UUID).
+- **FullName**: Estructura con primeros nombres y apellidos.
+- **ContactInfo**: Incluye dirección postal, teléfono y email.
+- **Money**: Valor monetario con monto y divisa.
+- **Date**: Fecha de calendario en zona Europe/Madrid.
+- **TimeSlot**: Período de tiempo con inicio y fin.
+- **WeeklyAvailability**: Mapa de disponibilidad semanal por día.
+- **TimeRange**: Rango de tiempo con inicio y fin.
+- **AppointmentStatus**: Estado de la cita (Scheduled, WaitingRoom, InProgress, Completed, Cancelled).
+- **Gender**: Género del paciente (Male, Female, Other).
+- **ToothNumber**: Numeración dental (1-32 adultos, 51-85 niños).
+- **ToothSurface**: Superficies dentales (O, M, D, P, V).
+- **ToothSurfaces**: Conjunto de superficies para un diente específico.
+- **LesionRecord**: Registro de lesión con identificador, superficies afectadas y fecha.
+- **TreatmentPlan**: Lista de procedimientos planificados.
+- **CompletedProcedures**: Conjunto de procedimientos completados.
+
+## Relaciones Principales
+
+- **Patient** contiene un **Odontogram** con múltiples **ToothRecord**.
+- **Appointment** vincula a un **Patient** con un **Doctor** y contiene un **TreatmentPlan**.
+- **ToothRecord** mantiene historial de **CompletedProcedures** y **LesionRecord**.
+- **PlannedProcedure** referencia un **Treatment** y especifica **ToothSurfaces**.
+- **PerformedProcedure** registra un **Treatment** completado en ciertas **ToothSurface**.
+
+## Agregados Principales
+
+1. **Patient Aggregate**:
+   - Raíz: Patient
+   - Incluye: Odontogram, ToothRecord
+   
+2. **Appointment Aggregate**:
+   - Raíz: Appointment
+   - Incluye: TreatmentPlan, PlannedProcedure
+
+3. **Treatment Catalog**:
+   - Raíz: Treatment (catálogo)
+   
+4. **Doctor Aggregate**:
+   - Raíz: Doctor
+   - Incluye: WeeklyAvailability
+
+## Invariantes de Dominio
+
+- Una cita no puede programarse fuera del horario disponible del doctor.
+- Un tratamiento no puede tener precio negativo.
+- Un diente anterior no puede tener superficie oclusal (O).
+- Las citas no pueden superponerse para un mismo doctor.
+- Un paciente no puede tener citas simultáneas.
+- Los identificadores de entidades deben ser únicos.
+- Los nombres de pacientes y doctores no pueden estar vacíos.
+- Las superficies dentales deben ser válidas según el tipo de diente.
+
+## Referencias para Implementación
+
+Consulta los ejemplos de código en `DDD_Ejemplos_Codigo/1_Domain_Entity.cs` para ver cómo implementar entidades con encapsulamiento y validaciones correctas.
+
+Patient (Representa a la persona atendida e incluye su información de filiación y el conjunto completo de datos clínicos básicos)  
+  - PatientId  
+  - FullName  
+  - DateOfBirth  
+  - Gender  
+  - ContactInfo  
+  - Odontogram ← colección de ToothRecord  
+
+Doctor (Representa al profesional odontológico y controla su identidad y disponibilidad de agenda)  
+  - DoctorId  
+  - FullName  
+  - Specialty (opcional)  
+  - WeeklyAvailability  
+
+Treatment (Define los procedimientos clínicos que la clínica ofrece y factura)  
+  - TreatmentId  
+  - Name  
+  - Price ← Money  
+  - EstimatedDuration  
+
+Appointment (Gestiona el encuentro programado en el que un paciente y un doctor realizan uno o varios tratamientos)  
+  - AppointmentId  
+  - PatientId  
+  - DoctorId  
+  - Date ← Date  
+  - TimeSlot  
+  - TreatmentPlan ← lista de PlannedProcedure  
+  - AppointmentStatus  
+
+Odontogram (Representa el mapa dental completo del paciente y agrupa el historial individual de cada diente)  
+  - Set<ToothRecord>  
+
+ToothRecord (Mantiene el historial clínico de una pieza dental concreta dentro del Odontogram)  
+  - ToothNumber  
+  - CompletedProcedures ← set de PerformedProcedure  
+  - RecordedLesions ← set de LesionRecord  
+
+Lesion (Catálogo de patologías/lesiones bucales disponibles para registrar en pacientes)  
+  - LesionId  
+  - Name  
+  - Description  
+
+PlannedProcedure (Elemento de plan dentro de una cita que indica un tratamiento a realizar y los dientes afectos)  
+  - TreatmentId  
+  - Set<ToothSurfaces>  
+
+PerformedProcedure (Registro histórico de un tratamiento que ya se completó sobre determinadas superficies dentales)  
+  - TreatmentId  
+  - Set<ToothSurface>  
+  - CompletionDate  
+
+
+──────────── Value Objects ────────────
+PatientId | DoctorId | TreatmentId | AppointmentId | LesionId (Identificador único opaco, normalmente UUID)
+
+FullName (PrimerosNombres, Apellidos)
+
+ContactInfo (PostalAddress, PhoneNumber, Email)
+
+Money (Amount, Currency) — monto ≥ 0
+
+Date (Fecha de calendario en zona Europe/Madrid)
+
+TimeSlot (StartTime, EndTime) — EndTime > StartTime
+
+WeeklyAvailability (Map<DayOfWeek, List<TimeRange>>)
+
+TimeRange (StartTime, EndTime)
+
+AppointmentStatus (Enum: Scheduled | WaitingRoom | InProgress | Completed | Cancelled)
+
+Gender (Enum: Male | Female | Other) — si deseas reflejarlo en el modelo explícitamente
+
+ToothNumber (1‑32 adultos | 51‑85 niños)
+
+ToothSurface (Enum: O | M | D | P | V) — la superficie O no es válida en dientes anteriores
+
+ToothSurfaces (ToothNumber, Set<ToothSurface>)
+
+LesionRecord (LesionId, ToothSurfaces, DetectionDate)
+
+TreatmentPlan (List<PlannedProcedure>)
+
+CompletedProcedures (Set<PerformedProcedure>)
+
+

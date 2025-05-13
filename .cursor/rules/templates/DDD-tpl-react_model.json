@@ -1,0 +1,27 @@
+{
+  "name": "react_model",
+  "description": "Reglas para modelos de dominio en React/TypeScript",
+  "patterns": [
+    ".*Model\\.tsx$",
+    ".*Model\\.ts$",
+    ".*/models/.+\\.ts$",
+    ".*/models/.+\\.tsx$"
+  ],
+  "keywords": [
+    "modelo react",
+    "react model",
+    "dominio frontend",
+    "modelo typescript"
+  ],
+  "documentation": "../docs/react_model.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/18_React_Model.tsx",
+  "templates": [
+    {
+      "name": "Modelo de Dominio para React",
+      "description": "Plantilla para un modelo de dominio en React/TypeScript siguiendo principios DDD",
+      "code": "// src/models/<ModuloPlural>/<Entidad>Model.tsx\n\n/**\n * Modelo que representa un/a <Entidad> en el dominio de la aplicaci\u00f3n\n */\nexport interface I<Entidad> {\n  id: string;\n  name: string;\n  creationDate: Date;\n  editDate: Date;\n  // Agrega m\u00e1s propiedades espec\u00edficas aqu\u00ed\n}\n\n/**\n * DTO para creaci\u00f3n de <Entidad>\n */\nexport interface I<Entidad>CreateDto {\n  name: string;\n  // Agrega m\u00e1s propiedades para creaci\u00f3n\n}\n\n/**\n * DTO para actualizaci\u00f3n de <Entidad>\n */\nexport interface I<Entidad>UpdateDto {\n  name?: string;\n  // Agrega m\u00e1s propiedades para actualizaci\u00f3n\n}\n\n/**\n * Factory para crear una nueva instancia de <Entidad>\n */\nexport const create<Entidad> = (data: I<Entidad>CreateDto): I<Entidad> => {\n  const now = new Date();\n  \n  return {\n    id: crypto.randomUUID(),\n    name: data.name,\n    creationDate: now,\n    editDate: now,\n    // Inicializa otras propiedades\n  };\n};\n\n/**\n * Actualiza un/a <Entidad> existente\n */\nexport const update<Entidad> = (original: I<Entidad>, updates: I<Entidad>UpdateDto): I<Entidad> => {\n  return {\n    ...original,\n    ...(updates.name !== undefined && { name: updates.name }),\n    // Actualiza otras propiedades\n    editDate: new Date()\n  };\n};\n\n/**\n * Funciones de utilidad para <Entidad>\n */\nexport const <Entidad>Utils = {\n  validate: (entity: I<Entidad>): boolean => {\n    // Implementa validaciones de <Entidad>\n    return !!entity.name && entity.name.trim().length > 0;\n  },\n  \n  format: (entity: I<Entidad>): string => {\n    // Formato para presentaci\u00f3n\n    return `${entity.name}`;\n  }\n};"
+    }
+  ],
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md"
+}

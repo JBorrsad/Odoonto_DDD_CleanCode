@@ -1,0 +1,24 @@
+{
+  "name": "domain_core_entity",
+  "description": "Reglas para la clase base Entity en Domain.Core",
+  "patterns": [
+    "Entity\\.cs$",
+    ".*/Domain/.*/Core/Models/Entity\\.cs$"
+  ],
+  "keywords": [
+    "entity base",
+    "entidad base",
+    "clase base dominio"
+  ],
+  "documentation": "../global/ddd_estructura.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/11_Domain_Core_Entity.cs",
+  "templates": [
+    {
+      "name": "Clase Base Entity",
+      "description": "Plantilla para la clase base Entity con propiedades comunes",
+      "code": "namespace TuProyecto.Domain.Core.Models;\n\nusing System;\n\npublic abstract class Entity\n{\n    public Guid Id { get; private set; }\n    public DateTime CreationDate { get; private set; }\n    public DateTime EditDate { get; private set; }\n\n    protected Entity(Guid id)\n    {\n        Id = id;\n        CreationDate = DateTime.UtcNow;\n        EditDate = CreationDate;\n    }\n\n    protected void UpdateEditDate()\n    {\n        EditDate = DateTime.UtcNow;\n    }\n\n    public override bool Equals(object obj)\n    {\n        if (obj is null)\n            return false;\n\n        if (ReferenceEquals(this, obj))\n            return true;\n\n        if (GetType() != obj.GetType())\n            return false;\n\n        var other = (Entity)obj;\n\n        return Id.Equals(other.Id);\n    }\n\n    public override int GetHashCode()\n    {\n        return Id.GetHashCode();\n    }\n\n    public static bool operator ==(Entity left, Entity right)\n    {\n        if (left is null && right is null)\n            return true;\n\n        if (left is null || right is null)\n            return false;\n\n        return left.Equals(right);\n    }\n\n    public static bool operator !=(Entity left, Entity right)\n    {\n        return !(left == right);\n    }\n}"
+    }
+  ],
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md"
+}

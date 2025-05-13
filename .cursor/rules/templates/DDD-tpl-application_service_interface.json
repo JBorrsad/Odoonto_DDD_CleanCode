@@ -1,0 +1,25 @@
+{
+  "name": "application_service_interface",
+  "description": "Reglas para interfaces de servicios de aplicaci\u00f3n",
+  "patterns": [
+    ".*IAppService\\.cs$",
+    ".*IApplicationService\\.cs$",
+    ".*/Application/.*/Interfaces/.+\\.cs$"
+  ],
+  "keywords": [
+    "interfaz servicio",
+    "application service interface",
+    "servicio aplicaci\u00f3n interfaz"
+  ],
+  "documentation": "../global/ddd_comunicacion.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/6_Application_Service_Interface.cs",
+  "templates": [
+    {
+      "name": "Interfaz de Servicio de Aplicaci\u00f3n",
+      "description": "Plantilla para una interfaz de servicio de aplicaci\u00f3n con operaciones CRUD",
+      "code": "namespace TuProyecto.Application.Interfaces.<Modulo>;\n\nusing System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing TuProyecto.Application.DTO.<Modulo>;\n\npublic interface I<Entidad>AppService\n{\n    Task<IEnumerable<<Entidad>QueryDto>> GetAllAsync();\n    Task<<Entidad>ReadDto> GetByIdAsync(Guid id);\n    Task<Guid> CreateAsync(<Entidad>CreateDto dto);\n    Task UpdateAsync(Guid id, <Entidad>UpdateDto dto);\n    Task DeleteAsync(Guid id);\n    \n    // M\u00e9todos adicionales espec\u00edficos para <Entidad>\n    // Task<IEnumerable<<Entidad>QueryDto>> GetByNameAsync(string name);\n    // Task<int> GetCountAsync();\n}"
+    }
+  ],
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md"
+}

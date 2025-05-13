@@ -1,0 +1,236 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Arquitectura DDD con Firebase y React
+
+## 1. Visión General
+
+La arquitectura implementa un enfoque Domain-Driven Design (DDD) con dos adaptaciones principales:
+
+1. **Backend con Firebase**: La capa de datos utiliza Firebase Firestore en lugar de una base de datos relacional
+2. **Frontend Separado**: Una aplicación React/TypeScript independiente que se comunica exclusivamente por API REST
+
+```
+┌─────────────────────────────────────────┐      ┌─────────────────────────────────┐
+│ BACKEND (C#)                            │      │ FRONTEND (React/TypeScript)     │
+│                                         │      │                                 │
+│ ┌───────────┐  ┌───────────────────┐    │      │ ┌───────────┐ ┌──────────┐     │
+│ │  Domain   │  │   Application     │    │      │ │  Models   │ │Presenters│     │
+│ │  Layer    │◄─┤   Layer           │    │      │ │  (Domain) │◄┤(Applica- │     │
+│ │           │  │                   │    │      │ │           │ │ tion)    │     │
+│ └───┬───────┘  └──────────┬────────┘    │      │ └───────────┘ └──────┬───┘     │
+│     │                     │             │      │                       │         │
+│     ▼                     ▼             │      │                       ▼         │
+│ ┌───────────┐  ┌───────────────────┐    │      │ ┌───────────┐ ┌──────────┐     │
+│ │  Data     │  │   Presentation    │    │   API │ │ Services  │ │  Views   │     │
+│ │ Layer     │  │   Layer (API)     │◄───┼──────┼─┤ (Infraestr│ │  (UI)    │     │
+│ │(Firebase) │  │                   │    │ REST  │ │  ucture)  │ │          │     │
+│ └─────┬─────┘  └───────────────────┘    │      │ └───────────┘ └──────────┘     │
+│       │                                 │      │                                 │
+│       ▼                                 │      │                                 │
+│ ┌───────────┐                           │      │                                 │
+│ │ Firebase  │                           │      │                                 │
+│ │ Firestore │                           │      │                                 │
+│ └───────────┘                           │      │                                 │
+└─────────────────────────────────────────┘      └─────────────────────────────────┘
+```
+
+## 2. Adaptaciones en el Backend (C#)
+
+### 2.1. Capa de Datos (Firebase)
+
+- **FirebaseDbContext**: Centraliza el acceso a Firestore
+- **Repositorios Firebase**: Implementan interfaces definidas en el dominio
+- **Mapeo manual**: Conversión entre documentos Firestore y entidades del dominio
+
+```csharp
+// Ejemplo de repositorio para Firebase
+public class CategoryRepository : ICategoryRepository
+{
+    private readonly FirebaseDbContext _firebaseContext;
+    private readonly string _collectionName = "categories";
+
+    public CategoryRepository(FirebaseDbContext firebaseContext)
+    {
+        _firebaseContext = firebaseContext;
+    }
+
+    public async Task<IEnumerable<Category>> GetAll()
+    {
+        var snapshot = await _firebaseContext.FirestoreDb
+            .Collection(_collectionName)
+            .GetSnapshotAsync();
+
+        return snapshot.Documents
+            .Select(doc => ConvertToEntity(doc))
+            .ToList();
+    }
+    
+    // Más métodos...
+}
+```
+
+### 2.2. Infraestructura (Firebase)
+
+- **FirebaseInyector**: Configura la inyección de dependencias para repositorios Firebase
+- **Gestión segura**: Credenciales y configuración en variables de entorno o configuración protegida
+
+### 2.3. Consideraciones para Firebase
+
+- Crear índices para consultas frecuentes
+- Implementar transacciones para operaciones multi-documento
+- Adaptar queries al modelo NoSQL de Firestore
+
+## 3. Estructura del Frontend (React/TypeScript)
+
+### 3.1. Arquitectura DDD Adaptada al Frontend
+
+La aplicación frontend implementa principios DDD adaptados:
+
+```
+frontend/
+  ├── src/
+  │   ├── models/             # Modelos de dominio (Domain Layer)
+  │   │   ├── common/         # Interfaces y tipos comunes
+  │   │   ├── categories/     # Modelos específicos de dominio
+  │   │
+  │   ├── services/           # Servicios de API (Infrastructure Layer)
+  │   │   ├── api/            # Comunicación con backend via REST
+  │   │   ├── utils/          # Utilidades auxiliares
+  │   │
+  │   ├── presenters/         # Lógica de casos de uso (Application Layer)
+  │   │   ├── categories/     # Hooks personalizados para categorías
+  │   │   ├── hooks/          # Hooks generales reutilizables
+  │   │
+  │   ├── views/              # Componentes de UI (Presentation Layer)
+  │   │   ├── components/     # Componentes reutilizables (Atomic Design)
+  │   │   ├── pages/          # Páginas/rutas de la aplicación
+  │   │   ├── layouts/        # Estructuras de página
+```
+
+### 3.2. Patrón MVP en React
+
+- **Model**: Objetos de dominio en `src/models/`
+- **View**: Componentes React en `src/views/`
+- **Presenter**: Custom hooks en `src/presenters/`
+
+```typescript
+// Ejemplo de presenter (custom hook)
+export function useCategoryPresenter() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(false);
+  const categoryService = new CategoryService();
+
+  const loadCategories = async () => {
+    setLoading(true);
+    try {
+      const data = await categoryService.getAll();
+      setCategories(data.map(dto => new Category(dto)));
+    } catch (error) {
+      // Manejo de errores
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Más métodos...
+
+  return { categories, loading, loadCategories /* ... */ };
+}
+```
+
+### 3.3. Comunicación con Backend
+
+El frontend se comunica EXCLUSIVAMENTE con el backend a través de API REST:
+
+```typescript
+// Ejemplo de servicio API
+export class CategoryService {
+  private readonly baseUrl = "/api/categories";
+
+  async getAll(): Promise<CategoryDto[]> {
+    const response = await axios.get(this.baseUrl);
+    return response.data;
+  }
+
+  async create(category: CategoryCreateDto): Promise<string> {
+    const response = await axios.post(this.baseUrl, category);
+    return response.data;
+  }
+
+  // Más métodos...
+}
+```
+
+## 4. Flujo de Datos en la Aplicación
+
+1. **Usuario → React Component (View)**:
+   - Usuario interactúa con la interfaz
+   - El componente llama a métodos del presenter
+
+2. **Presenter → Service**:
+   - Presenter coordina la lógica de presentación
+   - Invoca servicios para obtener/modificar datos
+
+3. **Service → API REST**:
+   - Realiza peticiones HTTP al backend
+   - Transforma respuestas a modelos de dominio
+
+4. **Backend API → Application Services**:
+   - Valida datos de entrada
+   - Coordina operaciones de dominio
+
+5. **Application Services → Domain Entities**:
+   - Aplica reglas de negocio
+   - Mantiene la integridad del dominio
+
+6. **Application Services → Repositories**:
+   - Persiste cambios en entidades
+   - Obtiene datos de Firestore
+
+7. **Repositories ↔ Firebase**:
+   - Traduce operaciones a formato Firestore
+   - Mapea documentos a entidades
+
+## 5. Estrategias y Buenas Prácticas
+
+### 5.1. Seguridad
+
+- Frontend nunca accede directamente a Firebase
+- Autenticación vía JWT en todas las comunicaciones API
+- Validación en ambos lados (frontend y backend)
+
+### 5.2. Rendimiento
+
+- Paginación en consultas grandes
+- Prefetching de datos comunes
+- Lazy loading de componentes
+
+### 5.3. Mantenibilidad
+
+- Código autodocumentado con nombres significativos
+- Separación clara de responsabilidades
+- Tests automatizados para cada capa
+
+## 6. Tecnologías Recomendadas
+
+### 6.1. Backend (C#)
+- Firebase Admin SDK para .NET
+- AutoMapper para mapeo
+- Swagger para documentación API
+
+### 6.2. Frontend (React)
+- React con TypeScript
+- Axios para comunicación HTTP
+- React Query o SWR para gestión de estado de servidor
+- Styled-components o Emotion para estilos
+
+## 7. Implementación Gradual
+
+1. Comenzar con el dominio (entidades y reglas de negocio)
+2. Implementar repositorios Firebase y servicios de aplicación
+3. Crear API REST con documentación Swagger
+4. Desarrollar frontend con enfoque DDD/MVP
+5. Integrar frontend y backend vía API

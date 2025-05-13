@@ -1,0 +1,26 @@
+{
+  "name": "data_core_firebase_context",
+  "description": "Reglas para contexto de Firebase Firestore",
+  "patterns": [
+    ".*FirebaseDbContext\\.cs$",
+    ".*FirebaseContext\\.cs$",
+    ".*/Data/.*/Contexts/Firebase/.+\\.cs$"
+  ],
+  "keywords": [
+    "contexto firebase",
+    "firestore context",
+    "firebase db context",
+    "firestore connection"
+  ],
+  "documentation": "../docs/data_core_firebase_context.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/16_Data_Core_Firebase_Context.cs",
+  "templates": [
+    {
+      "name": "Contexto de Firebase Firestore",
+      "description": "Plantilla para un contexto que maneja la conexi\u00f3n con Firebase Firestore",
+      "code": "namespace TuProyecto.Data.Core.Contexts;\n\nusing System;\nusing System.IO;\nusing Google.Apis.Auth.OAuth2;\nusing Google.Cloud.Firestore;\nusing Google.Cloud.Firestore.V1;\nusing Grpc.Auth;\nusing Grpc.Core;\nusing Microsoft.Extensions.Configuration;\n\n/// <summary>\n/// Contexto que maneja la conexi\u00f3n con Firebase Firestore.\n/// Proporciona acceso centralizado a las operaciones de base de datos.\n/// </summary>\npublic class FirebaseDbContext : IDisposable\n{\n    private readonly IConfiguration _configuration;\n    private bool _disposed = false;\n\n    /// <summary>\n    /// Instancia de FirestoreDb para acceder a Firestore\n    /// </summary>\n    public FirestoreDb FirestoreDb { get; private set; }\n\n    /// <summary>\n    /// Constructor que inicializa la conexi\u00f3n a Firestore\n    /// </summary>\n    public FirebaseDbContext(IConfiguration configuration)\n    {\n        _configuration = configuration;\n        InitializeFirestore();\n    }\n\n    /// <summary>\n    /// Inicializa la conexi\u00f3n a Firestore utilizando credenciales y configuraci\u00f3n\n    /// </summary>\n    private void InitializeFirestore()\n    {\n        try\n        {\n            string projectId = _configuration[\"Firebase:ProjectId\"];\n            string credentialsPath = _configuration[\"Firebase:CredentialsPath\"];\n\n            // Verifica si se debe usar el archivo de credenciales o credenciales de entorno\n            if (!string.IsNullOrEmpty(credentialsPath) && File.Exists(credentialsPath))\n            {\n                // Crea la instancia usando el archivo de credenciales\n                FirestoreDb = CreateFirestoreWithCredentialsFile(projectId, credentialsPath);\n            }\n            else if (!string.IsNullOrEmpty(_configuration[\"Firebase:Credentials\"]))\n            {\n                // Crea la instancia usando las credenciales en configuraci\u00f3n\n                string credentialsJson = _configuration[\"Firebase:Credentials\"];\n                FirestoreDb = CreateFirestoreWithCredentialsJson(projectId, credentialsJson);\n            }\n            else\n            {\n                // Intenta usar las credenciales por defecto (\u00fatil en entorno de Google Cloud)\n                FirestoreDb = FirestoreDb.Create(projectId);\n            }\n\n            Console.WriteLine($\"Firestore inicializado correctamente para el proyecto {projectId}\");\n        }\n        catch (Exception ex)\n        {\n            Console.WriteLine($\"Error al inicializar Firestore: {ex.Message}\");\n            throw new InvalidOperationException(\"No se pudo inicializar la conexi\u00f3n a Firebase Firestore\", ex);\n        }\n    }\n\n    /// <summary>\n    /// Crea una instancia de FirestoreDb usando un archivo de credenciales\n    /// </summary>\n    private FirestoreDb CreateFirestoreWithCredentialsFile(string projectId, string credentialsPath)\n    {\n        GoogleCredential credential = GoogleCredential.FromFile(credentialsPath);\n        return CreateFirestoreWithCredential(projectId, credential);\n    }\n\n    /// <summary>\n    /// Crea una instancia de FirestoreDb usando un JSON de credenciales\n    /// </summary>\n    private FirestoreDb CreateFirestoreWithCredentialsJson(string projectId, string credentialsJson)\n    {\n        GoogleCredential credential = GoogleCredential.FromJson(credentialsJson);\n        return CreateFirestoreWithCredential(projectId, credential);\n    }\n\n    /// <summary>\n    /// Crea una instancia de FirestoreDb usando un objeto GoogleCredential\n    /// </summary>\n    private FirestoreDb CreateFirestoreWithCredential(string projectId, GoogleCredential credential)\n    {\n        FirestoreDbBuilder builder = new FirestoreDbBuilder\n        {\n            ProjectId = projectId,\n            ChannelCredentials = credential.ToChannelCredentials()\n        };\n\n        return builder.Build();\n    }\n\n    /// <summary>\n    /// Libera los recursos utilizados por el contexto\n    /// </summary>\n    public void Dispose()\n    {\n        Dispose(true);\n        GC.SuppressFinalize(this);\n    }\n\n    /// <summary>\n    /// Liberaci\u00f3n de recursos gestionada\n    /// </summary>\n    protected virtual void Dispose(bool disposing)\n    {\n        if (!_disposed)\n        {\n            if (disposing)\n            {\n                // No hay recursos administrados para liberar directamente\n                // FirestoreDb no implementa IDisposable\n            }\n\n            _disposed = true;\n        }\n    }\n}"
+    }
+  ],
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md"
+}
