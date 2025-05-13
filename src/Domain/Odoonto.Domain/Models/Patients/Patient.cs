@@ -4,120 +4,151 @@ using Odoonto.Domain.Core.Models;
 using Odoonto.Domain.Core.Models.Exceptions;
 using Odoonto.Domain.Models.ValueObjects;
 using Odoonto.Domain.Models.Odontograms;
+using Odoonto.Domain.Core.Abstractions;
 
 namespace Odoonto.Domain.Models.Patients
 {
     /// <summary>
-    /// Representa a la persona atendida e incluye su información personal y 
-    /// el conjunto completo de datos clínicos básicos.
+    /// Entidad que representa a un paciente dental
     /// </summary>
     public class Patient : Entity
     {
-        // Propiedades con getters públicos y setters privados
-        public FullName FullName { get; private set; }
-        public DateTime DateOfBirth { get; private set; }
+        /// <summary>
+        /// Nombre completo del paciente
+        /// </summary>
+        public FullName Name { get; private set; }
+
+        /// <summary>
+        /// Fecha de nacimiento
+        /// </summary>
+        public Date DateOfBirth { get; private set; }
+
+        /// <summary>
+        /// Género del paciente
+        /// </summary>
         public Gender Gender { get; private set; }
-        public ContactInfo ContactInfo { get; private set; }
-        public Odontogram Odontogram { get; private set; }
 
-        // Constructor privado - solo accesible desde método factory
-        private Patient(Guid id) : base(id)
+        /// <summary>
+        /// Información de contacto
+        /// </summary>
+        public ContactInfo Contact { get; private set; }
+
+        /// <summary>
+        /// Historial de alergias
+        /// </summary>
+        public List<string> Allergies { get; private set; }
+
+        /// <summary>
+        /// Historial médico relevante
+        /// </summary>
+        public string MedicalHistory { get; private set; }
+
+        /// <summary>
+        /// Notas adicionales sobre el paciente
+        /// </summary>
+        public string Notes { get; private set; }
+
+        /// <summary>
+        /// Constructor privado para serialización
+        /// </summary>
+        private Patient() 
         {
-            Odontogram = new Odontogram();
+            Allergies = new List<string>();
         }
 
-        // Método factory para crear instancias válidas
-        public static Patient Create(Guid id)
+        /// <summary>
+        /// Constructor para crear un nuevo paciente
+        /// </summary>
+        public Patient(FullName name, Date dateOfBirth, Gender gender, ContactInfo contact)
         {
-            if (id == Guid.Empty)
-            {
-                throw new InvalidValueException("El identificador del paciente no puede estar vacío.");
-            }
+            ValidatePatient(name, dateOfBirth);
 
-            var patient = new Patient(id);
-            patient.UpdateEditDate();
-            return patient;
-        }
-
-        // Método para establecer el nombre completo
-        public void SetFullName(string firstNames, string lastNames)
-        {
-            if (string.IsNullOrWhiteSpace(firstNames))
-            {
-                throw new InvalidValueException("El nombre del paciente no puede estar vacío.");
-            }
-
-            if (string.IsNullOrWhiteSpace(lastNames))
-            {
-                throw new InvalidValueException("Los apellidos del paciente no pueden estar vacíos.");
-            }
-
-            FullName = new FullName(firstNames, lastNames);
-            UpdateEditDate();
-        }
-
-        // Método para establecer la fecha de nacimiento
-        public void SetDateOfBirth(DateTime dateOfBirth)
-        {
-            if (dateOfBirth > DateTime.Now)
-            {
-                throw new InvalidValueException("La fecha de nacimiento no puede ser futura.");
-            }
-
-            if (DateTime.Now.Year - dateOfBirth.Year > 120)
-            {
-                throw new InvalidValueException("La edad del paciente parece incorrecta.");
-            }
-
+            Name = name;
             DateOfBirth = dateOfBirth;
-            UpdateEditDate();
+            Gender = gender;
+            Contact = contact;
+            Allergies = new List<string>();
+            MedicalHistory = string.Empty;
+            Notes = string.Empty;
         }
 
-        // Método para establecer el género
-        public void SetGender(Gender gender)
+        /// <summary>
+        /// Actualiza la información básica del paciente
+        /// </summary>
+        public void UpdateBasicInfo(FullName name, Date dateOfBirth, Gender gender, ContactInfo contact)
         {
-            Gender = gender ?? throw new InvalidValueException("El género no puede ser nulo.");
-            UpdateEditDate();
+            ValidatePatient(name, dateOfBirth);
+
+            Name = name;
+            DateOfBirth = dateOfBirth;
+            Gender = gender;
+            Contact = contact;
         }
 
-        // Método para establecer la información de contacto
-        public void SetContactInfo(string postalAddress, string phoneNumber, string email)
+        /// <summary>
+        /// Actualiza el historial médico del paciente
+        /// </summary>
+        public void UpdateMedicalHistory(string medicalHistory)
         {
-            ContactInfo = new ContactInfo(postalAddress, phoneNumber, email);
-            UpdateEditDate();
+            MedicalHistory = medicalHistory ?? string.Empty;
         }
 
-        // Método para añadir un registro dental al odontograma
-        public void AddToothRecord(ToothRecord toothRecord)
+        /// <summary>
+        /// Añade una alergia al historial del paciente
+        /// </summary>
+        public void AddAllergy(string allergy)
         {
-            if (toothRecord == null)
+            if (string.IsNullOrWhiteSpace(allergy))
+                throw new ArgumentException("La alergia no puede estar vacía.", nameof(allergy));
+
+            if (!Allergies.Contains(allergy))
             {
-                throw new InvalidValueException("El registro dental no puede ser nulo.");
+                Allergies.Add(allergy);
             }
-
-            Odontogram.AddToothRecord(toothRecord);
-            UpdateEditDate();
         }
 
-        // Método para calcular la edad del paciente
+        /// <summary>
+        /// Elimina una alergia del historial del paciente
+        /// </summary>
+        public void RemoveAllergy(string allergy)
+        {
+            Allergies.Remove(allergy);
+        }
+
+        /// <summary>
+        /// Actualiza las notas del paciente
+        /// </summary>
+        public void UpdateNotes(string notes)
+        {
+            Notes = notes ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Calcula la edad actual del paciente
+        /// </summary>
         public int CalculateAge()
         {
             var today = DateTime.Today;
-            var age = today.Year - DateOfBirth.Year;
-            
-            // Ajuste si aún no ha cumplido años este año
-            if (DateOfBirth.Date > today.AddYears(-age))
-            {
+            var birthDate = DateOfBirth.Value;
+            var age = today.Year - birthDate.Year;
+
+            // Ajusta la edad si aún no ha llegado el cumpleaños este año
+            if (birthDate.Date > today.AddYears(-age))
                 age--;
-            }
-            
+
             return age;
         }
 
-        // Método para verificar si es menor de edad
-        public bool IsMinor()
+        private void ValidatePatient(FullName name, Date dateOfBirth)
         {
-            return CalculateAge() < 18;
+            if (name == null)
+                throw new ArgumentNullException(nameof(name), "El nombre no puede ser nulo.");
+
+            if (dateOfBirth == null)
+                throw new ArgumentNullException(nameof(dateOfBirth), "La fecha de nacimiento no puede ser nula.");
+
+            if (dateOfBirth.Value > DateTime.Today)
+                throw new ArgumentException("La fecha de nacimiento no puede ser una fecha futura.", nameof(dateOfBirth));
         }
     }
 } 

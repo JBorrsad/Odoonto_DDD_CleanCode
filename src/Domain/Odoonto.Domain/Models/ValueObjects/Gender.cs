@@ -4,6 +4,32 @@ using Odoonto.Domain.Core.Models.Exceptions;
 namespace Odoonto.Domain.Models.ValueObjects
 {
     /// <summary>
+    /// Representa el género de una persona
+    /// </summary>
+    public enum Gender
+    {
+        /// <summary>
+        /// No especificado
+        /// </summary>
+        NotSpecified = 0,
+
+        /// <summary>
+        /// Masculino
+        /// </summary>
+        Male = 1,
+
+        /// <summary>
+        /// Femenino
+        /// </summary>
+        Female = 2,
+
+        /// <summary>
+        /// Otro género
+        /// </summary>
+        Other = 3
+    }
+
+    /// <summary>
     /// Value object que representa el género de una persona
     /// </summary>
     public class Gender : IEquatable<Gender>

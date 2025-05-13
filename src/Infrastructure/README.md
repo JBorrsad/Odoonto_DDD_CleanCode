@@ -16,6 +16,9 @@ La capa de Infraestructura proporciona implementaciones técnicas para las inter
 
 - **Odoonto.Infrastructure.ExceptionsHandler**: Manejo centralizado de excepciones.
 
+- **Odoonto.Infrastructure.Configuration**: Configuraciones para servicios externos.
+  - `Firebase`: Configuración y credenciales para Firebase
+
 ## Reglas
 
 1. La capa de Infraestructura conoce todas las demás capas
@@ -24,20 +27,19 @@ La capa de Infraestructura proporciona implementaciones técnicas para las inter
 4. Las implementaciones de infraestructura no deben filtrar detalles técnicos al dominio
 5. Es responsable de la configuración global de la aplicación 
 
+## Implementación Completada
+
+### Componentes implementados:
+- Estructura base para inyección de dependencias
+- Configuración inicial para manejo de excepciones
+- Estructura para registro de servicios
+- FirebaseConfiguration (configuración para acceso a Firebase)
+- FirebaseInyector (registro de servicios de Firebase)
+- Configuración segura para credenciales de Firebase
+
 ## TODO
 
-### Directrices para componentes de infraestructura:
-- Separar responsabilidades en módulos específicos
-- Evitar que los detalles de implementación se filtren al dominio
-- Proporcionar configuración centralizada para aspectos transversales
-- Implementar mecanismos para diagnóstico y monitoreo
-- Facilitar pruebas automatizadas mediante abstracciones
-
 ### Componentes pendientes por implementar:
-- FirebaseInyector (configuración de inyección para Firebase)
-  - Registro de servicio FirebaseApp y FirebaseAuth
-  - Configuración de opciones de conexión y timeout
-  - Inicialización de índices y reglas de seguridad
 - ServicesInyector (registro de servicios de aplicación)
   - Registro de todos los servicios de aplicación
   - Configuración de sus dependencias

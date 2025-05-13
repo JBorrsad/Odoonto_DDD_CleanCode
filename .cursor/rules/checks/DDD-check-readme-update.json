@@ -1,16 +1,16 @@
 {
   "name": "DDD-check-readme-update",
   "category": "check",
-  "description": "Verificar actualización del README después de cambios en la capa",
+  "description": "Verificar que la sección TODO de los README de cada capa esté actualizada",
   "doc": "../../docs/DDD_Core_Guide.md",
   "filePattern": "src/**/*.cs",
   "afterCommit": true,
   "check": [
     {
-      "pattern": ".*",
-      "message": "Después de hacer cambios en una capa, actualiza la sección TODO y lo implementado en el README.md de la capa",
+      "pattern": ".*(?:Service|Repository|Controller|Entity|Dto|Profile|Context)\\.cs$",
+      "message": "Recuerda actualizar la sección TODO del README de la capa después de implementar un nuevo componente",
       "severity": "warning",
-      "advice": "Revisa el archivo README.md en la carpeta de la capa modificada y actualiza la sección TODO y la sección de implementación completada para reflejar los cambios realizados."
+      "advice": "Puedes ejecutar el script scripts/readme_updater.bat para actualizar automáticamente la sección TODO del README de la capa. Este script detectará los componentes implementados y actualizará la sección TODO en consecuencia."
     }
   ]
 } 

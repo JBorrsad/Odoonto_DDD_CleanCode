@@ -1,0 +1,40 @@
+{
+  "name": "DDD-check-application-readme",
+  "category": "check",
+  "description": "Verificar que el README de la capa Application refleje correctamente los componentes implementados y pendientes",
+  "doc": "../../docs/DDD_Core_Guide.md",
+  "filePattern": "src/Application/**/*.cs",
+  "afterCommit": true,
+  "check": [
+    {
+      "pattern": ".*Dto\\.cs$",
+      "message": "Nuevo DTO detectado. Actualiza el README.md de Application para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Application/README.md, añade este DTO a la sección '## Implementación Completada' y elimínalo de la sección '## TODO' si estaba pendiente.\n\nConsulta DDD_Ejemplos_Codigo/5_Application_DTO.cs para ver ejemplos de DTOs bien estructurados siguiendo las prácticas recomendadas de DDD."
+    },
+    {
+      "pattern": ".*Service\\.cs$",
+      "message": "Nuevo servicio detectado. Actualiza el README.md de Application para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Application/README.md, añade este servicio a la sección '## Implementación Completada' y elimínalo de la sección '## TODO' si estaba pendiente.\n\nConsulta DDD_Ejemplos_Codigo/7_Application_Service_Implementation.cs para ver ejemplos de servicios de aplicación y docs/DDD_Core_Guide.md para entender su papel en la arquitectura."
+    },
+    {
+      "pattern": "I.*Service\\.cs$",
+      "message": "Nueva interfaz de servicio detectada. Actualiza el README.md de Application para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Application/README.md, añade esta interfaz de servicio a la sección '## Implementación Completada' y elimínala de la sección '## TODO' si estaba pendiente.\n\nConsulta DDD_Ejemplos_Codigo/6_Application_Service_Interface.cs para ver ejemplos de interfaces de servicio siguiendo los principios de DDD."
+    },
+    {
+      "pattern": ".*Profile\\.cs$",
+      "message": "Nuevo perfil de mapeo detectado. Actualiza el README.md de Application para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Application/README.md, añade este perfil de mapeo a la sección '## Implementación Completada'.\n\nConsulta DDD_Ejemplos_Codigo/8_Application_AutoMapper_Profile.cs para ver ejemplos de perfiles de mapeo y cómo deberían configurarse."
+    },
+    {
+      "pattern": "(Appointment|Treatment|Odontogram)Service\\.cs$",
+      "message": "Has implementado un servicio clave de la aplicación. Actualiza el README.md",
+      "severity": "warning",
+      "advice": "En src/Application/README.md, actualiza la sección '## TODO' eliminando este servicio de 'Componentes pendientes por implementar'.\n\nConsulta docs/DDD_Core_Guide.md en la sección de Application Services para entender el papel de estos servicios en la arquitectura DDD."
+    }
+  ]
+} 

@@ -16,6 +16,8 @@ La capa de Datos implementa los repositorios definidos en el dominio y gestiona 
 
 - **Odoonto.Data.Core**: Abstracciones para acceso a datos.
   - `Abstractions`: Clases base e interfaces comunes para acceso a datos
+  - `Contexts`: Contextos para acceso a la base de datos
+  - `Repositories`: Clases base para implementaciones de repositorios
 
 - **Odoonto.Data.Contexts**: Definición de contextos de base de datos.
   - `Contexts`: Contextos de Firebase
@@ -30,30 +32,34 @@ La capa de Datos implementa los repositorios definidos en el dominio y gestiona 
 5. Los documentos Firestore se convierten a entidades del dominio antes de devolverlos
 6. Las transacciones complejas se implementan a nivel de repositorio 
 
+## Implementación Completada
+
+### Componentes implementados:
+- Estructura base para repositorios
+- Configuración inicial de Firebase
+- Clases base para conversión de documentos-entidades
+- FirestoreContext para interactuar con Firestore
+- Repository<T> clase base para todos los repositorios
+- PatientRepository (Implementación concreta)
+  - Métodos para búsqueda por nombre, fecha de nacimiento, etc.
+  - Búsqueda por datos de contacto y rango de edad
+- AppointmentRepository (Implementación concreta)
+  - Consultas por rango de fechas
+  - Filtrado por doctor, paciente o estado
+  - Validación de superposición de citas
+- Configuraciones de mapeo:
+  - AppointmentConfiguration: Conversión bidireccional entre documentos Firestore y entidades Appointment
+  - Estrategias de serialización para objetos Date y TimeSlot
+
 ## TODO
 
-### Directrices para implementación de repositorios:
-- Seguir el patrón del repositorio ejemplo (FlowRepository)
-- Implementar métodos específicos como GetByIdOrThrow para manejo seguro
-- Asegurar conversión correcta entre documentos Firestore y entidades
-- Proporcionar métodos para consultas optimizadas por caso de uso
-- Implementar transacciones para operaciones que afectan a múltiples entidades
-- Considerar implementaciones de caché para mejorar rendimiento
-
 ### Repositorios pendientes por implementar:
-- IPatientRepository y PatientRepository
-  - Métodos para búsqueda por nombre, fecha de nacimiento, etc.
-  - Carga eficiente del odontograma (parcial o completo)
 - IDoctorRepository y DoctorRepository
   - Métodos para consulta de disponibilidad
   - Optimización para búsqueda de horarios 
 - ITreatmentRepository y TreatmentRepository
   - Métodos para búsqueda por categoría, precio, etc.
   - Soporte para catálogo de tratamientos
-- IAppointmentRepository y AppointmentRepository
-  - Consultas por rango de fechas
-  - Filtrado por doctor, paciente o estado
-  - Validación de superposición de citas
 - IOdontogramRepository y OdontogramRepository
   - Soporte para carga/guardado incremental
   - Histórico de cambios por diente
@@ -61,9 +67,7 @@ La capa de Datos implementa los repositorios definidos en el dominio y gestiona 
   - Catálogo y gestión de tipos de lesiones
 
 ### Contextos pendientes por implementar:
-- FirebaseContext (configuración principal)
-  - Inicialización y configuración segura de Firebase
-  - Gestión de autenticación y permisos
-- Configuraciones de mapeo para todas las entidades
-  - Conversión bidireccional entidad-documento
-  - Estrategias de serialización para value objects 
+- Configuraciones de mapeo para el resto de entidades
+  - PatientConfiguration
+  - DoctorConfiguration
+  - TreatmentConfiguration 

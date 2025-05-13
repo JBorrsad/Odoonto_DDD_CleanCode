@@ -1,0 +1,40 @@
+{
+  "name": "DDD-check-infrastructure-readme",
+  "category": "check",
+  "description": "Verificar que el README de la capa Infrastructure refleje correctamente los componentes implementados y pendientes",
+  "doc": "../../docs/DDD_Core_Guide.md",
+  "filePattern": "src/Infrastructure/**/*.cs",
+  "afterCommit": true,
+  "check": [
+    {
+      "pattern": ".*Inyector\\.cs$",
+      "message": "Nuevo inyector detectado. Actualiza el README.md de Infrastructure para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Infrastructure/README.md, añade este inyector a la sección '## Implementación Completada' y elimínalo de la sección '## TODO' si estaba pendiente.\n\nConsulta DDD_Ejemplos_Codigo/10_Infrastructure_Inyector.cs y DDD_Ejemplos_Codigo/17_Infrastructure_Firebase_Inyector.cs para ver ejemplos de inyección de dependencias."
+    },
+    {
+      "pattern": ".*Configuration\\.cs$",
+      "message": "Nueva configuración detectada. Actualiza el README.md de Infrastructure para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Infrastructure/README.md, añade esta configuración a la sección '## Implementación Completada' y elimínala de la sección '## TODO' si estaba pendiente.\n\nConsulta docs/DDD_Core_Guide.md en la sección de Infrastructure para entender el papel de las configuraciones en la arquitectura."
+    },
+    {
+      "pattern": ".*Middleware\\.cs$",
+      "message": "Nuevo middleware detectado. Actualiza el README.md de Infrastructure para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Infrastructure/README.md, añade este middleware a la sección '## Implementación Completada'.\n\nConsulta docs/DDD_Core_Guide.md y docs/Clean_Code_Guidelines.md para entender las mejores prácticas en la implementación de middlewares."
+    },
+    {
+      "pattern": "Firebase.*\\.cs$",
+      "message": "Nueva configuración de Firebase detectada. Actualiza el README.md",
+      "severity": "warning",
+      "advice": "En src/Infrastructure/README.md, añade esta configuración de Firebase a la sección '## Implementación Completada'.\n\nConsulta docs/Firebase_React_Guide.md para entender la configuración e inicialización de Firebase en la aplicación."
+    },
+    {
+      "pattern": "(Email|Security|Caching).*\\.cs$",
+      "message": "Has implementado un componente clave de infraestructura. Actualiza el README.md",
+      "severity": "warning",
+      "advice": "En src/Infrastructure/README.md, actualiza la sección '## TODO' eliminando este componente de 'Componentes pendientes por implementar'.\n\nConsulta docs/DDD_Core_Guide.md para entender cómo estos componentes se integran en la arquitectura general."
+    }
+  ]
+} 

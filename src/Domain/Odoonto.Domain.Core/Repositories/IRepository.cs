@@ -7,9 +7,9 @@ using Odoonto.Domain.Core.Abstractions;
 namespace Odoonto.Domain.Core.Repositories
 {
     /// <summary>
-    /// Interfaz genérica para repositorios de entidades
+    /// Interfaz base para todos los repositorios que proporcionan operaciones CRUD
     /// </summary>
-    /// <typeparam name="T">Tipo de entidad del repositorio</typeparam>
+    /// <typeparam name="T">Tipo de entidad que maneja el repositorio</typeparam>
     public interface IRepository<T> where T : Entity
     {
         /// <summary>
@@ -89,5 +89,10 @@ namespace Odoonto.Domain.Core.Repositories
         /// <param name="entity">Entidad a guardar o actualizar</param>
         /// <returns>Task asíncrono</returns>
         Task SaveAsync(T entity);
+
+        /// <summary>
+        /// Verifica si una entidad existe
+        /// </summary>
+        Task<bool> EntityExistsAsync(Guid id);
     }
 } 

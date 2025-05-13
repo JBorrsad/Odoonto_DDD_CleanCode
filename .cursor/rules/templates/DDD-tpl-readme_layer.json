@@ -1,0 +1,31 @@
+{
+  "name": "readme_layer",
+  "description": "Plantilla para los README de cada capa siguiendo la arquitectura DDD",
+  "patterns": [
+    ".*README\\.md$",
+    ".*/src/.*/README\\.md$"
+  ],
+  "keywords": [
+    "readme capa",
+    "documentación capa",
+    "layer readme"
+  ],
+  "documentation": "../../docs/DDD_Core_Guide.md",
+  "templates": [
+    {
+      "name": "README para capas DDD",
+      "description": "Plantilla estándar para los README de cada capa con secciones para implementación completada y pendiente",
+      "code": "# Capa de {{Capa}}\n\n{{Descripción_Capa}}\n\n## Responsabilidades\n\n- {{Responsabilidad_1}}\n- {{Responsabilidad_2}}\n- {{Responsabilidad_3}}\n- {{Responsabilidad_4}}\n\n## Estructura\n\n- **Odoonto.{{Capa}}**: Contiene {{Descripción_Estructura}}.\n  - `{{Carpeta_1}}`: {{Descripción_Carpeta_1}}\n  - `{{Carpeta_2}}`: {{Descripción_Carpeta_2}}\n  - `{{Carpeta_3}}`: {{Descripción_Carpeta_3}}\n\n## Reglas\n\n1. {{Regla_1}}\n2. {{Regla_2}}\n3. {{Regla_3}}\n4. {{Regla_4}}\n5. {{Regla_5}}\n\n## Implementación Completada\n\n### Directrices implementadas:\n- {{Implementado_1}}\n- {{Implementado_2}}\n- {{Implementado_3}}\n\n### Componentes implementados:\n- {{Componente_1}} ({{Descripción_Componente_1}})\n- {{Componente_2}} ({{Descripción_Componente_2}})\n- {{Componente_3}} ({{Descripción_Componente_3}})\n\n## TODO\n\n### Componentes pendientes por implementar:\n- {{Pendiente_1}} ({{Descripción_Pendiente_1}})\n  - {{Subtarea_1.1}}\n  - {{Subtarea_1.2}}\n- {{Pendiente_2}} ({{Descripción_Pendiente_2}})\n  - {{Subtarea_2.1}}\n  - {{Subtarea_2.2}}\n- {{Pendiente_3}} ({{Descripción_Pendiente_3}})\n  - {{Subtarea_3.1}}\n  - {{Subtarea_3.2}}\n\n### Consideraciones técnicas:\n- {{Consideración_1}}\n- {{Consideración_2}}\n- {{Consideración_3}}"
+    }
+  ],
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md",
+  "placeholders": [
+    {"name": "capa", "description": "Nombre de la capa (Domain, Application, Data, Infrastructure, Presentation)"},
+    {"name": "descripcion_capa", "description": "Descripción general de la capa y su propósito"},
+    {"name": "implementado", "description": "Lista de componentes ya implementados", "multiline": true},
+    {"name": "pendiente", "description": "Lista de componentes pendientes por implementar", "multiline": true}
+  ],
+  "template": "# Capa de {{capa}}\n\n{{descripcion_capa}}\n\n## Responsabilidades\n\n- Definir {{responsabilidades}}\n\n## Estructura\n\n- **Odoonto.{{capa}}**: {{estructura_descripcion}}\n  - `{{estructura_detalles}}`\n\n## Reglas\n\n{{reglas}}\n\n## Implementación Completada\n\n### Directrices implementadas:\n{{implementado}}\n\n## TODO\n\n### Componentes pendientes por implementar:\n{{pendiente}}",
+  "filePattern": "src/{{capa}}/README.md"
+} 

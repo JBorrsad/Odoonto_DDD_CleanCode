@@ -1,0 +1,48 @@
+{
+  "name": "readme_section_implemented",
+  "description": "Plantilla para la sección de Implementación Completada de los README de cada capa",
+  "patterns": [
+    ".*README\\.md$"
+  ],
+  "keywords": [
+    "readme implementado",
+    "implementación completada",
+    "componentes implementados"
+  ],
+  "documentation": "../../docs/DDD_Core_Guide.md",
+  "templates": [
+    {
+      "name": "Sección Implementación Completada para capa Domain",
+      "description": "Plantilla para la sección Implementación Completada de la capa Domain",
+      "code": "## Implementación Completada\n\n### Directrices implementadas:\n- Estructura base de entidades y value objects\n- Validaciones de dominio mediante métodos en entidades\n- Interfaces de repositorio para persistencia\n- Lógica de negocio encapsulada en entidades y servicios de dominio\n\n### Componentes implementados:\n- Patient (Entidad para representar al paciente dental)\n  - Datos personales y demográficos\n  - Historial médico básico\n- Doctor (Entidad para representar al odontólogo)\n  - Perfil profesional y especialidades\n  - Gestión de disponibilidad\n- FullName, ContactInfo, Date (Value Objects para conceptos comunes)\n  - Validación y formato consistente\n  - Comportamiento inmutable\n- IPatientRepository, IDoctorRepository (Interfaces de repositorio)\n  - Definición de operaciones de persistencia\n  - Abstracciones para búsquedas específicas"
+    },
+    {
+      "name": "Sección Implementación Completada para capa Application",
+      "description": "Plantilla para la sección Implementación Completada de la capa Application",
+      "code": "## Implementación Completada\n\n### Directrices implementadas:\n- Estructura base de servicios de aplicación\n- Estructura base para DTOs\n- Configuración inicial de AutoMapper\n- Orquestación de casos de uso\n\n### Componentes implementados:\n- PatientDto, CreatePatientDto (DTOs para pacientes)\n  - Validación mediante Data Annotations\n  - Estructuras simplificadas para UI\n- DoctorDto, CreateDoctorDto, ScheduleDto (DTOs para doctores)\n  - Validación mediante Data Annotations\n  - Estructuras para gestión de horarios\n- PatientService, DoctorService (Servicios de aplicación)\n  - Implementación CRUD completa\n  - Validaciones específicas de aplicación\n- IPatientService, IDoctorService (Interfaces de servicio)\n  - Contratos para operaciones de aplicación\n  - Métodos para casos de uso específicos\n- PatientMappingProfile, DoctorMappingProfile (Perfiles de AutoMapper)\n  - Mapeo bidireccional entidad-DTO\n  - Transformaciones personalizadas"
+    },
+    {
+      "name": "Sección Implementación Completada para capa Data",
+      "description": "Plantilla para la sección Implementación Completada de la capa Data",
+      "code": "## Implementación Completada\n\n### Componentes implementados:\n- Estructura base para repositorios\n- Configuración inicial de Firebase\n- Clases base para conversión de documentos-entidades\n- FirestoreContext para interactuar con Firestore\n- Repository<T> clase base para todos los repositorios\n- PatientRepository (Implementación concreta)\n  - Consultas específicas para pacientes\n  - Optimizaciones para carga de datos relacionados\n- DoctorRepository (Implementación concreta)\n  - Gestión de horarios y disponibilidad\n  - Búsqueda por especialidades"
+    },
+    {
+      "name": "Sección Implementación Completada para capa Infrastructure",
+      "description": "Plantilla para la sección Implementación Completada de la capa Infrastructure",
+      "code": "## Implementación Completada\n\n### Componentes implementados:\n- FirebaseConfiguration (Configuración de Firebase)\n  - Inicialización y manejo de credenciales\n  - Configuración de opciones de Firestore\n- FirebaseInyector (Inyección de dependencias Firebase)\n  - Registro de servicios de Firebase\n  - Singleton para cliente Firestore\n- DependencyInyector (Inyección de dependencias general)\n  - Registro de repositorios y servicios\n  - Configuración de ciclo de vida de servicios"
+    },
+    {
+      "name": "Sección Implementación Completada para capa Presentation",
+      "description": "Plantilla para la sección Implementación Completada de la capa Presentation",
+      "code": "## Implementación Completada\n\n### Componentes implementados:\n- PatientController (API para gestión de pacientes)\n  - Endpoints CRUD completos\n  - Validación de solicitudes\n- DoctorController (API para gestión de doctores)\n  - Endpoints para gestión de disponibilidad\n  - Validación de horarios\n- ErrorHandlingMiddleware (Middleware para errores)\n  - Manejo consistente de excepciones\n  - Respuestas estructuradas"
+    }
+  ],
+  "category": "template",
+  "doc": "../../docs/DDD_Core_Guide.md",
+  "placeholders": [
+    {"name": "capa", "description": "Nombre de la capa (Domain, Application, Data, Infrastructure, Presentation)"},
+    {"name": "directrices", "description": "Lista de directrices implementadas", "multiline": true},
+    {"name": "componentes", "description": "Lista de componentes implementados", "multiline": true}
+  ],
+  "filePattern": "src/*/README.md"
+} 

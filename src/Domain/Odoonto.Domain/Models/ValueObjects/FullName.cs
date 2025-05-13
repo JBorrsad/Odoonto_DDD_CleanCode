@@ -1,66 +1,55 @@
+using Odoonto.Domain.Core.Abstractions;
 using System;
+using System.Collections.Generic;
 using Odoonto.Domain.Core.Models.Exceptions;
 
 namespace Odoonto.Domain.Models.ValueObjects
 {
     /// <summary>
-    /// Value object que representa el nombre completo de una persona
+    /// Representa el nombre completo de una persona
     /// </summary>
-    public class FullName : IEquatable<FullName>
+    public class FullName : ValueObject
     {
-        public string FirstNames { get; }
-        public string LastNames { get; }
+        /// <summary>
+        /// Nombres de la persona
+        /// </summary>
+        public string FirstName { get; }
 
-        public FullName(string firstNames, string lastNames)
+        /// <summary>
+        /// Apellidos de la persona
+        /// </summary>
+        public string LastName { get; }
+
+        /// <summary>
+        /// Constructor para crear un nombre completo
+        /// </summary>
+        public FullName(string firstName, string lastName)
         {
-            if (string.IsNullOrWhiteSpace(firstNames))
-                throw new InvalidValueException("El nombre no puede estar vacío.");
+            if (string.IsNullOrWhiteSpace(firstName))
+                throw new ArgumentException("El nombre no puede estar vacío", nameof(firstName));
 
-            if (string.IsNullOrWhiteSpace(lastNames))
-                throw new InvalidValueException("Los apellidos no pueden estar vacíos.");
+            if (string.IsNullOrWhiteSpace(lastName))
+                throw new ArgumentException("Los apellidos no pueden estar vacíos", nameof(lastName));
 
-            FirstNames = firstNames.Trim();
-            LastNames = lastNames.Trim();
+            FirstName = firstName.Trim();
+            LastName = lastName.Trim();
         }
 
-        // Propiedad calculada para el nombre completo
-        public string FullNameFormatted => $"{FirstNames} {LastNames}";
-
-        // Value objects deben ser inmutables y comparables por valor
-        public bool Equals(FullName other)
+        /// <summary>
+        /// Devuelve el nombre completo formateado
+        /// </summary>
+        public override string ToString()
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
-            
-            return string.Equals(FirstNames, other.FirstNames, StringComparison.OrdinalIgnoreCase) &&
-                   string.Equals(LastNames, other.LastNames, StringComparison.OrdinalIgnoreCase);
+            return $"{FirstName} {LastName}";
         }
 
-        public override bool Equals(object obj)
+        /// <summary>
+        /// Componentes para comparación de igualdad
+        /// </summary>
+        protected override IEnumerable<object> GetEqualityComponents()
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            
-            return Equals((FullName)obj);
+            yield return FirstName;
+            yield return LastName;
         }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(
-                FirstNames?.ToLowerInvariant().GetHashCode() ?? 0,
-                LastNames?.ToLowerInvariant().GetHashCode() ?? 0);
-        }
-
-        public override string ToString() => FullNameFormatted;
-
-        // Operadores de comparación
-        public static bool operator ==(FullName left, FullName right)
-        {
-            if (left is null) return right is null;
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(FullName left, FullName right) => !(left == right);
     }
 } 

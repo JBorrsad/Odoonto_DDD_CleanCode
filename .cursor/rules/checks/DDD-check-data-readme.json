@@ -1,0 +1,40 @@
+{
+  "name": "DDD-check-data-readme",
+  "category": "check",
+  "description": "Verificar que el README de la capa Data refleje correctamente los componentes implementados y pendientes",
+  "doc": "../../docs/DDD_Core_Guide.md",
+  "filePattern": "src/Data/**/*.cs",
+  "afterCommit": true,
+  "check": [
+    {
+      "pattern": ".*Repository\\.cs$",
+      "message": "Nueva implementación de repositorio detectada. Actualiza el README.md de Data para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Data/README.md, añade esta implementación de repositorio a la sección '## Implementación Completada' y elimínala de la sección '## TODO' si estaba pendiente.\n\nConsulta DDD_Ejemplos_Codigo/3_Data_Repository_Implementation.cs y DDD_Ejemplos_Codigo/15_Firebase_Repository_Implementation.cs para ver ejemplos de implementación de repositorios."
+    },
+    {
+      "pattern": ".*Context\\.cs$",
+      "message": "Nuevo contexto detectado. Actualiza el README.md de Data para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Data/README.md, añade este contexto a la sección '## Implementación Completada' y elimínalo de la sección '## TODO' si estaba pendiente.\n\nConsulta DDD_Ejemplos_Codigo/16_Data_Core_Firebase_Context.cs para ver ejemplos de contextos de base de datos en la arquitectura DDD."
+    },
+    {
+      "pattern": ".*Mapping\\.cs$",
+      "message": "Nueva configuración de mapeo detectada. Actualiza el README.md de Data para reflejar esta implementación",
+      "severity": "warning",
+      "advice": "En src/Data/README.md, añade esta configuración de mapeo a la sección '## Implementación Completada'.\n\nConsulta DDD_Ejemplos_Codigo/4_Data_Entity_Mapping.cs para ver ejemplos de mapeo entre entidades de dominio y modelos de persistencia."
+    },
+    {
+      "pattern": "(Appointment|Treatment|Odontogram)Repository\\.cs$",
+      "message": "Has implementado un repositorio clave. Actualiza el README.md",
+      "severity": "warning",
+      "advice": "En src/Data/README.md, actualiza la sección '## TODO' eliminando este repositorio de 'Componentes pendientes por implementar'.\n\nConsulta docs/DDD_Core_Guide.md y docs/Firebase_React_Guide.md para entender cómo se implementan los repositorios en esta arquitectura."
+    },
+    {
+      "pattern": "Firebase.*\\.cs$",
+      "message": "Nueva configuración de Firebase detectada. Actualiza el README.md",
+      "severity": "warning",
+      "advice": "En src/Data/README.md, añade esta configuración de Firebase a la sección '## Implementación Completada'.\n\nConsulta docs/Firebase_React_Guide.md para entender la integración con Firebase en la arquitectura."
+    }
+  ]
+} 

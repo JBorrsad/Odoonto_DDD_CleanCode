@@ -5,19 +5,18 @@ using System.Linq;
 namespace Odoonto.Domain.Core.Abstractions
 {
     /// <summary>
-    /// Clase base para todos los value objects del dominio.
-    /// Los value objects son inmutables y se comparan por valor, no por referencia.
+    /// Clase base para objetos de valor (Value Objects) en el dominio.
+    /// Los objetos de valor se comparan por el valor, no por la identidad.
     /// </summary>
     public abstract class ValueObject
     {
         /// <summary>
-        /// Cuando se sobrescribe, devuelve los componentes que forman parte de la igualdad del value object
+        /// Cuando se implementa en una clase derivada, devuelve los componentes de este objeto que deben compararse.
         /// </summary>
-        /// <returns>Colección de componentes para comparación de igualdad</returns>
         protected abstract IEnumerable<object> GetEqualityComponents();
 
         /// <summary>
-        /// Implementación genérica de Equals que compara todos los componentes
+        /// Compara si este objeto es igual a otro.
         /// </summary>
         public override bool Equals(object obj)
         {
@@ -27,45 +26,47 @@ namespace Odoonto.Domain.Core.Abstractions
             }
 
             var other = (ValueObject)obj;
-            
             return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
         /// <summary>
-        /// Implementación genérica de GetHashCode que combina todos los componentes
+        /// Obtiene un código hash basado en los componentes del objeto.
         /// </summary>
         public override int GetHashCode()
         {
             return GetEqualityComponents()
-                .Aggregate(1, (current, obj) =>
-                {
-                    unchecked
-                    {
-                        return (current * 23) + (obj?.GetHashCode() ?? 0);
-                    }
-                });
+                .Select(x => x != null ? x.GetHashCode() : 0)
+                .Aggregate((x, y) => x ^ y);
         }
 
         /// <summary>
-        /// Operador de igualdad para comparar value objects
+        /// Operador de igualdad
         /// </summary>
-        public static bool operator ==(ValueObject a, ValueObject b)
+        public static bool operator ==(ValueObject left, ValueObject right)
         {
-            if (a is null && b is null)
+            if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
                 return true;
 
-            if (a is null || b is null)
+            if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
                 return false;
 
-            return a.Equals(b);
+            return left.Equals(right);
         }
 
         /// <summary>
-        /// Operador de desigualdad para comparar value objects
+        /// Operador de desigualdad
         /// </summary>
-        public static bool operator !=(ValueObject a, ValueObject b)
+        public static bool operator !=(ValueObject left, ValueObject right)
         {
-            return !(a == b);
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Crea una copia superficial de este objeto.
+        /// </summary>
+        public ValueObject GetCopy()
+        {
+            return this.MemberwiseClone() as ValueObject;
         }
     }
 } 
