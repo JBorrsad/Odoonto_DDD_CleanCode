@@ -1,0 +1,31 @@
+{
+  "name": "domain_entity",
+  "description": "Reglas y ejemplos para crear entidades de dominio siguiendo DDD",
+  "patterns": [
+    "crear? entidad(?:es)? (?:de )?dominio",
+    "implementar? entidad(?:es)? (?:de )?dominio",
+    "entidad DDD",
+    "domain entity"
+  ],
+  "references": [
+    {
+      "path": "src/DDD_Ejemplos_Codigo/1_Domain_Entity.cs",
+      "description": "Ejemplo de entidad de dominio básica"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/11_Domain_Core_Entity.cs",
+      "description": "Ejemplo de clase base para entidades"
+    },
+    {
+      "path": "src/DDD_Estructura_Proyecto.txt",
+      "section": "4.1. Capa de Dominio",
+      "description": "Documentación sobre la capa de dominio"
+    }
+  ],
+  "templates": [
+    {
+      "name": "Entidad básica",
+      "code": "namespace TuProyecto.Domain.Models.<Modulo>;\n\nusing System;\nusing TuProyecto.Domain.Core.Models;\nusing TuProyecto.Domain.Core.Models.Exceptions;\n\npublic class <Nombre> : Entity\n{\n    public string Name { get; private set; }\n\n    private <Nombre>(Guid id) : base(id)\n    {\n        Name = null;\n    }\n\n    public static <Nombre> Create(Guid id)\n    {\n        if (id.Equals(Guid.Empty))\n        {\n            throw new InvalidValueException(\"The <Nombre> id can't be empty.\");\n        }\n\n        <Nombre> entity = new <Nombre>(id);\n        entity.UpdateEditDate();\n        return entity;\n    }\n\n    public void SetName(string name)\n    {\n        if (string.IsNullOrWhiteSpace(name))\n        {\n            throw new InvalidValueException(\"The <Nombre> name can't be null/empty.\");\n        }\n\n        Name = name;\n        UpdateEditDate();\n    }\n}"
+    }
+  ]
+} 

@@ -1,0 +1,38 @@
+{
+  "name": "architecture",
+  "description": "Reglas y ejemplos sobre la arquitectura DDD con Firebase y React",
+  "patterns": [
+    "arquitectura DDD",
+    "estructura (de )?proyecto",
+    "capas DDD",
+    "firebase arquitectura",
+    "frontend arquitectura",
+    "flujo de datos"
+  ],
+  "references": [
+    {
+      "path": "src/DDD_Estructura_Proyecto.txt",
+      "description": "Estructura general del proyecto DDD"
+    },
+    {
+      "path": "src/DDD_Flujos_Comunicacion.txt",
+      "description": "Flujos de comunicación entre capas"
+    },
+    {
+      "path": "src/DDD_Reglas_Cursor.txt",
+      "description": "Reglas para implementar DDD"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/22_ReactFirebase_Integration.md",
+      "description": "Integración de API REST con Firebase"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/23_Frontend_Estructura.md",
+      "description": "Estructura del frontend React"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/24_Resumen_Adaptaciones.md",
+      "description": "Resumen de adaptaciones para el proyecto"
+    }
+  ]
+} 

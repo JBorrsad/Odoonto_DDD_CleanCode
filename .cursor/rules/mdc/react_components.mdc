@@ -1,0 +1,548 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Componentes React (Frontend MVP)
+
+## Info
+
+- **Autor**: Cursor
+- **Versión**: 1.0
+- **Categoría**: Implementación
+- **Tags**: #React #Frontend #TypeScript #MVP
+
+## Descripción
+
+El frontend sigue el patrón MVP (Model-View-Presenter) con React y TypeScript, donde:
+- **Models**: Definen las estructuras de datos y validaciones
+- **Services**: Manejan la comunicación con la API
+- **Presenters**: Implementan la lógica de presentación (custom hooks)
+- **Views**: Componentes React para la interfaz de usuario
+
+## Reglas de Implementación
+
+### Modelos
+
+- ✅ Usar interfaces TypeScript para definir estructuras
+- ✅ Implementar validaciones básicas
+- ✅ Crear modelos específicos para cada operación (Create, Update, Read)
+- ❌ No incluir lógica de acceso a datos
+
+### Servicios
+
+- ✅ Usar axios u otra biblioteca HTTP para comunicación con API
+- ✅ Crear métodos específicos para cada operación CRUD
+- ✅ Manejar errores y transformar respuestas
+- ❌ No acceder directamente a Firebase
+- ❌ No incluir lógica de presentación
+
+### Presentadores (Custom Hooks)
+
+- ✅ Gestionar estado con useState/useReducer
+- ✅ Implementar la lógica de presentación
+- ✅ Comunicarse con servicios para obtener/persistir datos
+- ✅ Manejar carga, errores y validación
+- ❌ No incluir elementos de UI
+
+### Vistas (Componentes)
+
+- ✅ Usar presentadores para la lógica
+- ✅ Implementar la interfaz de usuario
+- ✅ Manejar eventos de UI
+- ✅ Implementar renderizado condicional
+- ❌ No incluir lógica de negocio
+- ❌ No hacer llamadas directas a servicios o API
+
+## Ejemplos
+
+### Modelo
+
+```typescript
+// src/models/products/Product.model.ts
+export interface ProductBase {
+  name: string;
+  price: number;
+}
+
+export interface ProductCreateModel extends ProductBase {
+  categoryId?: string;
+}
+
+export interface ProductUpdateModel extends ProductBase {}
+
+export interface ProductReadModel extends ProductBase {
+  id: string;
+  status: string;
+  creationDate: string;
+  editDate: string;
+  category?: CategoryMinModel;
+}
+
+export interface ProductQueryModel {
+  id: string;
+  name: string;
+  price: number;
+  status: string;
+}
+
+export interface CategoryMinModel {
+  id: string;
+  name: string;
+}
+
+export class Product implements ProductReadModel {
+  id: string;
+  name: string;
+  price: number;
+  status: string;
+  creationDate: string;
+  editDate: string;
+  category?: CategoryMinModel;
+
+  constructor(data: ProductReadModel) {
+    this.id = data.id;
+    this.name = data.name;
+    this.price = data.price;
+    this.status = data.status;
+    this.creationDate = data.creationDate;
+    this.editDate = data.editDate;
+    this.category = data.category;
+  }
+
+  get formattedPrice(): string {
+    return `$${this.price.toFixed(2)}`;
+  }
+
+  get isPublished(): boolean {
+    return this.status === 'Published';
+  }
+
+  static validate(data: ProductCreateModel | ProductUpdateModel): string[] {
+    const errors: string[] = [];
+    
+    if (!data.name || data.name.trim().length < 3) {
+      errors.push('El nombre debe tener al menos 3 caracteres');
+    }
+    
+    if (!data.price || data.price <= 0) {
+      errors.push('El precio debe ser mayor que cero');
+    }
+    
+    return errors;
+  }
+}
+```
+
+### Servicio
+
+```typescript
+// src/services/products/product.service.ts
+import axios from 'axios';
+import { 
+  ProductCreateModel, 
+  ProductUpdateModel, 
+  ProductReadModel,
+  ProductQueryModel 
+} from '../../models/products/Product.model';
+
+const API_URL = '/api/products';
+
+export class ProductService {
+  async getAll(): Promise<ProductQueryModel[]> {
+    try {
+      const response = await axios.get(API_URL);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+      return [];
+    }
+  }
+
+  async getById(id: string): Promise<ProductReadModel> {
+    try {
+      const response = await axios.get(`${API_URL}/${id}`);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
+  async create(data: ProductCreateModel): Promise<void> {
+    try {
+      await axios.post(API_URL, data);
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
+  async update(id: string, data: ProductUpdateModel): Promise<void> {
+    try {
+      await axios.put(`${API_URL}/${id}`, data);
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
+  private handleError(error: any): void {
+    console.error('API error:', error);
+    
+    if (error.response) {
+      const status = error.response.status;
+      const message = error.response.data?.message || 'Error desconocido';
+      
+      if (status === 400) {
+        throw new Error(`Datos inválidos: ${message}`);
+      } else if (status === 404) {
+        throw new Error('El recurso no fue encontrado');
+      } else if (status >= 500) {
+        throw new Error('Error en el servidor');
+      }
+    }
+    
+    throw new Error('Error de conexión');
+  }
+}
+
+export default new ProductService();
+```
+
+### Presentador (Custom Hook)
+
+```typescript
+// src/presenters/products/useProductPresenter.tsx
+import { useState, useEffect, useCallback } from 'react';
+import productService from '../../services/products/product.service';
+import { 
+  Product, 
+  ProductCreateModel,
+  ProductUpdateModel,
+  ProductQueryModel 
+} from '../../models/products/Product.model';
+
+export function useProductPresenter() {
+  const [products, setProducts] = useState<ProductQueryModel[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadProducts = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const data = await productService.getAll();
+      setProducts(data);
+    } catch (err: any) {
+      setError(err.message || 'Error al cargar productos');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const getProductById = useCallback(async (id: string) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const data = await productService.getById(id);
+      setSelectedProduct(new Product(data));
+      return data;
+    } catch (err: any) {
+      setError(err.message || 'Error al cargar el producto');
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const createProduct = useCallback(async (data: ProductCreateModel) => {
+    setLoading(true);
+    setError(null);
+    
+    // Validar datos primero
+    const errors = Product.validate(data);
+    if (errors.length > 0) {
+      setError(errors.join('. '));
+      setLoading(false);
+      throw new Error(errors.join('. '));
+    }
+    
+    try {
+      await productService.create(data);
+      await loadProducts(); // Recargar lista
+    } catch (err: any) {
+      setError(err.message || 'Error al crear el producto');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [loadProducts]);
+
+  const updateProduct = useCallback(async (id: string, data: ProductUpdateModel) => {
+    setLoading(true);
+    setError(null);
+    
+    // Validar datos primero
+    const errors = Product.validate(data);
+    if (errors.length > 0) {
+      setError(errors.join('. '));
+      setLoading(false);
+      throw new Error(errors.join('. '));
+    }
+    
+    try {
+      await productService.update(id, data);
+      await loadProducts(); // Recargar lista
+      
+      if (selectedProduct?.id === id) {
+        const updated = await productService.getById(id);
+        setSelectedProduct(new Product(updated));
+      }
+    } catch (err: any) {
+      setError(err.message || 'Error al actualizar el producto');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [loadProducts, selectedProduct]);
+
+  const deleteProduct = useCallback(async (id: string) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      await productService.delete(id);
+      await loadProducts(); // Recargar lista
+      
+      if (selectedProduct?.id === id) {
+        setSelectedProduct(null);
+      }
+    } catch (err: any) {
+      setError(err.message || 'Error al eliminar el producto');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [loadProducts, selectedProduct]);
+
+  // Cargar productos al montar el componente
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
+  return {
+    products,
+    selectedProduct,
+    loading,
+    error,
+    loadProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct
+  };
+}
+```
+
+### Vista (Componente)
+
+```typescript
+// src/views/products/ProductList.tsx
+import React, { useState } from 'react';
+import { useProductPresenter } from '../../presenters/products/useProductPresenter';
+import { ProductCreateModel } from '../../models/products/Product.model';
+
+export const ProductList: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [productName, setProductName] = useState('');
+  const [productPrice, setProductPrice] = useState('');
+
+  const {
+    products,
+    loading,
+    error,
+    createProduct,
+    deleteProduct
+  } = useProductPresenter();
+
+  const handleCreateProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const price = parseFloat(productPrice);
+    if (isNaN(price) || price <= 0) {
+      alert('El precio debe ser un número válido mayor a cero');
+      return;
+    }
+    
+    const newProduct: ProductCreateModel = {
+      name: productName,
+      price: price
+    };
+    
+    try {
+      await createProduct(newProduct);
+      setIsModalOpen(false);
+      resetForm();
+    } catch (err) {
+      console.error('Error al crear producto:', err);
+    }
+  };
+
+  const resetForm = () => {
+    setProductName('');
+    setProductPrice('');
+  };
+
+  return (
+    <div className="container">
+      <h1>Productos</h1>
+      
+      {error && <div className="alert alert-danger">{error}</div>}
+      
+      <button 
+        className="btn btn-primary mb-3" 
+        onClick={() => setIsModalOpen(true)}
+        disabled={loading}
+      >
+        Nuevo Producto
+      </button>
+      
+      {loading ? (
+        <div>Cargando...</div>
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map(product => (
+              <tr key={product.id}>
+                <td>{product.name}</td>
+                <td>${product.price.toFixed(2)}</td>
+                <td>{product.status}</td>
+                <td>
+                  <button 
+                    className="btn btn-sm btn-danger"
+                    onClick={() => deleteProduct(product.id)}
+                    disabled={loading}
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      
+      {isModalOpen && (
+        <div className="modal d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Nuevo Producto</h5>
+                <button 
+                  type="button" 
+                  className="close" 
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  <span>&times;</span>
+                </button>
+              </div>
+              <form onSubmit={handleCreateProduct}>
+                <div className="modal-body">
+                  <div className="form-group">
+                    <label>Nombre</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={productName}
+                      onChange={e => setProductName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Precio</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0.01"
+                      className="form-control"
+                      value={productPrice}
+                      onChange={e => setProductPrice(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button 
+                    type="button" 
+                    className="btn btn-secondary"
+                    onClick={() => setIsModalOpen(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary"
+                    disabled={loading}
+                  >
+                    Crear
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+```
+
+## Estructura del Archivo
+
+```
+frontend/
+  src/
+    models/
+      [Modulo]/
+        [Entidad].model.ts
+    services/
+      [Modulo]/
+        [entidad].service.ts
+    presenters/
+      [Modulo]/
+        use[Entidad]Presenter.tsx
+    views/
+      [Modulo]/
+        [Entidad]List.tsx
+        [Entidad]Detail.tsx
+        [Entidad]Form.tsx
+```
+
+## Referencias
+
+- [Modelo React](src/DDD_Ejemplos_Codigo/18_React_Model.tsx)
+- [Servicio React](src/DDD_Ejemplos_Codigo/19_React_Service.tsx)
+- [Presentador React](src/DDD_Ejemplos_Codigo/20_React_Presenter.tsx)
+- [Vista React](src/DDD_Ejemplos_Codigo/21_React_View.tsx)
+- [Estructura Frontend](src/DDD_Ejemplos_Codigo/23_Frontend_Estructura.md)

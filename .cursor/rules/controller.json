@@ -1,0 +1,27 @@
+{
+  "name": "controller",
+  "description": "Reglas y ejemplos para crear controladores API siguiendo DDD",
+  "patterns": [
+    "crear? controlador(?:es)?",
+    "implementar? controlador(?:es)?",
+    "API controller",
+    "endpoint REST"
+  ],
+  "references": [
+    {
+      "path": "src/DDD_Ejemplos_Codigo/9_Presentation_Controller.cs",
+      "description": "Ejemplo de controlador API"
+    },
+    {
+      "path": "src/DDD_Flujos_Comunicacion.txt",
+      "section": "2.1. Solicitud HTTP → Controlador",
+      "description": "Documentación sobre flujo de comunicación con controladores"
+    }
+  ],
+  "templates": [
+    {
+      "name": "Controlador API",
+      "code": "namespace TuProyecto.Presentation.Controllers.<Modulo>;\n\nusing Microsoft.AspNetCore.Mvc;\nusing System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing TuProyecto.Application.DTO.<Modulo>;\nusing TuProyecto.Application.Interfaces.<Modulo>;\n\n[ApiController]\n[Route(\"api/[controller]\")]\npublic class <Entidad>Controller : ControllerBase\n{\n    private readonly I<Entidad>AppService _<entidad>AppService;\n\n    public <Entidad>Controller(I<Entidad>AppService <entidad>AppService)\n    {\n        _<entidad>AppService = <entidad>AppService;\n    }\n\n    [HttpGet]\n    [ProducesResponseType(typeof(IEnumerable<<Entidad>QueryDto>), 200)]\n    public async Task<ActionResult<IEnumerable<<Entidad>QueryDto>>> GetAll()\n    {\n        var result = await _<entidad>AppService.GetAll();\n        return Ok(result);\n    }\n\n    [HttpGet(\"{id}\")]\n    [ProducesResponseType(typeof(<Entidad>ReadDto), 200)]\n    [ProducesResponseType(404)]\n    public async Task<ActionResult<<Entidad>ReadDto>> GetById(Guid id)\n    {\n        try\n        {\n            var result = await _<entidad>AppService.GetById(id);\n            return Ok(result);\n        }\n        catch (Exception ex) when (ex.Message.Contains(\"not found\"))\n        {\n            return NotFound();\n        }\n    }\n\n    [HttpPost]\n    [ProducesResponseType(201)]\n    [ProducesResponseType(400)]\n    public async Task<ActionResult> Create([FromBody] <Entidad>CreateDto data)\n    {\n        try\n        {\n            await _<entidad>AppService.Create(data);\n            return CreatedAtAction(nameof(GetById), new { id = data.Id }, null);\n        }\n        catch (Exception ex) when (ex.Message.Contains(\"invalid\"))\n        {\n            return BadRequest(ex.Message);\n        }\n    }\n\n    [HttpPut(\"{id}\")]\n    [ProducesResponseType(204)]\n    [ProducesResponseType(400)]\n    [ProducesResponseType(404)]\n    public async Task<ActionResult> Update(Guid id, [FromBody] <Entidad>UpdateDto data)\n    {\n        try\n        {\n            await _<entidad>AppService.Update(id, data);\n            return NoContent();\n        }\n        catch (Exception ex)\n        {\n            if (ex.Message.Contains(\"not found\"))\n                return NotFound();\n            if (ex.Message.Contains(\"invalid\"))\n                return BadRequest(ex.Message);\n            throw;\n        }\n    }\n\n    [HttpDelete(\"{id}\")]\n    [ProducesResponseType(204)]\n    [ProducesResponseType(404)]\n    public async Task<ActionResult> Delete(Guid id)\n    {\n        try\n        {\n            await _<entidad>AppService.Remove(id);\n            return NoContent();\n        }\n        catch (Exception ex) when (ex.Message.Contains(\"not found\"))\n        {\n            return NotFound();\n        }\n    }\n}"
+    }
+  ]
+} 

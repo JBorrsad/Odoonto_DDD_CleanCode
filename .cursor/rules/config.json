@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "format": "cursor-config",
+  "config": {
+    "name": "DDD Firebase React",
+    "description": "Reglas y documentación para implementar Domain-Driven Design con Firebase y React",
+    "author": "Cursor",
+    "rules": {
+      "json": "./rules.json",
+      "mdc": "./mdc.json"
+    },
+    "settings": {
+      "default_templates": true,
+      "default_patterns": true
+    }
+  }
+} 

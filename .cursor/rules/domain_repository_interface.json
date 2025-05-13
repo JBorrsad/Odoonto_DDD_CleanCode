@@ -1,0 +1,32 @@
+{
+  "name": "domain_repository_interface",
+  "description": "Reglas y ejemplos para crear interfaces de repositorio siguiendo DDD",
+  "patterns": [
+    "crear? interface? repositorio",
+    "implementar? interface? repositorio",
+    "repositorio interface",
+    "interface repositorio",
+    "repository interface"
+  ],
+  "references": [
+    {
+      "path": "src/DDD_Ejemplos_Codigo/2_Domain_Repository_Interface.cs",
+      "description": "Ejemplo de interfaz de repositorio"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/12_Domain_Core_Repository_Interface.cs",
+      "description": "Ejemplo de interfaz base para repositorios"
+    },
+    {
+      "path": "src/DDD_Flujos_Comunicacion.txt",
+      "section": "2.4. Servicio de Aplicación → Repositorio",
+      "description": "Documentación sobre flujo de comunicación con repositorios"
+    }
+  ],
+  "templates": [
+    {
+      "name": "Interfaz de repositorio",
+      "code": "namespace TuProyecto.Domain.Repositories.<Modulo>;\n\nusing System;\nusing System.Threading.Tasks;\nusing TuProyecto.Domain.Core.Repositories;\nusing TuProyecto.Domain.Models.<Modulo>;\n\npublic interface I<Entidad>Repository : IRepository<<Entidad>>\n{\n    // Métodos específicos para <Entidad>\n    Task<<Entidad>> GetByIdWithRelations(Guid id);\n    Task<bool> ExistsByName(string name);\n    // Otros métodos específicos\n}"
+    }
+  ]
+} 

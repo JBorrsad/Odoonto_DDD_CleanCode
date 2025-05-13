@@ -1,0 +1,34 @@
+{
+  "name": "firebase_repository_implementation",
+  "description": "Reglas y ejemplos para crear implementaciones de repositorio con Firebase",
+  "patterns": [
+    "crear? repositorio firebase",
+    "implementar? repositorio (con|para) firebase",
+    "firebase repositorio",
+    "firebase repository"
+  ],
+  "references": [
+    {
+      "path": "src/DDD_Ejemplos_Codigo/15_Firebase_Repository_Implementation.cs",
+      "description": "Ejemplo de implementación de repositorio con Firebase"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/16_Data_Core_Firebase_Context.cs",
+      "description": "Ejemplo de contexto Firebase"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/17_Infrastructure_Firebase_Inyector.cs",
+      "description": "Ejemplo de inyección de dependencias para Firebase"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/22_ReactFirebase_Integration.md",
+      "description": "Documentación sobre integración con Firebase"
+    }
+  ],
+  "templates": [
+    {
+      "name": "Implementación de repositorio con Firebase",
+      "code": "namespace TuProyecto.Data.Repositories.<Modulo>;\n\nusing Google.Cloud.Firestore;\nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\nusing System.Threading.Tasks;\nusing TuProyecto.Data.Core.Firebase;\nusing TuProyecto.Domain.Core.Models.Exceptions;\nusing TuProyecto.Domain.Models.<Modulo>;\nusing TuProyecto.Domain.Repositories.<Modulo>;\n\npublic class <Entidad>Repository : I<Entidad>Repository\n{\n    private readonly FirebaseDbContext _firebaseContext;\n    private readonly string _collectionName = \"<collectionName>\";\n\n    public <Entidad>Repository(FirebaseDbContext firebaseContext)\n    {\n        _firebaseContext = firebaseContext;\n    }\n\n    public async Task<<Entidad>> GetById(Guid id)\n    {\n        DocumentSnapshot document = await _firebaseContext.FirestoreDb\n            .Collection(_collectionName)\n            .Document(id.ToString())\n            .GetSnapshotAsync();\n\n        if (!document.Exists)\n        {\n            return null;\n        }\n\n        var data = document.ConvertTo<<Entidad>Document>();\n        return MapToDomainEntity(data);\n    }\n\n    public async Task<<Entidad>> GetByIdOrThrow(Guid id)\n    {\n        <Entidad> entity = await GetById(id);\n\n        if (entity is null)\n        {\n            throw new ValueNotFoundException($\"The {nameof(<Entidad>)} (Id: {id}) not found.\");\n        }\n\n        return entity;\n    }\n\n    public async Task<IEnumerable<<Entidad>>> GetAll()\n    {\n        QuerySnapshot querySnapshot = await _firebaseContext.FirestoreDb\n            .Collection(_collectionName)\n            .GetSnapshotAsync();\n\n        if (querySnapshot.Count == 0)\n        {\n            return Enumerable.Empty<<Entidad>>();\n        }\n\n        var entities = new List<<Entidad>>();\n        foreach (DocumentSnapshot document in querySnapshot.Documents)\n        {\n            var data = document.ConvertTo<<Entidad>Document>();\n            entities.Add(MapToDomainEntity(data));\n        }\n\n        return entities;\n    }\n\n    public async Task Create(<Entidad> entity)\n    {\n        var document = MapToDocument(entity);\n\n        await _firebaseContext.FirestoreDb\n            .Collection(_collectionName)\n            .Document(entity.Id.ToString())\n            .SetAsync(document);\n    }\n\n    public async Task Update(<Entidad> entity)\n    {\n        var document = MapToDocument(entity);\n\n        await _firebaseContext.FirestoreDb\n            .Collection(_collectionName)\n            .Document(entity.Id.ToString())\n            .SetAsync(document, SetOptions.MergeAll);\n    }\n\n    public async Task Delete(<Entidad> entity)\n    {\n        await _firebaseContext.FirestoreDb\n            .Collection(_collectionName)\n            .Document(entity.Id.ToString())\n            .DeleteAsync();\n    }\n\n    public async Task<bool> Exists(Guid id)\n    {\n        DocumentSnapshot document = await _firebaseContext.FirestoreDb\n            .Collection(_collectionName)\n            .Document(id.ToString())\n            .GetSnapshotAsync();\n\n        return document.Exists;\n    }\n\n    // Clases privadas para mapeo\n    private class <Entidad>Document\n    {\n        public string Id { get; set; }\n        public string Name { get; set; }\n        public DateTime CreationDate { get; set; }\n        public DateTime EditDate { get; set; }\n        // Otras propiedades\n    }\n\n    // Métodos de mapeo\n    private <Entidad> MapToDomainEntity(<Entidad>Document document)\n    {\n        var entity = <Entidad>.Create(Guid.Parse(document.Id));\n        entity.SetName(document.Name);\n        return entity;\n    }\n\n    private <Entidad>Document MapToDocument(<Entidad> entity)\n    {\n        return new <Entidad>Document\n        {\n            Id = entity.Id.ToString(),\n            Name = entity.Name,\n            CreationDate = entity.CreationDate,\n            EditDate = entity.EditDate\n            // Mapear otras propiedades\n        };\n    }\n}"
+    }
+  ]
+} 

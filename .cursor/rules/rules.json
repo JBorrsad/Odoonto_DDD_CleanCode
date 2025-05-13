@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "rules": [
+    "./rules/domain_entity.json",
+    "./rules/domain_repository_interface.json",
+    "./rules/firebase_repository_implementation.json",
+    "./rules/application_service.json",
+    "./rules/controller.json",
+    "./rules/dto.json",
+    "./rules/react_components.json",
+    "./rules/architecture.json"
+  ]
+} 

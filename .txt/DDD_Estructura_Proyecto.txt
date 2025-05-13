@@ -1,0 +1,227 @@
+# Estructura Domain-Driven Design del Proyecto WF.Mimetic
+
+## 1. Definición de Domain-Driven Design (DDD)
+
+Domain-Driven Design es un enfoque de desarrollo de software que prioriza el dominio del problema como el elemento central del diseño. Se basa en:
+
+- La colaboración estrecha entre expertos técnicos y expertos del dominio
+- La creación de un lenguaje ubicuo entre todos los participantes
+- El aislamiento de la lógica de negocio en un modelo de dominio rico
+- La separación clara de responsabilidades en capas bien definidas
+
+## 2. Arquitectura en Capas del Proyecto
+
+Este proyecto implementa una arquitectura en capas siguiendo los principios de DDD:
+
+### 2.1. Capa de Dominio (Domain Layer)
+Es el núcleo de la aplicación, contiene las entidades, reglas de negocio, interfaces de repositorios y definiciones de servicios de dominio.
+
+**Ubicación**: `src/Domain/`
+Subdividida en:
+- `WF.Mimetic.Domain`: Contiene las entidades principales, interfaces de repositorios y lógica de dominio.
+- `WF.Mimetic.Domain.Core`: Contiene abstracciones comunes, base para entidades y excepciones.
+- `WF.Mimetic.Domain.Sidecar`: Contiene módulos adicionales o extensiones del dominio.
+
+**Responsabilidades**:
+- Definir entidades y agregados (Models)
+- Definir interfaces de repositorio (Repositories)
+- Establecer reglas y validaciones de negocio
+- Definir eventos de dominio
+
+### 2.2. Capa de Aplicación (Application Layer)
+Orquesta el flujo de la aplicación, coordina los objetos del dominio y proporciona APIs para acceder al sistema.
+
+**Ubicación**: `src/Application/`
+Subdividida en:
+- `WF.Mimetic.Application`: Contiene servicios, DTOs y mapeadores.
+- `WF.Mimetic.Application.Sidecars`: Contiene servicios adicionales.
+
+**Responsabilidades**:
+- Definir casos de uso (Services)
+- Definir DTOs para transferencia de datos
+- Implementar mapeo entre entidades y DTOs (AutoMapper)
+- Coordinar operaciones complejas entre entidades
+
+### 2.3. Capa de Infraestructura (Infrastructure Layer)
+Proporciona implementaciones técnicas para las interfaces del dominio.
+
+**Ubicación**: `src/Infraestructure/`
+Subdividida en:
+- `WF.Mimetic.Infraestructure.InversionOfControl`: Configura la inyección de dependencias.
+- `WF.Mimetic.Infraestructure.ExceptionsHandler`: Manejo centralizado de excepciones.
+- `WF.Mimetic.Infraestructure.Sidecars`: Componentes adicionales de infraestructura.
+
+**Responsabilidades**:
+- Configurar inyección de dependencias
+- Proporcionar implementaciones técnicas (logging, autenticación, etc.)
+- Manejar excepciones globales
+
+### 2.4. Capa de Datos (Data Layer)
+Implementa los repositorios definidos en el dominio y gestiona la persistencia.
+
+**Ubicación**: `src/Data/`
+Subdividida en:
+- `WF.Mimetic.Data`: Implementaciones de repositorios.
+- `WF.Mimetic.Data.Core`: Abstracciones para acceso a datos.
+- `WF.Mimetic.Data.Contexts`: Definición de contextos de base de datos.
+- `WF.Mimetic.Data.Cache`: Implementación de caché.
+- `WF.Mimetic.Data.Sidecar`: Implementaciones adicionales.
+
+**Responsabilidades**:
+- Implementar repositorios
+- Gestionar contextos de base de datos
+- Proporcionar mapeos ORM
+- Implementar cache y optimizaciones
+
+### 2.5. Capa de Presentación (Presentation Layer)
+Proporciona la interfaz de usuario y expone APIs.
+
+**Ubicación**: `src/Presentation/`
+Subdividida en:
+- `WF.Mimetic.UI.Server`: API REST.
+- `WF.Mimetic.UI.Client`: Cliente Blazor.
+- `WF.Mimetic.UI.Inside`: API interna.
+- `WF.Mimetic.UI.Outside`: API externa.
+
+**Responsabilidades**:
+- Presentar interfaces de usuario
+- Gestionar entrada del usuario
+- Proporcionar endpoints APIs
+- Manejar validaciones de formularios
+
+## 3. Flujo de Comunicación Entre Capas
+
+El flujo de comunicación sigue el principio de dependencia hacia adentro:
+1. La capa de Presentación depende de la capa de Aplicación.
+2. La capa de Aplicación depende de la capa de Dominio.
+3. La capa de Datos implementa interfaces definidas en el Dominio.
+4. La capa de Infraestructura proporciona implementaciones técnicas.
+
+Reglas de comunicación:
+- Las capas externas pueden conocer las capas internas, pero no al revés.
+- La capa de Dominio no depende de ninguna otra capa.
+- La comunicación entre capas se realiza a través de interfaces bien definidas.
+
+## 4. Componentes Principales en Cada Capa
+
+### 4.1. Capa de Dominio
+
+#### Entidades (Models)
+Clases que representan objetos del dominio con identidad y ciclo de vida.
+- Ubicación: `src/Domain/WF.Mimetic.Domain/Models/`
+- Ejemplos: Category, Flow, Node, Parameter
+
+#### Interfaces de Repositorios
+Definen métodos para acceder y persistir entidades.
+- Ubicación: `src/Domain/WF.Mimetic.Domain/Repositories/`
+- Ejemplos: ICategoryRepository, IFlowRepository, INodeRepository
+
+### 4.2. Capa de Aplicación
+
+#### Servicios de Aplicación
+Implementan casos de uso específicos.
+- Ubicación: `src/Application/WF.Mimetic.Application/Services/`
+- Ejemplos: CategoryAppService, FlowAppService, NodeAppService
+
+#### DTOs (Data Transfer Objects)
+Objetos para transferencia de datos entre capas.
+- Ubicación: `src/Application/WF.Mimetic.Application/DTO/`
+- Ejemplos: CategoryCreateDto, CategoryReadDto, FlowResultDto
+
+#### Interfaces de Servicios
+Definen contratos para servicios de aplicación.
+- Ubicación: `src/Application/WF.Mimetic.Application/Interfaces/`
+- Ejemplos: ICategoryAppService, IFlowAppService
+
+### 4.3. Capa de Datos
+
+#### Implementaciones de Repositorios
+Implementan interfaces de repositorio definidas en el dominio.
+- Ubicación: `src/Data/WF.Mimetic.Data/Repositories/`
+- Ejemplos: CategoryRepository, FlowRepository, NodeRepository
+
+#### Contextos
+Definen la configuración de la base de datos.
+- Ubicación: `src/Data/WF.Mimetic.Data.Contexts/Contexts/`
+
+### 4.4. Capa de Infraestructura
+
+#### Inyección de Dependencias
+Configura la resolución de dependencias.
+- Ubicación: `src/Infraestructure/WF.Mimetic.Infraestructure.InversionOfControl/Inyectors/`
+- Ejemplos: ApplicationInyector, DataInyector, DomainInyector
+
+### 4.5. Capa de Presentación
+
+#### Controladores
+Exponen endpoints API.
+- Ubicación: `src/Presentation/WF.Mimetic.UI.Server/Controllers/`
+- Ejemplos: CategoriesController, FlowsController, NodesController
+
+## 5. Reglas para Implementar DDD en Proyectos Nuevos
+
+1. **Organización de carpetas**: Mantener la estructura de carpetas por capas y funcionalidades.
+2. **Comunicación entre capas**: Respetar el principio de dependencia hacia adentro.
+3. **Entidades de dominio**: Implementar entidades ricas con comportamiento encapsulado.
+4. **Interfaces**: Definir interfaces en el dominio, implementarlas en capas externas.
+5. **DTOs**: Usar DTOs para transferencia de datos entre capas.
+6. **Servicios de aplicación**: Implementar casos de uso en servicios de aplicación.
+7. **Inyección de dependencias**: Configurar inyección de dependencias en la capa de infraestructura.
+8. **Repositorios**: Definir interfaces en el dominio, implementarlas en la capa de datos.
+9. **Controladores**: Mantener controladores ligeros, delegando lógica a servicios de aplicación.
+10. **Mapeo**: Utilizar AutoMapper para mapear entre entidades y DTOs.
+
+## 6. Sugerencias para Rules de Cursor
+
+Para replicar esta estructura en otros proyectos, se sugieren las siguientes reglas para Cursor:
+
+1. **Estructura de carpetas**: Forzar la creación de carpetas siguiendo el patrón de capas DDD.
+   ```
+   src/
+     Domain/
+       YourProject.Domain/
+         Models/
+         Repositories/
+         Interfaces/
+       YourProject.Domain.Core/
+     Application/
+       YourProject.Application/
+         Services/
+         Interfaces/
+         DTO/
+         AutoMapper/
+     Data/
+       YourProject.Data/
+         Repositories/
+         Mappings/
+       YourProject.Data.Contexts/
+     Infraestructure/
+       YourProject.Infraestructure.InversionOfControl/
+     Presentation/
+       YourProject.API/
+       YourProject.UI/
+   ```
+
+2. **Clases de dominio**: Las entidades de dominio deben:
+   - Encapsular propiedades (getters públicos, setters privados)
+   - Implementar métodos de comportamiento
+   - Validar reglas de negocio internamente
+   - Heredar de una clase base Entity
+
+3. **Interfaces de repositorio**: Definidas en Domain, implementadas en Data.
+
+4. **Servicios de aplicación**: Deben:
+   - Implementar interfaces definidas en Application
+   - Usar AutoMapper para mapeo entre entidades y DTOs
+   - No implementar lógica de negocio (delegada al dominio)
+
+5. **Controladores**: Deben:
+   - Ser ligeros, sin lógica de negocio
+   - Inyectar y usar servicios de aplicación
+   - Devolver DTO, no entidades de dominio
+
+6. **Inyección de dependencias**: Configurada en la capa de infraestructura.
+
+7. **Excepciones de dominio**: Utilizar excepciones personalizadas para errores de negocio.
+
+Estas reglas pueden implementarse como guías de código o plantillas en Cursor para asegurar que el nuevo proyecto siga la arquitectura DDD correctamente. 

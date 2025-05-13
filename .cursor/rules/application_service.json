@@ -1,0 +1,35 @@
+{
+  "name": "application_service",
+  "description": "Reglas y ejemplos para crear servicios de aplicación siguiendo DDD",
+  "patterns": [
+    "crear? servicio(?:s)? (?:de )?aplicación",
+    "implementar? servicio(?:s)? (?:de )?aplicación",
+    "app service",
+    "application service"
+  ],
+  "references": [
+    {
+      "path": "src/DDD_Ejemplos_Codigo/6_Application_Service_Interface.cs",
+      "description": "Ejemplo de interfaz de servicio de aplicación"
+    },
+    {
+      "path": "src/DDD_Ejemplos_Codigo/7_Application_Service_Implementation.cs",
+      "description": "Ejemplo de implementación de servicio de aplicación"
+    },
+    {
+      "path": "src/DDD_Flujos_Comunicacion.txt",
+      "section": "2.2. Controlador → Servicio de Aplicación",
+      "description": "Documentación sobre flujo de comunicación con servicios"
+    }
+  ],
+  "templates": [
+    {
+      "name": "Interfaz de servicio de aplicación",
+      "code": "namespace TuProyecto.Application.Interfaces.<Modulo>;\n\nusing System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing TuProyecto.Application.DTO.<Modulo>;\n\npublic interface I<Entidad>AppService\n{\n    // Operaciones CRUD básicas\n    Task Create(<Entidad>CreateDto data);\n    Task Update(Guid id, <Entidad>UpdateDto data);\n    Task Remove(Guid id);\n    Task<<Entidad>ReadDto> GetById(Guid id);\n    Task<IEnumerable<<Entidad>QueryDto>> GetAll();\n\n    // Operaciones específicas para este dominio\n    // Task<IEnumerable<<Entidad>QueryDto>> GetByName(string namePattern);\n    // Task<int> Get<Entidad>Count();\n}"
+    },
+    {
+      "name": "Implementación de servicio de aplicación",
+      "code": "namespace TuProyecto.Application.Services.<Modulo>;\n\nusing global::AutoMapper;\nusing System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing TuProyecto.Application.DTO.<Modulo>;\nusing TuProyecto.Application.Interfaces.<Modulo>;\nusing TuProyecto.Domain.Core.Models.Exceptions;\nusing TuProyecto.Domain.Models.<Modulo>;\nusing TuProyecto.Domain.Repositories.<Modulo>;\n\npublic class <Entidad>AppService : I<Entidad>AppService\n{\n    // Inyección de dependencias\n    private readonly I<Entidad>Repository _<entidad>Repository;\n    private readonly IMapper _mapper;\n\n    public <Entidad>AppService(\n        I<Entidad>Repository <entidad>Repository,\n        IMapper mapper)\n    {\n        _<entidad>Repository = <entidad>Repository;\n        _mapper = mapper;\n    }\n\n    public async Task<<Entidad>ReadDto> GetById(Guid id)\n    {\n        <Entidad> entity = await _<entidad>Repository.GetByIdOrThrow(id);\n        return _mapper.Map<<Entidad>, <Entidad>ReadDto>(entity);\n    }\n\n    public async Task<IEnumerable<<Entidad>QueryDto>> GetAll()\n    {\n        IEnumerable<<Entidad>> entities = await _<entidad>Repository.GetAll();\n        return _mapper.Map<IEnumerable<<Entidad>>, IEnumerable<<Entidad>QueryDto>>(entities);\n    }\n\n    public async Task Create(<Entidad>CreateDto data)\n    {\n        // Validación básica\n        if (data is null)\n        {\n            throw new InvalidValueException(\"The request is not valid.\");\n        }\n\n        // Crear entidad usando método factory\n        <Entidad> entity = <Entidad>.Create(data.Id ?? Guid.NewGuid());\n\n        // Establecer propiedades usando métodos de comportamiento\n        entity.SetName(data.Name);\n\n        // Persistir utilizando el repositorio\n        await _<entidad>Repository.Create(entity);\n    }\n\n    public async Task Remove(Guid id)\n    {\n        // Obtener la entidad\n        <Entidad> entity = await _<entidad>Repository.GetByIdOrThrow(id);\n\n        // Eliminar utilizando el repositorio\n        await _<entidad>Repository.Delete(entity);\n    }\n\n    public async Task Update(Guid id, <Entidad>UpdateDto data)\n    {\n        // Validación básica\n        if (data is null)\n        {\n            throw new InvalidValueException(\"The request is not valid.\");\n        }\n\n        // Obtener la entidad\n        <Entidad> entity = await _<entidad>Repository.GetByIdOrThrow(id);\n\n        // Actualizar propiedades usando métodos de comportamiento\n        entity.SetName(data.Name);\n\n        // Persistir usando el repositorio\n        await _<entidad>Repository.Update(entity);\n    }\n}"
+    }
+  ]
+} 

@@ -1,0 +1,128 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Entidades de Dominio
+
+## Info
+
+- **Autor**: Cursor
+- **Versión**: 1.0
+- **Categoría**: Implementación
+- **Tags**: #DDD #Dominio #Entidad #C#
+
+## Aplicación Automática
+
+Este documento se aplica automáticamente en los siguientes casos:
+- Ruta de archivo contiene: `/Domain/*/Models/`, `/Models/`, `/Entities/`, `/Entidades/`
+- Extensión de archivo: `.cs`
+- Se está editando una clase que hereda de `Entity`
+- Cuando se definen clases con propiedades con getters públicos y setters privados
+- Cuando solicites ayuda usando `// crear entidad dominio` o `// entidad dominio`
+
+## Descripción
+
+Las entidades son objetos de dominio con identidad y ciclo de vida. Representan conceptos importantes del negocio y encapsulan su comportamiento y reglas.
+
+## Reglas de Implementación
+
+- ✅ Propiedades con getters públicos y setters privados
+- ✅ Constructor privado y métodos factory estáticos (Create)
+- ✅ Heredar de la clase base Entity
+- ✅ Validaciones en métodos que modifican estado
+- ✅ Lanzar excepciones específicas de dominio
+- ✅ Actualizar fecha de edición tras cada cambio
+- ❌ No permitir estados inválidos
+- ❌ No exponer setters públicos
+- ❌ No depender de otras capas
+
+## Ejemplos
+
+### Entidad Básica
+
+```csharp
+public class Product : Entity
+{
+    public string Name { get; private set; }
+    public decimal Price { get; private set; }
+    public ProductStatus Status { get; private set; }
+
+    private Product(Guid id) : base(id)
+    {
+        Name = null;
+        Price = 0;
+        Status = ProductStatus.Draft;
+    }
+
+    public static Product Create(Guid id)
+    {
+        if (id.Equals(Guid.Empty))
+        {
+            throw new InvalidValueException("Product id can't be empty.");
+        }
+
+        Product product = new Product(id);
+        product.UpdateEditDate();
+        return product;
+    }
+
+    public void SetName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new InvalidValueException("Product name can't be null/empty.");
+        }
+
+        Name = name;
+        UpdateEditDate();
+    }
+
+    public void SetPrice(decimal price)
+    {
+        if (price < 0)
+        {
+            throw new InvalidValueException("Product price can't be negative.");
+        }
+
+        Price = price;
+        UpdateEditDate();
+    }
+
+    public void Publish()
+    {
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            throw new WrongOperationException("Cannot publish product without name.");
+        }
+
+        if (Price <= 0)
+        {
+            throw new WrongOperationException("Cannot publish product with invalid price.");
+        }
+
+        Status = ProductStatus.Published;
+        UpdateEditDate();
+    }
+}
+```
+
+## Estructura del Archivo
+
+```
+src/
+  Domain/
+    TuProyecto.Domain/
+      Models/
+        [Modulo]/
+          [Entidad].cs
+```
+
+## Referencias
+
+- [Ejemplo Completo de Entidad](mdc:src/DDD_Ejemplos_Codigo/1_Domain_Entity.cs)
+- [Clase Base para Entidades](mdc:src/DDD_Ejemplos_Codigo/11_Domain_Core_Entity.cs)
+- [Documentación sobre Entidades](mdc:src/DDD_Estructura_Proyecto.txt)
+
+
+

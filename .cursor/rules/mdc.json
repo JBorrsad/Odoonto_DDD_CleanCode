@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "mdc": [
+    {
+      "id": "setup_instrucciones",
+      "file": "./mdc/setup_instrucciones.md",
+      "description": "Instrucciones para usar las reglas de Cursor DDD",
+      "contexts": ["cursor", "instrucciones", "reglas", "ayuda"],
+      "tags": ["DDD", "Cursor", "Instrucciones", "Setup"],
+      "priority": 110,
+      "filetypes": ["*"],
+      "global": true
+    },
+    {
+      "id": "ddd_structure",
+      "file": "./mdc/ddd_structure.md",
+      "description": "Estructura general para proyectos DDD con Firebase y React",
+      "contexts": ["ddd", "arquitectura", "estructura"],
+      "tags": ["DDD", "Arquitectura", "Estructura", "Firebase", "React"],
+      "priority": 100,
+      "filetypes": ["*"],
+      "global": true
+    },
+    {
+      "id": "ddd_communication",
+      "file": "./mdc/ddd_communication.md",
+      "description": "Flujos de comunicación entre capas en DDD con Firebase y React",
+      "contexts": ["ddd", "comunicación", "flujos", "mensajes"],
+      "tags": ["DDD", "Comunicación", "Flujos", "API", "Firebase"],
+      "priority": 90,
+      "filetypes": ["*"],
+      "global": true
+    },
+    {
+      "id": "ddd_rules",
+      "file": "./mdc/ddd_rules.md",
+      "description": "Reglas específicas de implementación para DDD con Firebase y React",
+      "contexts": ["ddd", "implementación", "reglas", "mejores prácticas"],
+      "tags": ["DDD", "Rules", "Implementación", "Firebase", "React"],
+      "priority": 80,
+      "filetypes": ["*"],
+      "global": true
+    },
+    {
+      "id": "domain_entity_rules",
+      "file": "./mdc/domain_entity.mdc",
+      "description": "Reglas para entidades de dominio",
+      "contexts": ["entidad", "dominio", "modelo"],
+      "tags": ["DDD", "Entidad", "Dominio"],
+      "priority": 100,
+      "filetypes": ["cs"],
+      "patterns": ["*.Domain*.Models*", "*/Domain/*/Models/*"],
+      "global": false
+    },
+    {
+      "id": "domain_repository_interface_rules",
+      "file": "./mdc/ddd_rules.md",
+      "description": "Reglas para interfaces de repositorio",
+      "contexts": ["repositorio", "interfaz", "dominio"],
+      "tags": ["DDD", "Repositorio", "Interfaz"],
+      "priority": 95,
+      "filetypes": ["cs"],
+      "patterns": ["*Repository.cs", "*/Domain/*/Repositories/*", "I*Repository.cs"],
+      "section": "Capa de Dominio > Interfaces de Repositorio"
+    },
+    {
+      "id": "application_service_rules",
+      "file": "./mdc/application_service.mdc",
+      "description": "Reglas para servicios de aplicación",
+      "contexts": ["servicio", "aplicación"],
+      "tags": ["DDD", "Aplicación", "Servicio"],
+      "priority": 100,
+      "filetypes": ["cs"],
+      "patterns": ["*AppService.cs", "*/Application/*/Services/*", "I*AppService.cs"],
+      "global": false
+    },
+    {
+      "id": "dto_rules",
+      "file": "./mdc/dto.mdc",
+      "description": "Reglas para DTOs",
+      "contexts": ["dto", "data transfer"],
+      "tags": ["DDD", "DTO"],
+      "priority": 100,
+      "filetypes": ["cs"],
+      "patterns": ["*Dto.cs", "*/Application/*/DTO/*"],
+      "global": false
+    },
+    {
+      "id": "firebase_repository_rules",
+      "file": "./mdc/ddd_rules.md",
+      "description": "Reglas para repositorios Firebase",
+      "contexts": ["firebase", "repositorio", "implementación"],
+      "tags": ["DDD", "Firebase", "Repositorio"],
+      "priority": 95,
+      "filetypes": ["cs"],
+      "patterns": ["*Repository.cs", "*/Data/*/Repositories/*"],
+      "section": "Capa de Datos > Repositorios Firebase"
+    },
+    {
+      "id": "controller_rules",
+      "file": "./mdc/ddd_rules.md",
+      "description": "Reglas para controladores API",
+      "contexts": ["api", "controlador", "rest"],
+      "tags": ["DDD", "API", "Controller"],
+      "priority": 95,
+      "filetypes": ["cs"],
+      "patterns": ["*Controller.cs", "*/Presentation/*/Controllers/*"],
+      "section": "Capa de Presentación > Controladores API"
+    },
+    {
+      "id": "react_components_rules",
+      "file": "./mdc/react_components.mdc",
+      "description": "Reglas para componentes React (MVP)",
+      "contexts": ["react", "frontend", "typescript", "MVP"],
+      "tags": ["React", "Frontend", "MVP"],
+      "priority": 100,
+      "filetypes": ["ts", "tsx"],
+      "patterns": ["*.tsx", "*.ts", "*/models/*", "*/services/*", "*/presenters/*", "*/views/*"],
+      "global": false
+    },
+    {
+      "id": "react_model_rules",
+      "file": "./mdc/react_components.mdc",
+      "description": "Reglas para modelos React",
+      "contexts": ["react", "modelo", "frontend", "typescript"],
+      "tags": ["React", "Model", "Frontend"],
+      "priority": 95,
+      "filetypes": ["ts", "tsx"],
+      "patterns": ["*.model.ts", "*/models/*"],
+      "section": "Modelos"
+    },
+    {
+      "id": "react_service_rules",
+      "file": "./mdc/react_components.mdc",
+      "description": "Reglas para servicios API React",
+      "contexts": ["react", "servicio", "frontend", "api"],
+      "tags": ["React", "Service", "Frontend"],
+      "priority": 95,
+      "filetypes": ["ts", "tsx"],
+      "patterns": ["*.service.ts", "*/services/*"],
+      "section": "Servicios"
+    },
+    {
+      "id": "react_presenter_rules",
+      "file": "./mdc/react_components.mdc",
+      "description": "Reglas para presentadores React",
+      "contexts": ["react", "presentador", "frontend", "hook"],
+      "tags": ["React", "Presenter", "Frontend"],
+      "priority": 95,
+      "filetypes": ["ts", "tsx"],
+      "patterns": ["*Presenter.ts", "*/presenters/*", "use*.ts"],
+      "section": "Presentadores (Custom Hooks)"
+    },
+    {
+      "id": "react_view_rules",
+      "file": "./mdc/react_components.mdc",
+      "description": "Reglas para vistas React",
+      "contexts": ["react", "vista", "frontend", "componente"],
+      "tags": ["React", "View", "Frontend"],
+      "priority": 95,
+      "filetypes": ["tsx"],
+      "patterns": ["*.tsx", "*/views/*", "*/components/*"],
+      "section": "Vistas (Componentes)"
+    },
+    {
+      "id": "code_examples",
+      "file": "./mdc/code_examples.md",
+      "description": "Ejemplos de código para diferentes componentes DDD",
+      "contexts": ["ejemplos", "código", "referencias"],
+      "tags": ["DDD", "Ejemplos", "Firebase", "React", "CSharp", "TypeScript"],
+      "priority": 70,
+      "filetypes": ["*"],
+      "global": true
+    }
+  ]
+} 

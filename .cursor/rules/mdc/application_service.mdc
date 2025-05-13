@@ -1,0 +1,155 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Servicios de Aplicación
+
+## Info
+
+- **Autor**: Cursor
+- **Versión**: 1.0
+- **Categoría**: Implementación
+- **Tags**: #DDD #Aplicación #Servicio #C#
+
+## Descripción
+
+Los servicios de aplicación orquestan los casos de uso, coordinando entre entidades, repositorios y otros servicios. Actúan como una fachada entre la capa de presentación y el dominio.
+
+## Reglas de Implementación
+
+- ✅ Implementar interfaces definidas en la capa de aplicación
+- ✅ Inyectar repositorios y otros servicios mediante interfaces
+- ✅ Usar AutoMapper para convertir entre entidades y DTOs
+- ✅ Validar datos de entrada
+- ✅ Manejar transacciones si es necesario
+- ✅ Convertir excepciones de dominio en excepciones de aplicación si es necesario
+- ❌ No implementar lógica de negocio (delegarla al dominio)
+- ❌ No acceder directamente a la base de datos (usar repositorios)
+- ❌ No devolver entidades de dominio (usar DTOs)
+
+## Ejemplos
+
+### Servicio de Aplicación para Productos
+
+```csharp
+namespace TuProyecto.Application.Services.Products;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using TuProyecto.Application.DTO.Products;
+using TuProyecto.Application.Interfaces.Products;
+using TuProyecto.Domain.Core.Models.Exceptions;
+using TuProyecto.Domain.Models.Products;
+using TuProyecto.Domain.Repositories.Products;
+using TuProyecto.Domain.Repositories.Categories;
+
+public class ProductAppService : IProductAppService
+{
+    private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly IMapper _mapper;
+
+    public ProductAppService(
+        IProductRepository productRepository,
+        ICategoryRepository categoryRepository,
+        IMapper mapper)
+    {
+        _productRepository = productRepository;
+        _categoryRepository = categoryRepository;
+        _mapper = mapper;
+    }
+
+    public async Task<ProductReadDto> GetById(Guid id)
+    {
+        Product product = await _productRepository.GetByIdOrThrow(id);
+        return _mapper.Map<Product, ProductReadDto>(product);
+    }
+
+    public async Task<IEnumerable<ProductQueryDto>> GetAll()
+    {
+        IEnumerable<Product> products = await _productRepository.GetAll();
+        return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductQueryDto>>(products);
+    }
+
+    public async Task Create(ProductCreateDto dto)
+    {
+        if (dto == null)
+        {
+            throw new InvalidValueException("Product data is required.");
+        }
+
+        // Crear entidad principal usando método factory del dominio
+        Product product = Product.Create(dto.Id ?? Guid.NewGuid());
+        product.SetName(dto.Name);
+        product.SetPrice(dto.Price);
+
+        // Verificar relaciones si es necesario
+        if (dto.CategoryId.HasValue)
+        {
+            var category = await _categoryRepository.GetByIdOrThrow(dto.CategoryId.Value);
+            // Alguna lógica con la categoría si es necesario
+        }
+
+        // Persistir
+        await _productRepository.Create(product);
+    }
+
+    public async Task Update(Guid id, ProductUpdateDto dto)
+    {
+        if (dto == null)
+        {
+            throw new InvalidValueException("Product data is required.");
+        }
+
+        // Obtener entidad existente
+        Product product = await _productRepository.GetByIdOrThrow(id);
+        
+        // Actualizar propiedades invocando métodos del dominio
+        product.SetName(dto.Name);
+        product.SetPrice(dto.Price);
+        
+        // Persistir cambios
+        await _productRepository.Update(product);
+    }
+
+    public async Task Remove(Guid id)
+    {
+        Product product = await _productRepository.GetByIdOrThrow(id);
+        await _productRepository.Delete(product);
+    }
+
+    public async Task PublishProduct(Guid id)
+    {
+        Product product = await _productRepository.GetByIdOrThrow(id);
+        
+        // Invocar comportamiento del dominio
+        product.Publish();
+        
+        await _productRepository.Update(product);
+    }
+}
+```
+
+## Estructura del Archivo
+
+```
+src/
+  Application/
+    TuProyecto.Application/
+      Interfaces/
+        [Modulo]/
+          I[Entidad]AppService.cs
+      Services/
+        [Modulo]/
+          [Entidad]AppService.cs
+```
+
+## Referencias
+
+- [Ejemplo de Interfaz de Servicio](src/DDD_Ejemplos_Codigo/6_Application_Service_Interface.cs)
+- [Ejemplo de Implementación de Servicio](src/DDD_Ejemplos_Codigo/7_Application_Service_Implementation.cs)
+- [Perfil de AutoMapper](src/DDD_Ejemplos_Codigo/8_Application_AutoMapper_Profile.cs)
+- [Documentación sobre Servicios de Aplicación](src/DDD_Estructura_Proyecto.txt)
