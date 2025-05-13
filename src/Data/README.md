@@ -47,16 +47,18 @@ La capa de Datos implementa los repositorios definidos en el dominio y gestiona 
   - Consultas por rango de fechas
   - Filtrado por doctor, paciente o estado
   - Validación de superposición de citas
+- DoctorRepository (Implementación concreta)
+  - Métodos para consulta de disponibilidad
+  - Búsqueda por nombre, especialidad y email
 - Configuraciones de mapeo:
+  - PatientConfiguration: Conversión bidireccional entre documentos Firestore y entidades Patient
   - AppointmentConfiguration: Conversión bidireccional entre documentos Firestore y entidades Appointment
-  - Estrategias de serialización para objetos Date y TimeSlot
+  - DoctorConfiguration: Conversión bidireccional entre documentos Firestore y entidades Doctor, incluido el mapeo complejo de WeeklyAvailability
+  - Estrategias de serialización para objetos Date, TimeSlot, TimeRange y WeeklyAvailability
 
 ## TODO
 
 ### Repositorios pendientes por implementar:
-- IDoctorRepository y DoctorRepository
-  - Métodos para consulta de disponibilidad
-  - Optimización para búsqueda de horarios 
 - ITreatmentRepository y TreatmentRepository
   - Métodos para búsqueda por categoría, precio, etc.
   - Soporte para catálogo de tratamientos
@@ -68,6 +70,4 @@ La capa de Datos implementa los repositorios definidos en el dominio y gestiona 
 
 ### Contextos pendientes por implementar:
 - Configuraciones de mapeo para el resto de entidades
-  - PatientConfiguration
-  - DoctorConfiguration
   - TreatmentConfiguration 

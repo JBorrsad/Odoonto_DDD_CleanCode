@@ -35,6 +35,10 @@ La capa de Infraestructura proporciona implementaciones técnicas para las inter
 - Estructura para registro de servicios
 - FirebaseConfiguration (configuración para acceso a Firebase)
 - FirebaseInyector (registro de servicios de Firebase)
+- RepositoryInyector (registro de repositorios implementados)
+  - Registro de PatientRepository, AppointmentRepository y DoctorRepository
+  - Configuración del ciclo de vida Scoped para los repositorios
+  - Registro del FirestoreContext como Singleton
 - Configuración segura para credenciales de Firebase
 
 ## TODO
@@ -44,10 +48,6 @@ La capa de Infraestructura proporciona implementaciones técnicas para las inter
   - Registro de todos los servicios de aplicación
   - Configuración de sus dependencias
   - Ciclo de vida adecuado para cada servicio
-- RepositoriesInyector (registro de repositorios)
-  - Registro de implementaciones de repositorio
-  - Configuración de caché si es necesario
-  - Gestión de conexiones y pool de conexiones
 - Middleware de autenticación con Firebase
   - Validación de tokens JWT
   - Gestión de roles y permisos
