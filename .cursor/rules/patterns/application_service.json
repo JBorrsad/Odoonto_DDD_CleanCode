@@ -1,0 +1,25 @@
+{
+  "name": "application_service",
+  "description": "Reglas para servicios de aplicación (Application Services)",
+  "patterns": [
+    ".*AppService\\.cs$",
+    ".*ApplicationService\\.cs$",
+    ".*/Application/.*/Services/.+\\.cs$",
+    ".*IAppService\\.cs$"
+  ],
+  "keywords": [
+    "servicio de aplicación",
+    "application service",
+    "app service",
+    "caso de uso"
+  ],
+  "documentation": "../docs/application_service.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/7_Application_Service_Implementation.cs",
+  "templates": [
+    {
+      "name": "Implementación de Servicio de Aplicación",
+      "description": "Plantilla para un servicio de aplicación que implementa CRUD",
+      "code": "namespace TuProyecto.Application.Services.<Modulo>;\n\nusing System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing AutoMapper;\nusing TuProyecto.Application.DTO.<Modulo>;\nusing TuProyecto.Domain.Models.<Modulo>;\nusing TuProyecto.Domain.Repositories.<Modulo>;\n\npublic class <Entidad>AppService : I<Entidad>AppService\n{\n    private readonly I<Entidad>Repository _repository;\n    private readonly IMapper _mapper;\n\n    public <Entidad>AppService(I<Entidad>Repository repository, IMapper mapper)\n    {\n        _repository = repository;\n        _mapper = mapper;\n    }\n\n    public async Task<IEnumerable<<Entidad>QueryDto>> GetAllAsync()\n    {\n        var entities = await _repository.GetAllAsync();\n        return _mapper.Map<IEnumerable<<Entidad>QueryDto>>(entities);\n    }\n\n    public async Task<<Entidad>ReadDto> GetByIdAsync(Guid id)\n    {\n        var entity = await _repository.GetByIdAsync(id);\n        return _mapper.Map<<Entidad>ReadDto>(entity);\n    }\n\n    public async Task<Guid> CreateAsync(<Entidad>CreateDto dto)\n    {\n        var entity = <Entidad>.Create(dto.Id ?? Guid.NewGuid());\n        entity.SetName(dto.Name);\n        \n        // Procesar otras propiedades...\n        \n        return await _repository.SaveAsync(entity);\n    }\n\n    public async Task UpdateAsync(Guid id, <Entidad>UpdateDto dto)\n    {\n        var entity = await _repository.GetByIdAsync(id);\n        if (entity == null)\n        {\n            throw new ApplicationException($\"<Entidad> with id {id} not found.\");\n        }\n\n        entity.SetName(dto.Name);\n        \n        // Actualizar otras propiedades...\n        \n        await _repository.SaveAsync(entity);\n    }\n\n    public async Task DeleteAsync(Guid id)\n    {\n        await _repository.DeleteAsync(id);\n    }\n}"
+    }
+  ]
+} 

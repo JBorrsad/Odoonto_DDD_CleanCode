@@ -1,0 +1,22 @@
+{
+  "name": "domain_core_repository_interface",
+  "description": "Reglas para la interfaz base IRepository en Domain.Core",
+  "patterns": [
+    "IRepository\\.cs$",
+    ".*/Domain/.*/Core/Repositories/IRepository\\.cs$"
+  ],
+  "keywords": [
+    "repository interface base",
+    "interfaz repositorio base",
+    "repositorio genérico"
+  ],
+  "documentation": "../global/ddd_estructura.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/12_Domain_Core_Repository_Interface.cs",
+  "templates": [
+    {
+      "name": "Interfaz Base IRepository",
+      "description": "Plantilla para la interfaz base de repositorio con operaciones genéricas",
+      "code": "namespace TuProyecto.Domain.Core.Repositories;\n\nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\nusing System.Linq.Expressions;\nusing System.Threading.Tasks;\nusing TuProyecto.Domain.Core.Models;\n\npublic interface IRepository<T> where T : Entity\n{\n    Task<IEnumerable<T>> GetAll();\n    Task<T> GetById(Guid id);\n    Task<T> GetByIdOrThrow(Guid id, string errorMessage = null);\n    Task<T> GetByIdOrThrow(Guid id, Func<IQueryable<T>, IQueryable<T>> include, string errorMessage = null);\n    Task<bool> Exists(Guid id);\n    Task Create(T entity);\n    Task Update(T entity);\n    Task Delete(T entity);\n    Task Delete(Guid id);\n}"
+    }
+  ]
+} 

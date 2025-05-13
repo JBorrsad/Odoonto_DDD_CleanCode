@@ -1,0 +1,24 @@
+{
+  "name": "data_repository_implementation",
+  "description": "Reglas para implementaciones de repositorio en Data Layer",
+  "patterns": [
+    ".*Repository(?!Interface).*\\.cs$",
+    ".*/Data/.*/Repositories/.+\\.cs$",
+    ".*RepositoryImplementation.*\\.cs$"
+  ],
+  "keywords": [
+    "repositorio implementación",
+    "repository implementation",
+    "persistencia",
+    "data access"
+  ],
+  "documentation": "../docs/data_repository_implementation.mdc",
+  "example_file": "../DDD_Ejemplos_Codigo/3_Data_Repository_Implementation.cs",
+  "templates": [
+    {
+      "name": "Implementación de Repositorio",
+      "description": "Plantilla para una implementación de repositorio en capa de datos",
+      "code": "namespace TuProyecto.Data.Repositories.<Modulo>;\n\nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\nusing System.Threading.Tasks;\nusing Microsoft.EntityFrameworkCore;\nusing TuProyecto.Data.Context;\nusing TuProyecto.Data.Entities.<Modulo>;\nusing TuProyecto.Domain.Models.<Modulo>;\nusing TuProyecto.Domain.Repositories.<Modulo>;\n\npublic class <Entidad>Repository : I<Entidad>Repository\n{\n    private readonly ApplicationDbContext _context;\n\n    public <Entidad>Repository(ApplicationDbContext context)\n    {\n        _context = context;\n    }\n\n    public async Task<IEnumerable<<Entidad>>> GetAllAsync()\n    {\n        var entities = await _context.<Entidades>\n            .AsNoTracking()\n            .ToListAsync();\n\n        return entities.Select(e => e.ToModel());\n    }\n\n    public async Task<<Entidad>> GetByIdAsync(Guid id)\n    {\n        var entity = await _context.<Entidades>\n            .AsNoTracking()\n            .FirstOrDefaultAsync(e => e.Id == id);\n\n        return entity?.ToModel();\n    }\n\n    public async Task<bool> ExistsAsync(Guid id)\n    {\n        return await _context.<Entidades>\n            .AnyAsync(e => e.Id == id);\n    }\n\n    public async Task<Guid> SaveAsync(<Entidad> model)\n    {\n        var entity = await _context.<Entidades>\n            .FirstOrDefaultAsync(e => e.Id == model.Id);\n\n        if (entity == null)\n        {\n            entity = new <Entidad>Entity(model);\n            await _context.<Entidades>.AddAsync(entity);\n        }\n        else\n        {\n            entity.Update(model);\n            _context.<Entidades>.Update(entity);\n        }\n\n        await _context.SaveChangesAsync();\n        return entity.Id;\n    }\n\n    public async Task DeleteAsync(Guid id)\n    {\n        var entity = await _context.<Entidades>\n            .FirstOrDefaultAsync(e => e.Id == id);\n\n        if (entity != null)\n        {\n            _context.<Entidades>.Remove(entity);\n            await _context.SaveChangesAsync();\n        }\n    }\n}"
+    }
+  ]
+} 

@@ -1,0 +1,238 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Flujos de Comunicación en la Arquitectura DDD
+
+## 1. Principio de Dependencia Hacia el Núcleo
+
+La arquitectura Domain-Driven Design (DDD) implementada en este proyecto sigue el principio de dependencia hacia el núcleo, donde:
+
+- La capa de Dominio es el núcleo y no depende de ninguna otra capa.
+- Cada capa externa sólo puede depender de capas más internas, nunca al revés.
+- Las dependencias externas se abstraen mediante interfaces definidas en el dominio.
+
+```
+Presentación → Aplicación → Dominio ← Datos
+                      ↘       ↑     ↗ 
+                       Infraestructura
+```
+
+## 2. Flujos de Datos y Comunicación Entre Capas
+
+### 2.1. Solicitud HTTP → Controlador (Capa de Presentación)
+
+1. El usuario realiza una solicitud HTTP a un endpoint.
+2. El controlador recibe la solicitud y los datos (si existen).
+3. El controlador valida los datos básicos de formato.
+4. El controlador llama al servicio de aplicación correspondiente.
+
+Ejemplo (CategoriesController):
+```csharp
+[HttpPost]
+public async Task<ActionResult> Create([FromBody] CategoryCreateDto data)
+{
+    await _categoryAppService.Create(data);
+    return CreatedAtAction(nameof(GetById), new { id = data.Id }, null);
+}
+```
+
+### 2.2. Controlador → Servicio de Aplicación (Capa de Aplicación)
+
+1. El servicio de aplicación recibe el DTO con los datos.
+2. El servicio valida los datos de negocio.
+3. El servicio mapea el DTO a entidades de dominio usando AutoMapper (si es necesario).
+4. El servicio coordina la lógica de negocio invocando métodos en las entidades de dominio.
+5. El servicio utiliza repositorios para persistir los cambios.
+
+Ejemplo (CategoryAppService):
+```csharp
+public Task Create(CategoryCreateDto data)
+{
+    if (data is null)
+    {
+        throw new InvalidValueException("The request is not valid.");
+    }
+    Category category = Category.Create(data.Id);
+    category.SetName(data.Name);
+    return _categoryRepository.Create(category);
+}
+```
+
+### 2.3. Servicio de Aplicación → Entidad de Dominio (Capa de Dominio)
+
+1. La entidad de dominio encapsula el comportamiento y las reglas de negocio.
+2. La entidad realiza validaciones de negocio, lanzando excepciones si es necesario.
+3. La entidad modifica su estado interno basado en el comportamiento invocado.
+
+Ejemplo (Category.cs):
+```csharp
+public void SetName(string name)
+{
+    if (string.IsNullOrWhiteSpace(name))
+    {
+        throw new InvalidValueException("The category name can't be null/empty.");
+    }
+
+    Name = name;
+    UpdateEditDate();
+}
+```
+
+### 2.4. Servicio de Aplicación → Repositorio (Interfaz en Dominio)
+
+1. El servicio de aplicación llama a métodos del repositorio para persistir o recuperar entidades.
+2. La interfaz del repositorio está definida en la capa de dominio.
+3. La implementación concreta está en la capa de datos.
+
+Ejemplo (ICategoryRepository):
+```csharp
+public interface ICategoryRepository : IRepository<Category>
+{
+    // Métodos específicos para Category
+}
+```
+
+### 2.5. Repositorio (Implementación en Datos) → Base de Datos
+
+1. La implementación del repositorio traduce las operaciones de dominio a operaciones de base de datos.
+2. Utiliza el contexto de EF Core para interactuar con la base de datos.
+3. Gestiona el mapeo entre entidades de dominio y esquema de base de datos.
+
+Ejemplo (CategoryRepository):
+```csharp
+public override Task<Category> GetById(Guid id)
+{
+    return _context.Set<Category>()
+        .Include(category => category.Flows)
+        .FirstOrDefaultAsync(category => category.Id == id);
+}
+```
+
+### 2.6. Flujo de Retorno de Datos
+
+1. El repositorio recupera datos de la base de datos y los mapea a entidades de dominio.
+2. El servicio de aplicación recibe entidades de dominio del repositorio.
+3. El servicio mapea las entidades a DTOs usando AutoMapper.
+4. El controlador recibe los DTOs y los devuelve como respuesta HTTP.
+
+Ejemplo (CategoryAppService - GetById):
+```csharp
+public async Task<CategoryReadDto> GetById(Guid CategoryId)
+{
+    Category category = await _categoryRepository.GetByIdOrThrow(CategoryId, query => 
+        query.Include(c => c.Flows)
+             .ThenInclude(f => f.Nodes));
+
+    return _mapper.Map<Category, CategoryReadDto>(category);
+}
+```
+
+## 3. Comunicación Entre Entidades de Dominio
+
+### 3.1. Relaciones Entre Entidades
+
+Las entidades de dominio pueden relacionarse entre sí, manteniendo la consistencia del modelo:
+
+Ejemplo (Category - AddFlow):
+```csharp
+public void AddFlow(Flow flow)
+{
+    if (flow is null)
+    {
+        throw new WrongOperationException("The flow can't be null.");
+    }
+
+    if (_flows.Exists(f => f.Id == flow.Id))
+    {
+        throw new DuplicatedValueException($"The flow (Id: {flow.Id}) already belongs to the category.");
+    }
+
+    flow.SetCategory(Id);
+    _flows.Add(flow);
+    UpdateEditDate();
+}
+```
+
+### 3.2. Agregados y Entidades Raíz
+
+- En DDD, los agregados son clusters de entidades que se tratan como una unidad cohesiva.
+- La entidad raíz es el punto de entrada al agregado y mantiene su consistencia.
+- En este proyecto, Category puede considerarse una entidad raíz que coordina los Flows asociados.
+
+## 4. Inyección de Dependencias
+
+La inyección de dependencias se configura en la capa de infraestructura, permitiendo:
+
+1. Registrar interfaces y sus implementaciones.
+2. Mantener el bajo acoplamiento entre componentes.
+3. Facilitar pruebas unitarias mediante mocks.
+
+Ejemplo (ApplicationInyector):
+```csharp
+public static void Inyect(IServiceCollection services)
+{
+    services.AddScoped<ICategoryRepository, CategoryRepository>(); 
+    services.AddScoped<ICategoryAppService, CategoryAppService>();
+    // Más registros...
+}
+```
+
+## 5. Comunicación Asíncrona
+
+La mayoría de las operaciones son asíncronas (Task/Task<T>), lo que permite:
+
+1. Mejor escalabilidad de la aplicación.
+2. Evitar bloqueos en operaciones de I/O.
+3. Mejor experiencia de usuario en aplicaciones interactivas.
+
+## 6. Manejo de Excepciones
+
+Las excepciones fluyen desde la capa de dominio hacia arriba:
+
+1. Las entidades de dominio lanzan excepciones específicas de dominio.
+2. Los servicios de aplicación capturan y pueden transformar estas excepciones.
+3. La infraestructura proporciona un manejador global de excepciones.
+4. Los controladores pueden manejar excepciones específicas para devolver códigos HTTP apropiados.
+
+Ejemplo de jerarquía de excepciones:
+- InvalidValueException (dominio)
+- WrongOperationException (dominio)
+- DuplicatedValueException (dominio)
+
+## 7. Validaciones en Cada Capa
+
+### 7.1. Capa de Presentación (API)
+- Validación de formato (requerido, tipo de datos, etc.)
+- Validación básica de modelo ([Required], [MaxLength], etc.)
+
+### 7.2. Capa de Aplicación
+- Validación de reglas de negocio complejas que involucran múltiples entidades
+- Orquestación de validaciones de dominio
+
+### 7.3. Capa de Dominio
+- Validación de invariantes de entidad
+- Reglas de negocio fundamentales
+- Preservación de la consistencia del modelo
+
+## 8. Buenas Prácticas Observadas
+
+1. **Encapsulamiento**: Propiedades con getters públicos y setters privados.
+2. **Validaciones**: Las entidades validan sus propios invariantes.
+3. **Métodos Factory**: Uso de métodos estáticos (Create) para instanciar entidades.
+4. **Interfaces**: Definición de contratos en el dominio.
+5. **DTOs**: Objetos específicos para transferencia de datos entre capas.
+6. **AutoMapper**: Mapeo entre entidades y DTOs.
+7. **Inyección de Dependencias**: Uso de interfaces en lugar de implementaciones concretas.
+8. **Métodos Asíncronos**: Uso de Task/Task<T> para operaciones asíncronas.
+
+## 9. Consejos para Implementación
+
+1. Empieza siempre por el dominio, definiendo entidades y sus comportamientos.
+2. Define interfaces de repositorio en el dominio.
+3. Implementa servicios de aplicación que coordinen casos de uso.
+4. Luego implementa repositorios concretos en la capa de datos.
+5. Configura la inyección de dependencias en la infraestructura.
+6. Finalmente, implementa controladores en la capa de presentación.
+
