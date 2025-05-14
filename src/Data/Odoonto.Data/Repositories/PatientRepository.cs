@@ -3,76 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Google.Cloud.Firestore;
-using Odoonto.Data.Contexts.Configurations;
 using Odoonto.Data.Core.Contexts;
 using Odoonto.Data.Core.Repositories;
+using Odoonto.Data.Mappings;
 using Odoonto.Domain.Models.Patients;
-using Odoonto.Domain.Models.ValueObjects;
 using Odoonto.Domain.Repositories;
 
 namespace Odoonto.Data.Repositories
 {
     /// <summary>
-    /// Implementación del repositorio de pacientes utilizando Firestore
+    /// Implementación del repositorio de pacientes utilizando Firebase
     /// </summary>
-    public class PatientRepository : Repository<Patient>, IPatientRepository
+    public class PatientRepository : BaseRepository<Patient>, IPatientRepository
     {
-        private const string CollectionName = "patients";
-
-        public PatientRepository(FirestoreContext context) 
-            : base(context, CollectionName)
+        public PatientRepository(FirestoreContext context)
+            : base(context, "patients")
         {
         }
 
-        public async Task<IEnumerable<Patient>> FindByNameAsync(string name)
+        protected override Patient ConvertToEntity(DocumentSnapshot document)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                return Enumerable.Empty<Patient>();
-
-            // Firebase no proporciona búsqueda de texto completo, así que obtenemos todos y filtramos
-            var allPatients = await GetAllAsync();
-            
-            // Normalizar para la búsqueda (quitar acentos, minúsculas)
-            string normalizedSearch = name.ToLowerInvariant().Trim();
-            
-            return allPatients.Where(p => 
-                (p.Name?.FirstName?.ToLowerInvariant()?.Contains(normalizedSearch) == true) || 
-                (p.Name?.LastName?.ToLowerInvariant()?.Contains(normalizedSearch) == true));
+            return PatientMapper.ToEntity(document);
         }
 
-        public async Task<IEnumerable<Patient>> FindByAgeRangeAsync(int minAge, int maxAge)
+        protected override Dictionary<string, object> ConvertFromEntity(Patient entity)
         {
-            if (minAge < 0) minAge = 0;
-            if (maxAge < minAge) maxAge = minAge;
-
-            var allPatients = await GetAllAsync();
-            return allPatients.Where(p => {
-                int age = p.CalculateAge();
-                return age >= minAge && age <= maxAge;
-            });
-        }
-
-        public async Task<Patient> FindByEmailAsync(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-                return null;
-
-            var allPatients = await GetAllAsync();
-            return allPatients.FirstOrDefault(p => 
-                string.Equals(p.Contact?.Email, email.Trim(), StringComparison.OrdinalIgnoreCase));
-        }
-
-        public async Task<IEnumerable<Patient>> FindByPhoneNumberAsync(string phoneNumber)
-        {
-            if (string.IsNullOrWhiteSpace(phoneNumber))
-                return Enumerable.Empty<Patient>();
-
-            // Normalizar número de teléfono para búsqueda
-            string normalizedPhone = phoneNumber.Trim();
-            
-            var allPatients = await GetAllAsync();
-            return allPatients.Where(p => 
-                p.Contact?.PhoneNumber?.Contains(normalizedPhone) == true);
+            return PatientMapper.ToFirestore(entity);
         }
 
         public async Task<int> GetTotalPatientsCountAsync()
@@ -83,43 +39,41 @@ namespace Odoonto.Data.Repositories
 
         public async Task<IEnumerable<Patient>> GetPaginatedAsync(int pageNumber, int pageSize)
         {
-            if (pageNumber < 1) pageNumber = 1;
-            if (pageSize < 1) pageSize = 10;
+            if (pageNumber < 1)
+                pageNumber = 1;
 
-            // Firestore no tiene paginación nativa como SQL, debemos simularla
-            var allPatients = (await GetAllAsync()).ToList();
-            
-            int skipCount = (pageNumber - 1) * pageSize;
-            return allPatients.Skip(skipCount).Take(pageSize);
-        }
+            if (pageSize < 1)
+                pageSize = 10;
 
-        public async Task<IEnumerable<Patient>> SearchAsync(string searchTerm)
-        {
-            if (string.IsNullOrWhiteSpace(searchTerm))
-                return await GetAllAsync();
+            // En Firestore, para implementar paginación necesitamos usar limit() y startAfter()
+            // Primero obtenemos los documentos ordenados por nombre
+            var query = _context.GetCollection(_collectionName)
+                .OrderBy("LastName")
+                .OrderBy("FirstName");
 
-            var normalizedSearch = searchTerm.ToLowerInvariant().Trim();
-            var allPatients = await GetAllAsync();
-            
-            return allPatients.Where(p => 
-                (p.Name?.FirstName?.ToLowerInvariant()?.Contains(normalizedSearch) == true) ||
-                (p.Name?.LastName?.ToLowerInvariant()?.Contains(normalizedSearch) == true) ||
-                (p.Contact?.Email?.ToLowerInvariant()?.Contains(normalizedSearch) == true) ||
-                (p.Contact?.PhoneNumber?.Contains(normalizedSearch) == true) ||
-                (p.Contact?.Address?.ToLowerInvariant()?.Contains(normalizedSearch) == true) ||
-                (p.MedicalHistory?.ToLowerInvariant()?.Contains(normalizedSearch) == true) ||
-                (p.Notes?.ToLowerInvariant()?.Contains(normalizedSearch) == true) ||
-                (p.Allergies?.Any(a => a.ToLowerInvariant().Contains(normalizedSearch)) == true));
-        }
+            // Si no es la primera página, necesitamos obtener el último documento de la página anterior
+            if (pageNumber > 1)
+            {
+                // Obtener el último documento de la página anterior
+                var lastDocOfPreviousPage = await query
+                    .Limit((pageNumber - 1) * pageSize)
+                    .GetSnapshotAsync();
 
-        protected override Patient MapToEntity(DocumentSnapshot document)
-        {
-            return PatientConfiguration.MapToEntity(document);
-        }
+                if (lastDocOfPreviousPage.Count > 0)
+                {
+                    var lastDoc = lastDocOfPreviousPage.Documents.Last();
+                    query = query.StartAfter(lastDoc);
+                }
+            }
 
-        protected override object MapToDocument(Patient entity)
-        {
-            return PatientConfiguration.MapToDocument(entity);
+            // Obtener los documentos de la página actual
+            var querySnapshot = await query
+                .Limit(pageSize)
+                .GetSnapshotAsync();
+
+            return querySnapshot.Documents
+                .Select(ConvertToEntity)
+                .Where(p => p != null);
         }
     }
-} 
+}

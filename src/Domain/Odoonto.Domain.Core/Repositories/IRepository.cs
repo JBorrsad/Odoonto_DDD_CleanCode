@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Odoonto.Domain.Core.Abstractions;
+using Odoonto.Domain.Core.Specifications;
 
 namespace Odoonto.Domain.Core.Repositories
 {
@@ -42,25 +43,34 @@ namespace Odoonto.Domain.Core.Repositories
         Task<bool> ExistsAsync(Guid id);
 
         /// <summary>
-        /// Busca entidades que cumplan un predicado
+        /// Busca entidades que cumplan una especificación
         /// </summary>
-        /// <param name="predicate">Predicado de búsqueda</param>
-        /// <returns>Colección de entidades que cumplen el predicado</returns>
-        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        /// <param name="spec">Especificación a aplicar</param>
+        /// <param name="page">Número de página (1-based)</param>
+        /// <param name="pageSize">Tamaño de página</param>
+        /// <returns>Colección de entidades que cumplen la especificación</returns>
+        Task<IEnumerable<T>> FindAsync(ISpecification<T> spec, int page = 1, int pageSize = 10);
 
         /// <summary>
-        /// Obtiene la primera entidad que cumple un predicado o devuelve null
+        /// Cuenta el número de entidades que cumplen una especificación
         /// </summary>
-        /// <param name="predicate">Predicado de búsqueda</param>
-        /// <returns>La primera entidad que cumple el predicado o null</returns>
-        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+        /// <param name="spec">Especificación a aplicar</param>
+        /// <returns>Número de entidades</returns>
+        Task<int> CountAsync(ISpecification<T> spec);
 
         /// <summary>
-        /// Verifica si existe alguna entidad que cumpla un predicado
+        /// Obtiene la primera entidad que cumple una especificación o devuelve null
         /// </summary>
-        /// <param name="predicate">Predicado de búsqueda</param>
+        /// <param name="spec">Especificación a aplicar</param>
+        /// <returns>La primera entidad que cumple la especificación o null</returns>
+        Task<T> FirstOrDefaultAsync(ISpecification<T> spec);
+
+        /// <summary>
+        /// Verifica si existe alguna entidad que cumpla una especificación
+        /// </summary>
+        /// <param name="spec">Especificación a aplicar</param>
         /// <returns>True si existe al menos una entidad, False si no existe ninguna</returns>
-        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
+        Task<bool> AnyAsync(ISpecification<T> spec);
 
         /// <summary>
         /// Guarda una entidad nueva
@@ -84,7 +94,7 @@ namespace Odoonto.Domain.Core.Repositories
         Task<bool> DeleteAsync(Guid id);
 
         /// <summary>
-        /// Guarda una entidad nueva o actualiza una existente
+        /// Guarda o actualiza una entidad
         /// </summary>
         /// <param name="entity">Entidad a guardar o actualizar</param>
         /// <returns>Task asíncrono</returns>
@@ -95,4 +105,4 @@ namespace Odoonto.Domain.Core.Repositories
         /// </summary>
         Task<bool> EntityExistsAsync(Guid id);
     }
-} 
+}

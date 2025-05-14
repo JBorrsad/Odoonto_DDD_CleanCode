@@ -3,85 +3,86 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Google.Cloud.Firestore;
-using Odoonto.Data.Contexts.Configurations;
 using Odoonto.Data.Core.Contexts;
 using Odoonto.Data.Core.Repositories;
+using Odoonto.Data.Mappings;
+using Odoonto.Domain.Core.Models.Exceptions;
 using Odoonto.Domain.Models.Appointments;
 using Odoonto.Domain.Models.ValueObjects;
 using Odoonto.Domain.Repositories;
+using Odoonto.Domain.Specifications.Appointments;
 
 namespace Odoonto.Data.Repositories
 {
     /// <summary>
-    /// Implementación del repositorio de citas utilizando Firestore
+    /// Implementación del repositorio de citas utilizando Firebase
     /// </summary>
-    public class AppointmentRepository : Repository<Appointment>, IAppointmentRepository
+    public class AppointmentRepository : BaseRepository<Appointment>, IAppointmentRepository
     {
-        private const string CollectionName = "appointments";
-
-        public AppointmentRepository(FirestoreContext context) 
-            : base(context, CollectionName)
+        public AppointmentRepository(FirestoreContext context)
+            : base(context, "appointments")
         {
+        }
+
+        protected override Appointment ConvertToEntity(DocumentSnapshot document)
+        {
+            return AppointmentMapper.ToEntity(document);
+        }
+
+        protected override Dictionary<string, object> ConvertFromEntity(Appointment entity)
+        {
+            return AppointmentMapper.ToFirestore(entity);
+        }
+
+        public async Task<Appointment> GetByIdAsync(Guid id)
+        {
+            if (id == Guid.Empty)
+                return null;
+
+            var document = await _context.GetDocumentByIdAsync(_collectionName, id.ToString());
+            return document.Exists ? ConvertToEntity(document) : null;
+        }
+
+        public async Task<Appointment> GetByIdOrThrowAsync(Guid id)
+        {
+            var appointment = await GetByIdAsync(id);
+
+            if (appointment == null)
+            {
+                throw new EntityNotFoundException($"Cita con ID {id} no encontrada.");
+            }
+
+            return appointment;
+        }
+
+        public async Task SaveAsync(Appointment appointment)
+        {
+            if (appointment == null)
+                throw new ArgumentNullException(nameof(appointment));
+
+            if (appointment.Id == Guid.Empty)
+                throw new ArgumentException("La cita debe tener un ID asignado.");
+
+            var data = ConvertFromEntity(appointment);
+            await _context.SetDocumentAsync(_collectionName, appointment.Id.ToString(), data);
         }
 
         public async Task<IEnumerable<Appointment>> GetByPatientIdAndDateRangeAsync(Guid patientId, DateTime startDate, DateTime endDate)
         {
-            if (patientId == Guid.Empty || startDate > endDate)
-                return Enumerable.Empty<Appointment>();
-
-            var allAppointments = await GetAllAsync();
-            
-            return allAppointments.Where(a => 
-                a.PatientId == patientId && 
-                a.AppointmentDate.Value.Date >= startDate.Date && 
-                a.AppointmentDate.Value.Date <= endDate.Date);
+            var spec = new AppointmentByPatientAndDateRangeSpecification(patientId, startDate, endDate);
+            return await FindAsync(spec);
         }
 
         public async Task<IEnumerable<Appointment>> GetByDoctorIdAndDateRangeAsync(Guid doctorId, DateTime startDate, DateTime endDate)
         {
-            if (doctorId == Guid.Empty || startDate > endDate)
-                return Enumerable.Empty<Appointment>();
-
-            var allAppointments = await GetAllAsync();
-            
-            return allAppointments.Where(a => 
-                a.DoctorId == doctorId && 
-                a.AppointmentDate.Value.Date >= startDate.Date && 
-                a.AppointmentDate.Value.Date <= endDate.Date);
+            var spec = new AppointmentByDoctorAndDateRangeSpecification(doctorId, startDate, endDate);
+            return await FindAsync(spec);
         }
 
         public async Task<IEnumerable<Appointment>> GetByDoctorIdAndDateAsync(Guid doctorId, DateTime date)
         {
-            if (doctorId == Guid.Empty)
-                return Enumerable.Empty<Appointment>();
-
-            var allAppointments = await GetAllAsync();
-            
-            return allAppointments.Where(a => 
-                a.DoctorId == doctorId && 
-                a.AppointmentDate.Value.Date == date.Date);
-        }
-
-        public async Task<bool> HasOverlappingAppointmentsAsync(Guid doctorId, DateTime date, TimeSlot timeSlot, Guid? excludeAppointmentId = null)
-        {
-            if (doctorId == Guid.Empty || timeSlot == null)
-                return false;
-
-            var appointmentsOnDate = await GetByDoctorIdAndDateAsync(doctorId, date);
-            
-            return appointmentsOnDate.Any(a => 
-                a.Id != excludeAppointmentId && // Excluir la cita que se está actualizando
-                a.TimeSlot.Overlaps(timeSlot));
-        }
-
-        protected override Appointment MapToEntity(DocumentSnapshot document)
-        {
-            return AppointmentConfiguration.MapToEntity(document);
-        }
-
-        protected override object MapToDocument(Appointment entity)
-        {
-            return AppointmentConfiguration.MapToDocument(entity);
+            var spec = new AppointmentByDoctorAndDateSpecification(doctorId, date);
+            return await FindAsync(spec);
         }
     }
-} 
+}
