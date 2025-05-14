@@ -19,21 +19,6 @@ namespace Odoonto.UI.Server.Controllers.Treatments
         }
 
         /// <summary>
-        /// Obtiene un tratamiento por su identificador
-        /// </summary>
-        /// <param name="id">Identificador del tratamiento</param>
-        /// <returns>Información del tratamiento</returns>
-        [HttpGet("{id}", Name = "GetTreatmentById")]
-        [ProducesResponseType(typeof(TreatmentDto), 200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<ActionResult<TreatmentDto>> GetById(Guid id)
-        {
-            var treatment = await _treatmentService.GetTreatmentByIdAsync(id);
-            return Ok(treatment);
-        }
-
-        /// <summary>
         /// Obtiene todos los tratamientos
         /// </summary>
         /// <returns>Lista de tratamientos</returns>
@@ -47,85 +32,49 @@ namespace Odoonto.UI.Server.Controllers.Treatments
         }
 
         /// <summary>
-        /// Obtiene tratamientos por categoría
+        /// Obtiene un tratamiento por su identificador
         /// </summary>
-        /// <param name="category">Categoría a buscar</param>
-        /// <returns>Lista de tratamientos en la categoría especificada</returns>
-        [HttpGet("category/{category}", Name = "GetTreatmentsByCategory")]
-        [ProducesResponseType(typeof(IEnumerable<TreatmentDto>), 200)]
-        [ProducesResponseType(400)]
+        /// <param name="id">Identificador del tratamiento</param>
+        /// <returns>Información del tratamiento</returns>
+        [HttpGet("{id}", Name = "GetTreatmentById")]
+        [ProducesResponseType(typeof(TreatmentDto), 200)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<IEnumerable<TreatmentDto>>> GetByCategory(string category)
+        public async Task<ActionResult<TreatmentDto>> GetById(Guid id)
         {
-            if (string.IsNullOrWhiteSpace(category))
+            var treatment = await _treatmentService.GetTreatmentByIdAsync(id);
+            if (treatment == null)
             {
-                return BadRequest("La categoría no puede estar vacía");
+                return NotFound($"Tratamiento con ID {id} no encontrado.");
             }
+            return Ok(treatment);
+        }
 
-            var treatments = await _treatmentService.GetTreatmentsByCategoryAsync(category);
+        /// <summary>
+        /// Obtiene los tratamientos de un paciente
+        /// </summary>
+        /// <param name="patientId">Identificador del paciente</param>
+        /// <returns>Lista de tratamientos del paciente</returns>
+        [HttpGet("patient/{patientId}", Name = "GetTreatmentsByPatient")]
+        [ProducesResponseType(typeof(IEnumerable<TreatmentDto>), 200)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult<IEnumerable<TreatmentDto>>> GetByPatient(Guid patientId)
+        {
+            var treatments = await _treatmentService.GetTreatmentsByPatientAsync(patientId);
             return Ok(treatments);
         }
 
         /// <summary>
-        /// Busca tratamientos por término de búsqueda (nombre o descripción)
+        /// Obtiene los tratamientos asignados a un doctor
         /// </summary>
-        /// <param name="searchTerm">Término de búsqueda</param>
-        /// <returns>Lista de tratamientos que coinciden con el término</returns>
-        [HttpGet("search", Name = "SearchTreatments")]
+        /// <param name="doctorId">Identificador del doctor</param>
+        /// <returns>Lista de tratamientos asignados al doctor</returns>
+        [HttpGet("doctor/{doctorId}", Name = "GetTreatmentsByDoctor")]
         [ProducesResponseType(typeof(IEnumerable<TreatmentDto>), 200)]
-        [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<IEnumerable<TreatmentDto>>> Search([FromQuery] string searchTerm)
+        public async Task<ActionResult<IEnumerable<TreatmentDto>>> GetByDoctor(Guid doctorId)
         {
-            if (string.IsNullOrWhiteSpace(searchTerm))
-            {
-                return BadRequest("El término de búsqueda no puede estar vacío");
-            }
-
-            var treatments = await _treatmentService.SearchTreatmentsAsync(searchTerm);
-            return Ok(treatments);
-        }
-
-        /// <summary>
-        /// Busca tratamientos por precio máximo
-        /// </summary>
-        /// <param name="maxPrice">Precio máximo</param>
-        /// <param name="currency">Moneda (por defecto EUR)</param>
-        /// <returns>Lista de tratamientos con precio menor o igual al especificado</returns>
-        [HttpGet("price", Name = "GetTreatmentsByMaxPrice")]
-        [ProducesResponseType(typeof(IEnumerable<TreatmentDto>), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<ActionResult<IEnumerable<TreatmentDto>>> GetByMaxPrice(
-            [FromQuery] decimal maxPrice, 
-            [FromQuery] string currency = "EUR")
-        {
-            if (maxPrice < 0)
-            {
-                return BadRequest("El precio máximo no puede ser negativo");
-            }
-
-            var treatments = await _treatmentService.GetTreatmentsByMaxPriceAsync(maxPrice, currency);
-            return Ok(treatments);
-        }
-
-        /// <summary>
-        /// Busca tratamientos por duración máxima
-        /// </summary>
-        /// <param name="maxDuration">Duración máxima en minutos</param>
-        /// <returns>Lista de tratamientos con duración menor o igual a la especificada</returns>
-        [HttpGet("duration", Name = "GetTreatmentsByMaxDuration")]
-        [ProducesResponseType(typeof(IEnumerable<TreatmentDto>), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<ActionResult<IEnumerable<TreatmentDto>>> GetByMaxDuration([FromQuery] int maxDuration)
-        {
-            if (maxDuration <= 0)
-            {
-                return BadRequest("La duración máxima debe ser mayor que cero");
-            }
-
-            var treatments = await _treatmentService.GetTreatmentsByMaxDurationAsync(maxDuration);
+            var treatments = await _treatmentService.GetTreatmentsByDoctorAsync(doctorId);
             return Ok(treatments);
         }
 
@@ -155,25 +104,66 @@ namespace Odoonto.UI.Server.Controllers.Treatments
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<TreatmentDto>> Update(Guid id, [FromBody] CreateTreatmentDto treatmentDto)
+        public async Task<ActionResult<TreatmentDto>> Update(Guid id, [FromBody] UpdateTreatmentDto treatmentDto)
         {
-            var updatedTreatment = await _treatmentService.UpdateTreatmentAsync(id, treatmentDto);
-            return Ok(updatedTreatment);
+            try
+            {
+                if (id != treatmentDto.Id)
+                {
+                    return BadRequest("El ID en la ruta y en el cuerpo de la solicitud no coinciden.");
+                }
+
+                var updatedTreatment = await _treatmentService.UpdateTreatmentAsync(treatmentDto);
+                return Ok(updatedTreatment);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Tratamiento con ID {id} no encontrado.");
+            }
         }
 
         /// <summary>
-        /// Elimina un tratamiento
+        /// Marca un tratamiento como completado
         /// </summary>
         /// <param name="id">Identificador del tratamiento</param>
-        /// <returns>Confirmación de eliminación</returns>
-        [HttpDelete("{id}", Name = "DeleteTreatment")]
-        [ProducesResponseType(204)]
+        /// <returns>Tratamiento actualizado</returns>
+        [HttpPatch("{id}/complete", Name = "CompleteTreatment")]
+        [ProducesResponseType(typeof(TreatmentDto), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult<TreatmentDto>> CompleteTreatment(Guid id)
         {
-            await _treatmentService.DeleteTreatmentAsync(id);
-            return NoContent();
+            try
+            {
+                var updatedTreatment = await _treatmentService.CompleteTreatmentAsync(id);
+                return Ok(updatedTreatment);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Tratamiento con ID {id} no encontrado.");
+            }
+        }
+
+        /// <summary>
+        /// Cancela un tratamiento
+        /// </summary>
+        /// <param name="id">Identificador del tratamiento</param>
+        /// <returns>Tratamiento actualizado</returns>
+        [HttpPatch("{id}/cancel", Name = "CancelTreatment")]
+        [ProducesResponseType(typeof(TreatmentDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult<TreatmentDto>> CancelTreatment(Guid id)
+        {
+            try
+            {
+                var updatedTreatment = await _treatmentService.CancelTreatmentAsync(id);
+                return Ok(updatedTreatment);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Tratamiento con ID {id} no encontrado.");
+            }
         }
     }
-} 
+}

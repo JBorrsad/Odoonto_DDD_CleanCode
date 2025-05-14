@@ -23,7 +23,8 @@ namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<ITreatmentService, TreatmentService>();
-            
+            services.AddScoped<ILesionService, LesionService>();
+
             // Configuración de AutoMapper
             InyectProfiles(services);
         }
@@ -35,25 +36,31 @@ namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
         private static void InyectProfiles(IServiceCollection services)
         {
             List<Type> profiles = new List<Type>();
-            
+
             // Añadir perfiles de mapeo
             profiles.Add(typeof(AppointmentProfile));
             profiles.Add(typeof(TreatmentProfile));
-            
+
             // Si existe un perfil para pacientes, añadirlo
             if (Type.GetType("Odoonto.Application.Mappers.PatientProfile") != null)
             {
                 profiles.Add(typeof(PatientProfile));
             }
-            
+
             // Si existe un perfil para doctores, añadirlo
             if (Type.GetType("Odoonto.Application.Mappers.DoctorProfile") != null)
             {
                 profiles.Add(typeof(DoctorProfile));
             }
 
+            // Si existe un perfil para lesiones, añadirlo
+            if (Type.GetType("Odoonto.Application.Mappers.LesionProfile") != null)
+            {
+                profiles.Add(typeof(LesionProfile));
+            }
+
             // Configurar AutoMapper con los perfiles
             services.AddAutoMapper(profiles.ToArray());
         }
     }
-} 
+}

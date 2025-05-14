@@ -3,10 +3,13 @@
 # Guía Núcleo DDD
 
 ---
-description: 
-globs: 
+
+description:
+globs:
 alwaysApply: true
+
 ---
+
 # Estructura Domain-Driven Design del Proyecto
 
 ## 1. Definición de Domain-Driven Design (DDD)
@@ -23,69 +26,86 @@ Domain-Driven Design es un enfoque de desarrollo de software que prioriza el dom
 Este proyecto implementa una arquitectura en capas siguiendo los principios de DDD:
 
 ### 2.1. Capa de Dominio (Domain Layer)
+
 Es el núcleo de la aplicación, contiene las entidades, reglas de negocio, interfaces de repositorios y definiciones de servicios de dominio.
 
 **Ubicación**: `src/Domain/`
 Subdividida en:
+
 - `Odoonto.Domain`: Contiene las entidades principales, interfaces de repositorios y lógica de dominio.
 - `Odoonto.Domain.Core`: Contiene abstracciones comunes, base para entidades y excepciones.
 
 **Responsabilidades**:
+
 - Definir entidades y agregados (Models)
 - Definir interfaces de repositorio (Repositories)
 - Establecer reglas y validaciones de negocio
 - Definir eventos de dominio
 
 ### 2.2. Capa de Aplicación (Application Layer)
+
 Orquesta el flujo de la aplicación, coordina los objetos del dominio y proporciona APIs para acceder al sistema.
 
 **Ubicación**: `src/Application/`
 Subdividida en:
+
 - `Odoonto.Application`: Contiene servicios, DTOs y mapeadores.
 
 **Responsabilidades**:
+
 - Definir casos de uso (Services)
 - Definir DTOs para transferencia de datos
 - Implementar mapeo entre entidades y DTOs (AutoMapper)
 - Coordinar operaciones complejas entre entidades
 
 ### 2.3. Capa de Infraestructura (Infrastructure Layer)
-Proporciona implementaciones técnicas para las interfaces del dominio.
+
+Proporciona implementaciones técnicas para las interfaces del dominio y configuración de Firebase.
 
 **Ubicación**: `src/Infraestructure/`
 Subdividida en:
+
 - `Odoonto.Infraestructure.InversionOfControl`: Configura la inyección de dependencias.
+- `Odoonto.Infraestructure.Configuration`: Contiene configuraciones como Firebase.
 - `Odoonto.Infraestructure.ExceptionsHandler`: Manejo centralizado de excepciones.
 
 **Responsabilidades**:
+
 - Configurar inyección de dependencias
+- Configurar Firebase y sus credenciales
 - Proporcionar implementaciones técnicas (logging, autenticación, etc.)
 - Manejar excepciones globales
 
 ### 2.4. Capa de Datos (Data Layer)
-Implementa los repositorios definidos en el dominio y gestiona la persistencia.
+
+Implementa los repositorios definidos en el dominio y gestiona la persistencia con Firebase.
 
 **Ubicación**: `src/Data/`
 Subdividida en:
+
 - `Odoonto.Data`: Implementaciones de repositorios.
-- `Odoonto.Data.Core`: Abstracciones para acceso a datos.
-- `Odoonto.Data.Contexts`: Definición de contextos de base de datos.
+- `Odoonto.Data.Core`: Abstracciones para acceso a datos y contexto de Firebase.
 
 **Responsabilidades**:
-- Implementar repositorios
-- Gestionar contextos de base de datos
-- Proporcionar mapeos ORM
+
+- Implementar repositorios usando Firebase Firestore
+- Gestionar la conexión con Firebase
+- Convertir entre documentos de Firestore y entidades de dominio
+- Implementar mapeos entre modelos
 - Implementar cache y optimizaciones
 
 ### 2.5. Capa de Presentación (Presentation Layer)
+
 Proporciona la interfaz de usuario y expone APIs.
 
 **Ubicación**: `src/Presentation/`
 Subdividida en:
+
 - `Odoonto.UI.Server`: API REST.
 - `Odoonto.UI.Client`: Cliente (React, Blazor, etc).
 
 **Responsabilidades**:
+
 - Presentar interfaces de usuario
 - Gestionar entrada del usuario
 - Proporcionar endpoints APIs
@@ -94,69 +114,98 @@ Subdividida en:
 ## 3. Flujo de Comunicación Entre Capas
 
 El flujo de comunicación sigue el principio de dependencia hacia adentro:
+
 1. La capa de Presentación depende de la capa de Aplicación.
 2. La capa de Aplicación depende de la capa de Dominio.
-3. La capa de Datos implementa interfaces definidas en el Dominio.
-4. La capa de Infraestructura proporciona implementaciones técnicas.
+3. La capa de Datos implementa interfaces definidas en el Dominio y se comunica con Firebase.
+4. La capa de Infraestructura proporciona implementaciones técnicas y configuración de Firebase.
 
 Reglas de comunicación:
+
 - Las capas externas pueden conocer las capas internas, pero no al revés.
 - La capa de Dominio no depende de ninguna otra capa.
 - La comunicación entre capas se realiza a través de interfaces bien definidas.
+- Solo la capa de Datos conoce los detalles de Firebase, el resto de capas es agnóstico a la tecnología de persistencia.
 
 ## 4. Componentes Principales en Cada Capa
 
 ### 4.1. Capa de Dominio
 
 #### Entidades (Models)
+
 Clases que representan objetos del dominio con identidad y ciclo de vida.
+
 - Ubicación: `src/Domain/Odoonto.Domain/Models/`
 - Ejemplos: Category, Product, Customer
 
 #### Interfaces de Repositorios
+
 Definen métodos para acceder y persistir entidades.
+
 - Ubicación: `src/Domain/Odoonto.Domain/Repositories/`
 - Ejemplos: ICategoryRepository, IProductRepository
 
 ### 4.2. Capa de Aplicación
 
 #### Servicios de Aplicación
+
 Implementan casos de uso específicos.
+
 - Ubicación: `src/Application/Odoonto.Application/Services/`
 - Ejemplos: CategoryAppService, ProductAppService
 
 #### DTOs (Data Transfer Objects)
+
 Objetos para transferencia de datos entre capas.
+
 - Ubicación: `src/Application/Odoonto.Application/DTO/`
 - Ejemplos: CategoryCreateDto, CategoryReadDto, ProductQueryDto
 
 #### Interfaces de Servicios
+
 Definen contratos para servicios de aplicación.
+
 - Ubicación: `src/Application/Odoonto.Application/Interfaces/`
 - Ejemplos: ICategoryAppService, IProductAppService
 
 ### 4.3. Capa de Datos
 
 #### Implementaciones de Repositorios
-Implementan interfaces de repositorio definidas en el dominio.
+
+Implementan interfaces de repositorio definidas en el dominio utilizando Firebase.
+
 - Ubicación: `src/Data/Odoonto.Data/Repositories/`
 - Ejemplos: CategoryRepository, ProductRepository
 
-#### Contextos
-Definen la configuración de la base de datos.
-- Ubicación: `src/Data/Odoonto.Data.Contexts/Contexts/`
+#### FirestoreContext
+
+Proporciona acceso a Firestore y métodos para manipular colecciones y documentos.
+
+- Ubicación: `src/Data/Odoonto.Data.Core/Contexts/`
+- Ejemplos: FirestoreContext
 
 ### 4.4. Capa de Infraestructura
 
 #### Inyección de Dependencias
+
 Configura la resolución de dependencias.
+
 - Ubicación: `src/Infraestructure/Odoonto.Infraestructure.InversionOfControl/Inyectors/`
-- Ejemplos: ApplicationInyector, DataInyector, DomainInyector
+- Ejemplos: ApplicationInyector, DataInyector, DomainInyector, FirebaseInyector
+
+#### Configuración de Firebase
+
+Gestiona la inicialización y configuración de Firebase.
+
+- Ubicación: `src/Infrastructure/Odoonto.Infrastructure.Configuration/Firebase/`
+- Ejemplos: FirebaseConfiguration
 
 ### 4.5. Capa de Presentación
 
 #### Controladores
+
 Exponen endpoints API.
+
 - Ubicación: `src/Presentation/Odoonto.UI.Server/Controllers/`
 - Ejemplos: CategoriesController, ProductsController
 
@@ -169,19 +218,21 @@ Exponen endpoints API.
 5. **DTOs**: Usar DTOs para transferencia de datos entre capas.
 6. **Servicios de aplicación**: Implementar casos de uso en servicios de aplicación.
 7. **Inyección de dependencias**: Configurar inyección de dependencias en la capa de infraestructura.
-8. **Repositorios**: Definir interfaces en el dominio, implementarlas en la capa de datos.
+8. **Repositorios**: Definir interfaces en el dominio, implementarlas en la capa de datos utilizando Firebase.
 9. **Controladores**: Mantener controladores ligeros, delegando lógica a servicios de aplicación.
 10. **Mapeo**: Utilizar AutoMapper para mapear entre entidades y DTOs.
+11. **Firebase**: Configurar correctamente las credenciales en appsettings.json y seguir el patrón de inyección para FirestoreContext.
 
-
+---
 
 ---
 
----
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
+
 ---
+
 # Flujos de Comunicación en la Arquitectura DDD
 
 ## 1. Principio de Dependencia Hacia el Núcleo
@@ -194,7 +245,7 @@ La arquitectura Domain-Driven Design (DDD) implementada en este proyecto sigue e
 
 ```
 Presentación → Aplicación → Dominio ← Datos
-                      ↘       ↑     ↗ 
+                      ↘       ↑     ↗
                        Infraestructura
 ```
 
@@ -208,6 +259,7 @@ Presentación → Aplicación → Dominio ← Datos
 4. El controlador llama al servicio de aplicación correspondiente.
 
 Ejemplo (CategoriesController):
+
 ```csharp
 [HttpPost]
 public async Task<ActionResult> Create([FromBody] CategoryCreateDto data)
@@ -226,6 +278,7 @@ public async Task<ActionResult> Create([FromBody] CategoryCreateDto data)
 5. El servicio utiliza repositorios para persistir los cambios.
 
 Ejemplo (CategoryAppService):
+
 ```csharp
 public Task Create(CategoryCreateDto data)
 {
@@ -246,6 +299,7 @@ public Task Create(CategoryCreateDto data)
 3. La entidad modifica su estado interno basado en el comportamiento invocado.
 
 Ejemplo (Category.cs):
+
 ```csharp
 public void SetName(string name)
 {
@@ -266,6 +320,7 @@ public void SetName(string name)
 3. La implementación concreta está en la capa de datos.
 
 Ejemplo (ICategoryRepository):
+
 ```csharp
 public interface ICategoryRepository : IRepository<Category>
 {
@@ -280,6 +335,7 @@ public interface ICategoryRepository : IRepository<Category>
 3. Gestiona el mapeo entre entidades de dominio y esquema de base de datos.
 
 Ejemplo (CategoryRepository):
+
 ```csharp
 public override Task<Category> GetById(Guid id)
 {
@@ -297,10 +353,11 @@ public override Task<Category> GetById(Guid id)
 4. El controlador recibe los DTOs y los devuelve como respuesta HTTP.
 
 Ejemplo (CategoryAppService - GetById):
+
 ```csharp
 public async Task<CategoryReadDto> GetById(Guid CategoryId)
 {
-    Category category = await _categoryRepository.GetByIdOrThrow(CategoryId, query => 
+    Category category = await _categoryRepository.GetByIdOrThrow(CategoryId, query =>
         query.Include(c => c.Flows)
              .ThenInclude(f => f.Nodes));
 
@@ -315,6 +372,7 @@ public async Task<CategoryReadDto> GetById(Guid CategoryId)
 Las entidades de dominio pueden relacionarse entre sí, manteniendo la consistencia del modelo:
 
 Ejemplo (Category - AddFlow):
+
 ```csharp
 public void AddFlow(Flow flow)
 {
@@ -349,10 +407,11 @@ La inyección de dependencias se configura en la capa de infraestructura, permit
 3. Facilitar pruebas unitarias mediante mocks.
 
 Ejemplo (ApplicationInyector):
+
 ```csharp
 public static void Inyect(IServiceCollection services)
 {
-    services.AddScoped<ICategoryRepository, CategoryRepository>(); 
+    services.AddScoped<ICategoryRepository, CategoryRepository>();
     services.AddScoped<ICategoryAppService, CategoryAppService>();
     // Más registros...
 }
@@ -376,6 +435,7 @@ Las excepciones fluyen desde la capa de dominio hacia arriba:
 4. Los controladores pueden manejar excepciones específicas para devolver códigos HTTP apropiados.
 
 Ejemplo de jerarquía de excepciones:
+
 - InvalidValueException (dominio)
 - WrongOperationException (dominio)
 - DuplicatedValueException (dominio)
@@ -383,14 +443,17 @@ Ejemplo de jerarquía de excepciones:
 ## 7. Validaciones en Cada Capa
 
 ### 7.1. Capa de Presentación (API)
+
 - Validación de formato (requerido, tipo de datos, etc.)
 - Validación básica de modelo ([Required], [MaxLength], etc.)
 
 ### 7.2. Capa de Aplicación
+
 - Validación de reglas de negocio complejas que involucran múltiples entidades
 - Orquestación de validaciones de dominio
 
 ### 7.3. Capa de Dominio
+
 - Validación de invariantes de entidad
 - Reglas de negocio fundamentales
 - Preservación de la consistencia del modelo
@@ -415,15 +478,16 @@ Ejemplo de jerarquía de excepciones:
 5. Configura la inyección de dependencias en la infraestructura.
 6. Finalmente, implementa controladores en la capa de presentación.
 
-
-
 ---
 
 ---
+
 description:
 globs:
 alwaysApply: false
+
 ---
+
 # Arquitectura Domain-Driven Design (DDD) Completa
 
 ## 1. Principios Fundamentales y Estructura
@@ -438,43 +502,49 @@ Domain-Driven Design (DDD) es un enfoque para el desarrollo de software que:
 - Organiza el código en capas con responsabilidades bien definidas
 
 La arquitectura sigue el principio de dependencia hacia el núcleo:
+
 - La capa de Dominio es el núcleo y no depende de ninguna otra capa
 - Cada capa externa solo puede depender de capas más internas
 - Las dependencias externas se abstraen mediante interfaces
 
 ```
 Presentación → Aplicación → Dominio ← Datos
-                      ↘       ↑     ↗ 
+                      ↘       ↑     ↗
                        Infraestructura
 ```
 
 ### 1.2. Estructura de Capas
 
 #### Capa de Dominio
+
 - Define entidades y agregados
 - Encapsula reglas de negocio en entidades
 - Define interfaces de repositorio
 - Establece contratos y validaciones
 
 #### Capa de Aplicación
+
 - Implementa casos de uso
 - Define DTOs para transferencia de datos
 - Coordina entre entidades de dominio
 - Implementa mapeo con AutoMapper
 
 #### Capa de Datos
+
 - Implementa repositorios definidos en dominio
 - Gestiona persistencia (Entity Framework o Firebase)
 - Configura mapeos ORM
 - Optimiza queries y cache
 
 #### Capa de Infraestructura
+
 - Configura inyección de dependencias
 - Gestiona autenticación y logging
 - Proporciona servicios técnicos
 - Maneja excepciones globales
 
 #### Capa de Presentación
+
 - Expone endpoints API
 - Maneja validaciones básicas de entrada
 - Devuelve respuestas HTTP adecuadas
@@ -576,7 +646,7 @@ public override Task<Category> GetById(Guid id)
 ```csharp
 public async Task<CategoryReadDto> GetById(Guid CategoryId)
 {
-    Category category = await _categoryRepository.GetByIdOrThrow(CategoryId, query => 
+    Category category = await _categoryRepository.GetByIdOrThrow(CategoryId, query =>
         query.Include(c => c.Flows)
              .ThenInclude(f => f.Nodes));
 
@@ -672,7 +742,7 @@ public class CategoryRepository : ICategoryRepository
             .Select(doc => ConvertToEntity(doc))
             .ToList();
     }
-    
+
     // Más métodos...
 }
 ```
@@ -716,7 +786,7 @@ export function useCategoryPresenter() {
     setLoading(true);
     try {
       const data = await categoryService.getAll();
-      setCategories(data.map(dto => new Category(dto)));
+      setCategories(data.map((dto) => new Category(dto)));
     } catch (error) {
       // Manejo de errores
     } finally {
@@ -764,39 +834,39 @@ export class CategoryService {
 
 ### 5.1. Capa de Dominio
 
-| Archivo                                                                      | Descripción                                                 |
-| ---------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| [1_Domain_Entity.cs](../DDD_Ejemplos_Codigo/1_Domain_Entity.cs)             | Entidad de dominio con validaciones y encapsulamiento       |
-| [2_Domain_Repository_Interface.cs](../DDD_Ejemplos_Codigo/2_Domain_Repository_Interface.cs) | Interfaz de repositorio |
+| Archivo                                                                                     | Descripción                                           |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| [1_Domain_Entity.cs](../DDD_Ejemplos_Codigo/1_Domain_Entity.cs)                             | Entidad de dominio con validaciones y encapsulamiento |
+| [2_Domain_Repository_Interface.cs](../DDD_Ejemplos_Codigo/2_Domain_Repository_Interface.cs) | Interfaz de repositorio                               |
 
 ### 5.2. Capa de Aplicación
 
-| Archivo                                                                                          | Descripción                             |
-| ------------------------------------------------------------------------------------------------ | --------------------------------------- |
-| [5_Application_DTO.cs](../DDD_Ejemplos_Codigo/5_Application_DTO.cs)                             | DTOs para diferentes operaciones        |
-| [7_Application_Service_Implementation.cs](../DDD_Ejemplos_Codigo/7_Application_Service_Implementation.cs) | Servicios de aplicación |
+| Archivo                                                                                                   | Descripción                      |
+| --------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| [5_Application_DTO.cs](../DDD_Ejemplos_Codigo/5_Application_DTO.cs)                                       | DTOs para diferentes operaciones |
+| [7_Application_Service_Implementation.cs](../DDD_Ejemplos_Codigo/7_Application_Service_Implementation.cs) | Servicios de aplicación          |
 
 ### 5.3. Capa de Datos
 
-| Archivo                                                                                                        | Descripción                  |
-| -------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| [3_Data_Repository_Implementation.cs](../DDD_Ejemplos_Codigo/3_Data_Repository_Implementation.cs)             | Implementación de repositorio |
-| [15_Firebase_Repository_Implementation.cs](../DDD_Ejemplos_Codigo/15_Firebase_Repository_Implementation.cs)   | Repositorio Firebase |
+| Archivo                                                                                                     | Descripción                   |
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| [3_Data_Repository_Implementation.cs](../DDD_Ejemplos_Codigo/3_Data_Repository_Implementation.cs)           | Implementación de repositorio |
+| [15_Firebase_Repository_Implementation.cs](../DDD_Ejemplos_Codigo/15_Firebase_Repository_Implementation.cs) | Repositorio Firebase          |
 
 ### 5.4. Capa de Presentación
 
-| Archivo                                                                              | Descripción                 |
-| ------------------------------------------------------------------------------------ | --------------------------- |
+| Archivo                                                                             | Descripción                 |
+| ----------------------------------------------------------------------------------- | --------------------------- |
 | [9_Presentation_Controller.cs](../DDD_Ejemplos_Codigo/9_Presentation_Controller.cs) | Controlador API con Swagger |
 
 ### 5.5. Frontend React
 
-| Archivo | Descripción |
-| ------- | ----------- |
-| [18_React_Model.tsx](../DDD_Ejemplos_Codigo/18_React_Model.tsx) | Modelos e interfaces TypeScript |
-| [19_React_Service.tsx](../DDD_Ejemplos_Codigo/19_React_Service.tsx) | Servicios API para comunicación |
-| [20_React_Presenter.tsx](../DDD_Ejemplos_Codigo/20_React_Presenter.tsx) | Presentadores (hooks) |
-| [21_React_View.tsx](../DDD_Ejemplos_Codigo/21_React_View.tsx) | Componentes React (vistas) |
+| Archivo                                                                 | Descripción                     |
+| ----------------------------------------------------------------------- | ------------------------------- |
+| [18_React_Model.tsx](../DDD_Ejemplos_Codigo/18_React_Model.tsx)         | Modelos e interfaces TypeScript |
+| [19_React_Service.tsx](../DDD_Ejemplos_Codigo/19_React_Service.tsx)     | Servicios API para comunicación |
+| [20_React_Presenter.tsx](../DDD_Ejemplos_Codigo/20_React_Presenter.tsx) | Presentadores (hooks)           |
+| [21_React_View.tsx](../DDD_Ejemplos_Codigo/21_React_View.tsx)           | Componentes React (vistas)      |
 
 ## 6. Implementación Paso a Paso
 
@@ -809,23 +879,24 @@ export class CategoryService {
 7. Crear frontend React con arquitectura MVP
 8. Integrar frontend y backend
 
-## 7. Consideraciones 
+## 7. Consideraciones
 
 ### 7.1. Seguridad
+
 - Frontend nunca accede directamente a Firebase
 - Autenticación vía JWT en todas las comunicaciones API
 - Validación en ambos lados (frontend y backend)
 
 ### 7.2. Rendimiento
+
 - Paginación en consultas grandes
 - Prefetching de datos comunes
 - Lazy loading de componentes
 
 ### 7.3. Mantenibilidad
+
 - Código autodocumentado con nombres significativos
 - Separación clara de responsabilidades
 - Tests automatizados para cada capa
 
-
 ---
-

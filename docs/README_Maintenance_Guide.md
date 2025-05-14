@@ -7,6 +7,7 @@ Este documento explica cómo usar las reglas de Cursor para mantener actualizado
 Hemos implementado las siguientes reglas en Cursor para ayudar a mantener actualizados los README:
 
 1. **Reglas de verificación por capa**:
+
    - `DDD-check-domain-readme.json`: Verifica el README de la capa Domain
    - `DDD-check-application-readme.json`: Verifica el README de la capa Application
    - `DDD-check-data-readme.json`: Verifica el README de la capa Data
@@ -32,6 +33,8 @@ Cuando Cursor te avise de que debes actualizar un README, sigue estos pasos:
 1. Abre el README de la capa correspondiente (por ejemplo, `src/Domain/README.md`)
 2. Busca la sección "## Implementación Completada" y añade el nuevo componente con una breve descripción
 3. Busca la sección "## TODO" y elimina el componente de la lista de "Componentes pendientes por implementar" si estaba allí
+
+**Nota importante sobre Firebase**: Recuerda que el proyecto utiliza Firebase como sistema de persistencia de datos. Cuando actualices los README de las capas de Datos e Infraestructura, asegúrate de mencionar claramente la configuración y uso de Firebase donde corresponda.
 
 ### Usando plantillas
 
@@ -69,9 +72,11 @@ Cada README debe mantener esta estructura:
 ## Implementación Completada
 
 ### Directrices implementadas:
+
 - [Lista de directrices implementadas]
 
 ### Componentes implementados:
+
 - [Componente 1] (Descripción breve)
   - [Detalle 1]
   - [Detalle 2]
@@ -82,6 +87,7 @@ Cada README debe mantener esta estructura:
 ## TODO
 
 ### Componentes pendientes por implementar:
+
 - [Componente pendiente 1] (Descripción breve)
   - [Subtarea 1]
   - [Subtarea 2]
@@ -90,6 +96,7 @@ Cada README debe mantener esta estructura:
   - [Subtarea 2]
 
 ### Consideraciones técnicas:
+
 - [Consideración 1]
 - [Consideración 2]
 ```
@@ -101,4 +108,4 @@ Manteniendo actualizados los README con esta metodología, conseguimos:
 1. Documentación siempre al día de los componentes implementados
 2. Visibilidad clara de lo que queda por implementar
 3. Guía para nuevos miembros del equipo sobre la estructura del proyecto
-4. Trazabilidad de la evolución del proyecto 
+4. Trazabilidad de la evolución del proyecto

@@ -22,8 +22,10 @@ namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddScoped<ILesionRepository, LesionRepository>();
+            services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 
             return services;
         }
     }
-} 
+}

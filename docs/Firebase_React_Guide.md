@@ -4,7 +4,7 @@
 
 # Arquitectura con API REST y Firebase en el Backend
 
-Este documento describe la arquitectura donde el frontend React se comunica con un backend .NET mediante una API REST, y es este backend quien interactúa con Firebase como sustituto de una base de datos relacional.
+Este documento describe la arquitectura donde el frontend React se comunica exclusivamente con un backend .NET mediante una API REST, y es este backend quien interactúa con Firebase como sistema de persistencia de datos, reemplazando a una base de datos relacional tradicional.
 
 ## 1. Visión General de la Arquitectura
 
@@ -20,8 +20,8 @@ La arquitectura sigue un diseño Domain-Driven Design (DDD) puro:
 │    TypeScript)      ├───────┼─► tion      ├──► tion      ├──►           │       │       │               │
 │                     │  REST │ │ Layer     │  │ Layer     │  │  Layer    │       │       │    Firebase   │
 │                     │       │ │ (API)     │  │           │  │           │       │       │    Firestore  │
-│                     │       │ │           │  │           │  │           │       │       │               │
-│                     │       │ └─────┬─────┘  └─────┬─────┘  └─────┬─────┘       │       │               │
+│                     │       │ │           │  │           │  │           │       │       │  (Persistencia│
+│                     │       │ └─────┬─────┘  └─────┬─────┘  └─────┬─────┘       │       │    de datos)  │
 │                     │       │       │              │              │             │       │               │
 │                     │       │       │              │              │             │       │               │
 │                     │       │       └──────────────┼──────────────┘             │       │               │
@@ -35,6 +35,12 @@ La arquitectura sigue un diseño Domain-Driven Design (DDD) puro:
 │                     │       │                                                   │       │               │
 └─────────────────────┘       └───────────────────────────────────────────────────┘       └───────────────┘
 ```
+
+**IMPORTANTE:**
+
+- El frontend NUNCA se comunica directamente con Firebase
+- La API REST sigue siendo necesaria como punto de entrada para todas las operaciones
+- Firebase solo reemplaza la capa de persistencia, no cambia la arquitectura general
 
 ## 2. Componentes de la Arquitectura
 
@@ -261,7 +267,6 @@ public class CategoryRepository : ICategoryRepository
 4. **Mapeo de datos**: Crear mappers bidireccionales entre documentos Firestore y entidades de dominio.
 
 Esta arquitectura mantiene los principios de DDD mientras reemplaza solo la capa de datos por Firebase, dejando el resto del flujo de datos intacto.
-
 
 ---
 
@@ -611,7 +616,6 @@ function MyComponent() {
 - Estrategias de optimización de rendimiento (code splitting, lazy loading).
 - Monitoreo y analítica.
 
-
 ---
 
 # Resumen de Adaptaciones para Proyecto DDD con Firebase y Frontend Separado
@@ -795,6 +799,4 @@ Los ejemplos de código proporcionados en esta carpeta muestran:
 
 Estos ejemplos proporcionan una base sólida para implementar la arquitectura propuesta adaptada a Firebase en el backend y con un frontend React que se comunica a través de la API REST.
 
-
 ---
-
