@@ -1,0 +1,20 @@
+> 2025-04-11 15:35:56.042 +02:00 [Information] Starting Web Host
+> 2025-04-11 15:35:57.515 +02:00 [Information] User profile is available. Using '"C:\Users\jborras\AppData\Local\ASP.NET\DataProtection-Keys"' as key repository and Windows DPAPI to encrypt keys at rest.
+> 2025-04-11 15:35:57.835 +02:00 [Warning] Overriding address(es) '"https://localhost:6001, http://localhost:6000"'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+> 2025-04-11 15:35:57.881 +02:00 [Information] Now listening on: "http://localhost:6000"
+> 2025-04-11 15:35:57.883 +02:00 [Information] Now listening on: "https://localhost:6001"
+> 2025-04-11 15:35:57.885 +02:00 [Information] Application started. Press Ctrl+C to shut down.
+> 2025-04-11 15:35:57.886 +02:00 [Information] Hosting environment: "Development"
+> 2025-04-11 15:35:57.887 +02:00 [Information] Content root path: "C:\Repos\WF.Mimetic - v1\src\Presentation\WF.Mimetic.UI.Server"
+> 2025-04-11 15:36:00.207 +02:00 [Information] Request starting "HTTP/1.1" "GET" "https"://"localhost""""/_framework/debug/ws-proxy""?browser=ws%3A%2F%2F127.0.0.1%3A56352%2Fdevtools%2Fbrowser%2F90064405-c90a-40af-b9fd-d798b065de04" - null null
+> 2025-04-11 15:36:00.678 +02:00 [Information] Request finished "HTTP/1.1" "GET" "https"://"localhost""""/_framework/debug/ws-proxy""?browser=ws%3A%2F%2F127.0.0.1%3A56352%2Fdevtools%2Fbrowser%2F90064405-c90a-40af-b9fd-d798b065de04" - 302 0 null 481.9748ms
+> 2025-04-11 15:36:00.926 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.html""" - null null
+> 2025-04-11 15:36:01.109 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.html""" - 200 null "text/html;charset=utf-8" 182.9223ms
+> 2025-04-11 15:36:01.117 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/_framework/aspnetcore-browser-refresh.js""" - null null
+> 2025-04-11 15:36:01.118 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.js""" - null null
+> 2025-04-11 15:36:01.133 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/index.js""" - 200 null "application/javascript;charset=utf-8" 14.5561ms
+> 2025-04-11 15:36:01.134 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/_framework/aspnetcore-browser-refresh.js""" - 200 13776 "application/javascript; charset=utf-8" 17.0765ms
+> 2025-04-11 15:36:01.180 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/_vs/browserLink""" - null null
+> 2025-04-11 15:36:01.250 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/_vs/browserLink""" - 200 null "text/javascript; charset=UTF-8" 70.8087ms
+> 2025-04-11 15:36:01.330 +02:00 [Information] Request starting "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/v1/swagger.json""" - null null
+> 2025-04-11 15:36:01.464 +02:00 [Information] Request finished "HTTP/2" "GET" "https"://"localhost:6001""""/swagger/v1/swagger.json""" - 200 null "application/json;charset=utf-8" 134.9167ms
