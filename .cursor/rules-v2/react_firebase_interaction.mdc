@@ -1,0 +1,293 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+
+# Guía de Interacción React + Firebase
+
+## Descripción
+Este documento explica cómo interactúan el frontend React y Firebase a través del backend en nuestra arquitectura DDD.
+
+## Principios clave
+- El frontend NUNCA se comunica directamente con Firebase
+- Toda la comunicación pasa a través de la API REST del backend
+- La capa de datos encapsula completamente los detalles de Firebase
+
+## Arquitectura de comunicación
+
+### Diagrama de flujo
+```
+[Componente React] → [Presentador React] → [Servicio API React] → HTTP → [Controlador API .NET] → [Servicio de Aplicación] → [Repositorio] → [Firebase Context] → [Firestore]
+```
+
+### Ejemplos de interacción
+
+#### 1. Obtener lista de pacientes
+
+**En el frontend (React):**
+```typescript
+// Vista (React Component)
+function PatientList() {
+  const { patients, loading, error, loadPatients } = usePatientPresenter();
+  
+  useEffect(() => {
+    loadPatients();
+  }, []);
+  
+  return (
+    <div>
+      {loading ? <Spinner /> : (
+        <table>
+          {patients.map(patient => (
+            <tr key={patient.id}>
+              <td>{patient.fullName.toString()}</td>
+              <td>{patient.dateOfBirth}</td>
+            </tr>
+          ))}
+        </table>
+      )}
+    </div>
+  );
+}
+
+// Presentador (Hook personalizado)
+function usePatientPresenter() {
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
+  const patientService = new PatientService();
+  
+  const loadPatients = async () => {
+    setLoading(true);
+    try {
+      const data = await patientService.getAll();
+      setPatients(data.map(p => new Patient(p)));
+    } catch (err) {
+      setError("Error al cargar pacientes");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return { patients, loading, error, loadPatients };
+}
+
+// Servicio API
+class PatientService {
+  private readonly baseUrl = "/api/patients";
+  
+  async getAll() {
+    const response = await axios.get(this.baseUrl);
+    return response.data;
+  }
+}
+```
+
+**En el backend (.NET):**
+```csharp
+// Controller
+[ApiController]
+[Route("api/[controller]")]
+public class PatientsController : ControllerBase
+{
+    private readonly IPatientAppService _patientService;
+    
+    public PatientsController(IPatientAppService patientService)
+    {
+        _patientService = patientService;
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
+    {
+        var patients = await _patientService.GetAll();
+        return Ok(patients);
+    }
+}
+
+// Application Service
+public class PatientAppService : IPatientAppService
+{
+    private readonly IPatientRepository _patientRepository;
+    private readonly IMapper _mapper;
+    
+    public PatientAppService(IPatientRepository patientRepository, IMapper mapper)
+    {
+        _patientRepository = patientRepository;
+        _mapper = mapper;
+    }
+    
+    public async Task<IEnumerable<PatientDto>> GetAll()
+    {
+        var patients = await _patientRepository.GetAll();
+        return _mapper.Map<IEnumerable<PatientDto>>(patients);
+    }
+}
+
+// Repository (Firebase)
+public class PatientRepository : IPatientRepository
+{
+    private readonly FirebaseDbContext _firebaseContext;
+    private readonly IPatientMapper _mapper;
+    private readonly string _collectionName = "patients";
+    
+    public PatientRepository(FirebaseDbContext firebaseContext, IPatientMapper mapper)
+    {
+        _firebaseContext = firebaseContext;
+        _mapper = mapper;
+        
+        // Configurar colección con converters
+        _firebaseContext.ConfigureCollection<Patient, PatientDocument>(
+            _collectionName,
+            entity => _mapper.ToDocument(entity),
+            document => _mapper.ToDomainEntity(document)
+        );
+    }
+    
+    public async Task<IEnumerable<Patient>> GetAll()
+    {
+        var snapshot = await _firebaseContext.GetCollection<Patient>()
+            .GetSnapshotAsync();
+            
+        return snapshot.Documents
+            .Select(doc => doc.ConvertTo<Patient>())
+            .ToList();
+    }
+}
+```
+
+#### 2. Crear un nuevo paciente
+
+**En el frontend (React):**
+```typescript
+// Vista (Componente React)
+function CreatePatientForm() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const { createPatient, loading, error } = usePatientPresenter();
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await createPatient({ 
+        firstName, 
+        lastName,
+        dateOfBirth: selectedDate
+      });
+      // Redireccionar o mostrar mensaje de éxito
+    } catch (err) {
+      // Mostrar error
+    }
+  };
+  
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Campos del formulario */}
+      <button type="submit" disabled={loading}>
+        Crear Paciente
+      </button>
+    </form>
+  );
+}
+
+// Presentador (continuación del anterior)
+function usePatientPresenter() {
+  // ... código previo
+  
+  const createPatient = async (data) => {
+    setLoading(true);
+    try {
+      const patientId = await patientService.create(data);
+      return patientId;
+    } catch (err) {
+      setError("Error al crear paciente");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return { 
+    patients, loading, error, 
+    loadPatients, createPatient 
+  };
+}
+
+// Servicio API (continuación del anterior)
+class PatientService {
+  // ... código previo
+  
+  async create(patientData) {
+    const response = await axios.post(this.baseUrl, patientData);
+    return response.data;
+  }
+}
+```
+
+**En el backend (.NET):**
+```csharp
+// Controller (continuación del anterior)
+[HttpPost]
+public async Task<ActionResult<Guid>> Create([FromBody] PatientCreateDto dto)
+{
+    var id = await _patientService.Create(dto);
+    return Ok(id);
+}
+
+// Application Service (continuación del anterior)
+public async Task<Guid> Create(PatientCreateDto dto)
+{
+    // Crear valor FullName
+    var fullName = FullName.Create(dto.FirstName, dto.LastName);
+    
+    // Crear entidad Patient
+    var patient = Patient.Create(Guid.NewGuid());
+    patient.SetFullName(fullName);
+    patient.SetDateOfBirth(dto.DateOfBirth);
+    
+    // Guardar en repositorio
+    await _patientRepository.Create(patient);
+    
+    return patient.Id;
+}
+
+// Repository (continuación del anterior)
+public async Task Create(Patient entity)
+{
+    await _firebaseContext.GetCollection<Patient>()
+        .Document(entity.Id.ToString())
+        .SetAsync(entity);
+}
+```
+
+## Buenas prácticas
+
+### 1. Gestión del estado en React
+- Usar presentadores (custom hooks) para gestionar el estado y la comunicación con la API
+- Mantener el estado lo más local posible
+- Considerar React Query para gestión avanzada de estado de servidor
+
+### 2. Manejo de errores
+- Manejar errores HTTP en los servicios API
+- Propagar mensajes de error amigables a través de los presentadores
+- Mostrar errores específicos en la UI
+
+### 3. Carga de datos y optimizaciones
+- Implementar estados de carga
+- Usar paginación para grandes conjuntos de datos
+- Implementar estrategias de caché en el frontend
+
+### 4. Seguridad
+- Todas las peticiones deben incluir tokens de autenticación
+- Validar datos tanto en el frontend como en el backend
+- No exponer detalles de implementación de Firebase
+
+## Referencias
+- Ver ejemplos completos en:
+  - `18_React_Model.tsx`
+  - `19_React_Service.tsx`
+  - `20_React_Presenter.tsx`
+  - `21_React_View.tsx`

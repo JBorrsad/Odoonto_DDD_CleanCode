@@ -1,0 +1,30 @@
+---
+description: Guidelines for the Doctor Domain Entity.
+globs: 
+autoAttach: true
+- "**/Domain/**/Models/**/Doctor*.cs"
+---
+
+# Doctor Entity Guidelines
+
+## Description
+Dental professional with identity and schedule availability.
+
+## When to apply
+Whenever you create or edit the `Doctor` entity class or any of its related files.
+
+## Responsibilities
+- Model the dental professional with identity and schedule availability.
+- Preserve invariants defined in `domain_entities_overview.mdc`
+- Encapsulate state; expose behavior via methods
+- Validate inputs and throw domain‑specific exceptions
+- Use `Entity` base class for identity and audit fields
+
+## Best Practices
+- Keep constructor private and use static `Create` factory
+- Provide methods such as `SetName`, `Add...`, `Remove...` with validation
+- Avoid leaking infrastructure concerns into the domain
+- Cover business rules with unit tests
+
+## Code Example
+Refer to `DDD_Ejemplos_Codigo/1_Domain_Entity.cs` as a template and adapt for `Doctor`.

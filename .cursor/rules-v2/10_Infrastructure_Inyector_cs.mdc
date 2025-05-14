@@ -1,0 +1,83 @@
+---
+description: Template and guidelines for 10_Infrastructure_Inyector.cs.
+autoAttach: true
+filePattern: "regex:src/.*/Inyector.*\.cs$"
+---
+
+# 10_Infrastructure_Inyector.cs Guideline
+
+## Purpose
+This rule automatically attaches when you are working on files that match **src/.*/Inyector.*\.cs$**.  
+It embeds the full reference implementation so you can copy‑paste or use it as a template.
+
+## Template code
+```csharp
+// EJEMPLO DE INYECTOR DE DEPENDENCIAS (Infrastructure Layer)
+// Ruta: src/Infraestructure/TuProyecto.Infraestructure.InversionOfControl/Inyectors/ApplicationInyector.cs
+
+namespace TuProyecto.Infraestructure.InversionOfControl.Inyectors;
+
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using TuProyecto.Application.AutoMapper.Categories;
+using TuProyecto.Application.AutoMapper.Flows;
+using TuProyecto.Application.AutoMapper.Nodes;
+using TuProyecto.Application.AutoMapper.Parameters;
+using TuProyecto.Application.Interfaces.Categories;
+using TuProyecto.Application.Interfaces.Flows;
+using TuProyecto.Application.Interfaces.Nodes;
+using TuProyecto.Application.Services.Categories;
+using TuProyecto.Application.Services.Flows;
+using TuProyecto.Application.Services.Nodes;
+using TuProyecto.Data.Repositories.Categories;
+using TuProyecto.Data.Repositories.Flows;
+using TuProyecto.Data.Repositories.Nodes;
+using TuProyecto.Domain.Repositories.Categories;
+using TuProyecto.Domain.Repositories.Flows;
+using TuProyecto.Domain.Repositories.Nodes;
+
+/// <summary>
+/// Características clave de un inyector de dependencias en DDD:
+/// 1. Registra servicios en el contenedor de IoC
+/// 2. Mapea interfaces a implementaciones concretas
+/// 3. Define el ciclo de vida de los servicios (Scoped, Singleton, Transient)
+/// 4. Organizado por capas o funcionalidades
+/// 5. Punto central para la configuración de dependencias
+/// </summary>
+public static class ApplicationInyector
+{
+    public static void Inyect(IServiceCollection services)
+    {
+        // Registro de repositorios
+        // Las interfaces están en Domain, las implementaciones en Data
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IFlowRepository, FlowRepository>();
+        services.AddScoped<INodeRepository, NodeRepository>();
+
+        // Registro de servicios de aplicación
+        // Las interfaces y las implementaciones están en Application
+        services.AddScoped<ICategoryAppService, CategoryAppService>();
+        services.AddScoped<IFlowAppService, FlowAppService>();
+        services.AddScoped<INodeAppService, NodeAppService>();
+
+        // Registro de perfiles de AutoMapper
+        RegisterAutoMapperProfiles(services);
+    }
+
+    private static void RegisterAutoMapperProfiles(IServiceCollection services)
+    {
+        // Recopilación de todos los perfiles de AutoMapper
+        List<Type> profiles = new List<Type>
+        {
+            typeof(CategoryMappingProfile),
+            typeof(FlowMappingProfile),
+            typeof(NodeMappingProfile),
+            typeof(ParameterMappingProfile)
+        };
+
+        // Registro de perfiles en el contenedor
+        services.AddAutoMapper(profiles.ToArray());
+    }
+}
+```

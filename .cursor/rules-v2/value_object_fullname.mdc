@@ -1,0 +1,129 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+
+# FullName Value Object Guidelines
+
+## Description
+A value object that represents a person's full name with first and last name components.
+
+## When to apply
+When implementing the `FullName` value object or any related code.
+
+## Responsibilities
+- Represent a person's complete name
+- Enforce invariants for names (non-empty, valid characters, etc.)
+- Provide immutability (value objects should be immutable)
+- Include equality comparison based on value, not identity
+
+## Code Example
+```csharp
+// VALUE OBJECT EXAMPLE: FullName
+// Ruta: src/Domain/Odoonto.Domain/Models/ValueObjects/FullName.cs
+
+namespace Odoonto.Domain.Models.ValueObjects;
+
+using System;
+using Odoonto.Domain.Core.Models.Exceptions;
+
+/// <summary>
+/// Value Object que representa un nombre completo (nombres y apellidos)
+/// Características clave:
+/// 1. Inmutabilidad - sin setters
+/// 2. Validación en el constructor
+/// 3. Implementa Equals/GetHashCode basados en el valor
+/// 4. Métodos ToString() para representación textual
+/// 5. Factory methods para creación con validación
+/// </summary>
+public sealed class FullName : IEquatable<FullName>
+{
+    // Propiedades inmutables (solo getters)
+    public string FirstName { get; }
+    public string LastName { get; }
+
+    // Constructor privado - solo accesible a través del método factory
+    private FullName(string firstName, string lastName)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+    }
+
+    // Método Factory con validación
+    public static FullName Create(string firstName, string lastName)
+    {
+        // Validaciones
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            throw new InvalidValueException("First name cannot be empty.");
+        }
+        
+        if (string.IsNullOrWhiteSpace(lastName))
+        {
+            throw new InvalidValueException("Last name cannot be empty.");
+        }
+        
+        // Validación adicional de caracteres si fuera necesario
+        if (ContainsInvalidCharacters(firstName) || ContainsInvalidCharacters(lastName))
+        {
+            throw new InvalidValueException("Name contains invalid characters.");
+        }
+
+        // Crear nuevo objeto
+        return new FullName(firstName.Trim(), lastName.Trim());
+    }
+
+    // Método de validación de caracteres
+    private static bool ContainsInvalidCharacters(string name)
+    {
+        // Implementación: verificar caracteres no permitidos
+        // Por ejemplo, solo permitir letras, espacios, guiones, apóstrofes
+        return System.Text.RegularExpressions.Regex.IsMatch(name, @"[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s\-']");
+    }
+
+    // Representación como string
+    public override string ToString()
+    {
+        return $"{FirstName} {LastName}";
+    }
+
+    // Implementación de IEquatable<T>
+    public bool Equals(FullName other)
+    {
+        if (other is null)
+            return false;
+
+        return StringComparer.OrdinalIgnoreCase.Equals(FirstName, other.FirstName) &&
+               StringComparer.OrdinalIgnoreCase.Equals(LastName, other.LastName);
+    }
+
+    // Sobreescritura de Object.Equals
+    public override bool Equals(object obj)
+    {
+        return obj is FullName other && Equals(other);
+    }
+
+    // Sobreescritura de Object.GetHashCode
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(
+            StringComparer.OrdinalIgnoreCase.GetHashCode(FirstName),
+            StringComparer.OrdinalIgnoreCase.GetHashCode(LastName));
+    }
+
+    // Operadores de igualdad
+    public static bool operator ==(FullName left, FullName right)
+    {
+        if (left is null)
+            return right is null;
+        
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(FullName left, FullName right)
+    {
+        return !(left == right);
+    }
+}

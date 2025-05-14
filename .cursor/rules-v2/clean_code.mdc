@@ -1,0 +1,134 @@
+---
+description: Clean code guidelines for maintainable and readable code.
+alwaysApply: true
+globs: 
+- "**/*.cs"
+- "**/*.ts"
+- "**/*.tsx"
+---
+
+> Versión 1.0 · 2025-05-13
+
+---
+
+description:
+globs:
+alwaysApply: true
+
+---
+
+---
+
+description: Guidelines for writing clean, maintainable, and human-readable code. Apply these rules when writing or reviewing code to ensure consistency and quality.
+globs:
+
+---
+
+# Clean Code Guidelines
+
+## Single Responsibility Principle (SRP)
+
+- One reason to change: Every class or module should have one, and only one, responsibility.
+- Keep functions and classes small; if you can describe it with an and or or, split it.
+- Group related behaviors together—separate persistence, presentation, and business logic.
+- Encapsulate stray utility logic inside well‑named, cohesive helpers.
+
+## Open/Closed Principle (OCP)
+
+- Open for extension, closed for modification: Add new functionality via inheritance, composition, or strategy—not by editing existing code.
+- Depend on abstractions (interfaces or abstract classes) so new implementations slot in seamlessly.
+- Use feature toggles, plug‑in architectures, or policy objects to extend behavior safely.
+- Guard against breaking changes with tests that lock down existing behavior.
+
+## Liskov Substitution Principle (LSP)
+
+- Subtypes must be substitutable for their base types: Derived classes should honor the contracts of their parents.
+- Never strengthen preconditions or weaken postconditions in overrides.
+- Avoid throwing broader or new exceptions that break callersʼ expectations.
+- Favor composition over inheritance when behavior diverges.
+
+## Interface Segregation Principle (ISP)
+
+- Many client‑specific interfaces are better than one fat interface.
+- Split bloated interfaces into role‑based ones so implementers depend only on what they use.
+- Prefer small, focused abstractions with clear names (e.g., IReadable, IWritable).
+- Compose granular interfaces to build richer contracts without coupling clients to unused members.
+
+## Dependency Inversion Principle (DIP)
+
+- Depend on abstractions, not concretions.
+- High‑level modules should not hard‑code low‑level details; inject them via constructors or factories.
+- Invert control with dependency injection containers or simple factory methods.
+- Expose stable interfaces at architectural boundaries (application ↔ infrastructure).
+- Keep domain logic agnostic of frameworks; wire them together only at the composition root.
+
+## Constants Over Magic Numbers
+
+- Replace hard-coded values with named constants
+- Use descriptive constant names that explain the value's purpose
+- Keep constants at the top of the file or in a dedicated constants file
+
+## Meaningful Names
+
+- Variables, functions, and classes should reveal their purpose
+- Names should explain why something exists and how it's used
+- Avoid abbreviations unless they're universally understood
+- Use the names with the same structure given in the examples folders
+
+## Smart Comments
+
+- Don't comment on what the code does - make the code self-documenting
+- Use comments to explain why something is done a certain way
+- Document APIs, complex algorithms, and non-obvious side effects
+
+## Single Responsibility
+
+- Each function should do exactly one thing
+- Functions should be small and focused
+- If a function needs a comment to explain what it does, it should be split
+
+## DRY (Don't Repeat Yourself)
+
+- Extract repeated code into reusable functions
+- Share common logic through proper abstraction
+- Maintain single sources of truth
+
+## Clean Structure
+
+- Keep related code together
+- Organize code in a logical hierarchy
+- Use consistent file and folder naming conventions
+
+## Encapsulation
+
+- Hide implementation details
+- Expose clear interfaces
+- Move nested conditionals into well-named functions
+
+## Code Quality Maintenance
+
+- Refactor continuously
+- Fix technical debt early
+- Leave code cleaner than you found it
+
+## Version Control
+
+- Write clear commit messages
+- Make small, focused commits
+- Use meaningful branch names
+
+## Firebase Best Practices
+
+- Abstraer el acceso a Firebase detrás de interfaces de repositorio
+- No exponer detalles de Firebase fuera de la capa de Datos
+- Manejar la conexión y autenticación de Firebase de forma centralizada
+- Usar transacciones para operaciones que afecten a múltiples documentos
+- Implementar mapeos claros entre documentos de Firestore y entidades de dominio
+- Cachear resultados frecuentes para reducir lecturas
+- Encapsular la estructura de colecciones y documentos
+
+## TODO
+
+En cada archivo readme de cada capa, tienes que poner en el archivo readme.md los archivos o las entidades que faltan por hacer.
+tienes que basarte en el esquema de entidades que hay en los documentos para hacerlo. cuando hagas algo, borra del readme el todo correspondiente.
+

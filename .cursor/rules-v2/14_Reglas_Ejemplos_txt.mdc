@@ -1,0 +1,187 @@
+---
+description: Template and guidelines for 14_Reglas_Ejemplos.txt.
+autoAttach: true
+filePattern: "regex:.*Reglas_Ejemplos\.txt$"
+---
+
+# 14_Reglas_Ejemplos.txt Guideline
+
+## Purpose
+This rule automatically attaches when you are working on files that match **.*Reglas_Ejemplos\.txt$**.  
+It embeds the full reference implementation so you can copy‑paste or use it as a template.
+
+## Template code
+```
+# Reglas para Cursor Basadas en Ejemplos de Código
+
+A continuación se presentan ejemplos de reglas para Cursor que utilizan directamente los ejemplos de código proporcionados en esta carpeta.
+
+## 1. Regla para Crear Entidades de Dominio
+
+```json
+{
+  "name": "DDD-entidad-dominio-ejemplo",
+  "description": "Crear una entidad de dominio siguiendo el patrón de Category.cs",
+  "prompt": "Quiero crear una entidad de dominio",
+  "filePattern": "src/Domain/${PROYECTO}.Domain/Models/**/*.cs",
+  "example": "src/DDD_Ejemplos_Codigo/1_Domain_Entity.cs",
+  "variables": [
+    {
+      "name": "NOMBRE",
+      "description": "Nombre de la entidad",
+      "defaultValue": "MiEntidad"
+    },
+    {
+      "name": "CARPETA",
+      "description": "Subcarpeta dentro de Models",
+      "defaultValue": "MiCarpeta"
+    }
+  ]
+}
+```
+
+## 2. Regla para Crear Interfaces de Repositorio
+
+```json
+{
+  "name": "DDD-interfaz-repositorio-ejemplo",
+  "description": "Crear una interfaz de repositorio siguiendo el patrón de ICategoryRepository.cs",
+  "prompt": "Quiero crear una interfaz de repositorio para una entidad",
+  "filePattern": "src/Domain/${PROYECTO}.Domain/Repositories/**/*.cs",
+  "example": "src/DDD_Ejemplos_Codigo/2_Domain_Repository_Interface.cs",
+  "variables": [
+    {
+      "name": "ENTIDAD",
+      "description": "Nombre de la entidad",
+      "defaultValue": "MiEntidad"
+    },
+    {
+      "name": "CARPETA",
+      "description": "Subcarpeta dentro de Repositories",
+      "defaultValue": "MiCarpeta"
+    }
+  ]
+}
+```
+
+## 3. Regla para Crear Implementaciones de Repositorio
+
+```json
+{
+  "name": "DDD-implementacion-repositorio-ejemplo",
+  "description": "Crear una implementación de repositorio siguiendo el patrón de CategoryRepository.cs",
+  "prompt": "Quiero crear una implementación de repositorio",
+  "filePattern": "src/Data/${PROYECTO}.Data/Repositories/**/*.cs",
+  "example": "src/DDD_Ejemplos_Codigo/3_Data_Repository_Implementation.cs",
+  "variables": [
+    {
+      "name": "ENTIDAD",
+      "description": "Nombre de la entidad",
+      "defaultValue": "MiEntidad"
+    },
+    {
+      "name": "CARPETA",
+      "description": "Subcarpeta dentro de Repositories",
+      "defaultValue": "MiCarpeta"
+    }
+  ]
+}
+```
+
+## 4. Regla para Crear Mapeos de Entity Framework
+
+```json
+{
+  "name": "DDD-entity-mapping-ejemplo",
+  "description": "Crear un mapeo EF Core siguiendo el patrón de CategoryMapping.cs",
+  "prompt": "Quiero crear un mapeo para Entity Framework",
+  "filePattern": "src/Data/${PROYECTO}.Data/Mappings/**/*.cs",
+  "example": "src/DDD_Ejemplos_Codigo/4_Data_Entity_Mapping.cs",
+  "variables": [
+    {
+      "name": "ENTIDAD",
+      "description": "Nombre de la entidad",
+      "defaultValue": "MiEntidad"
+    },
+    {
+      "name": "CARPETA",
+      "description": "Subcarpeta dentro de Mappings",
+      "defaultValue": "MiCarpeta"
+    },
+    {
+      "name": "TABLA",
+      "description": "Nombre de la tabla en la base de datos",
+      "defaultValue": "MiTabla"
+    }
+  ]
+}
+```
+
+## 5. Regla para Crear DTOs
+
+```json
+{
+  "name": "DDD-dto-ejemplo",
+  "description": "Crear un conjunto de DTOs siguiendo el patrón de los DTOs de Category",
+  "prompt": "Quiero crear DTOs para una entidad",
+  "filePattern": "src/Application/${PROYECTO}.Application/DTO/**/*.cs",
+  "example": "src/DDD_Ejemplos_Codigo/5_Application_DTO.cs",
+  "variables": [
+    {
+      "name": "ENTIDAD",
+      "description": "Nombre de la entidad",
+      "defaultValue": "MiEntidad"
+    },
+    {
+      "name": "CARPETA",
+      "description": "Subcarpeta dentro de DTO",
+      "defaultValue": "MiCarpeta"
+    }
+  ]
+}
+```
+
+## 6. Regla para Crear Interfaces de Servicio de Aplicación
+
+```json
+{
+  "name": "DDD-interfaz-servicio-ejemplo",
+  "description": "Crear una interfaz de servicio siguiendo el patrón de ICategoryAppService.cs",
+  "prompt": "Quiero crear una interfaz de servicio de aplicación",
+  "filePattern": "src/Application/${PROYECTO}.Application/Interfaces/**/*.cs",
+  "example": "src/DDD_Ejemplos_Codigo/6_Application_Service_Interface.cs",
+  "variables": [
+    {
+      "name": "ENTIDAD",
+      "description": "Nombre de la entidad",
+      "defaultValue": "MiEntidad"
+    },
+    {
+      "name": "CARPETA",
+      "description": "Subcarpeta dentro de Interfaces",
+      "defaultValue": "MiCarpeta"
+    }
+  ]
+}
+```
+
+## 7. Regla para Crear Implementaciones de Servicio de Aplicación
+
+```json
+{
+  "name": "DDD-implementacion-servicio-ejemplo",
+  "description": "Crear una implementación de servicio siguiendo el patrón de CategoryAppService.cs",
+  "prompt": "Quiero crear una implementación de servicio de aplicación",
+  "filePattern": "src/Application/${PROYECTO}.Application/Services/**/*.cs",
+  "example": "src/DDD_Ejemplos_Codigo/7_Application_Service_Implementation.cs",
+  "variables": [
+    {
+      "name": "ENTIDAD",
+      "description": "Nombre de la entidad",
+      "defaultValue": "MiEntidad"
+    },
+    {
+      "name": "CARPETA",
+      "description": "Subcarpeta dentro de Services",
+      "defaultValue": "Mi
+```

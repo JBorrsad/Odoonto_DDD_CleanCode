@@ -1,0 +1,28 @@
+---
+description: Guidelines for any Domain Entity class.
+globs: 
+autoAttach: true
+- "**/Domain/**/Models/**/*.cs"
+---
+
+# Domain Entity Guidelines
+
+## When to apply
+
+This rule activates whenever you create or modify files matching the glob patterns above.
+
+## Responsibilities
+
+- Inherit from base Entity.
+- Encapsulate state with private setters.
+- Enforce invariants and business rules inside methods.
+- Provide static factory methods for creation.
+- Avoid anemic models—include behavior.
+
+## Best Practices
+
+Follow the Clean Code and DDD principles documented in global rules. Keep the layer boundaries clear and respect dependency inversion.
+
+## Code Example
+
+See `DDD_Ejemplos_Codigo/1_Domain_Entity.cs` for a full reference implementation.

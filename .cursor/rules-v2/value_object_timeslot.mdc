@@ -1,0 +1,151 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+---
+
+# TimeSlot Value Object Guidelines
+
+## Description
+A value object that represents a period of time with a start and end time.
+
+## When to apply
+When implementing the `TimeSlot` value object or any code that deals with time periods.
+
+## Responsibilities
+- Represent a time period with start and end times
+- Enforce business rules (end time must be after start time)
+- Provide methods to check for overlaps with other time slots
+- Implement value equality (compare by value, not reference)
+
+## Code Example
+```csharp
+// VALUE OBJECT EXAMPLE: TimeSlot
+// Ruta: src/Domain/Odoonto.Domain/Models/ValueObjects/TimeSlot.cs
+
+namespace Odoonto.Domain.Models.ValueObjects;
+
+using System;
+using Odoonto.Domain.Core.Models.Exceptions;
+
+/// <summary>
+/// Value Object que representa un período de tiempo con hora de inicio y fin
+/// Características clave:
+/// 1. Inmutabilidad - sin setters
+/// 2. Validación en el constructor
+/// 3. Operaciones para verificar solapamientos
+/// 4. Implementa Equals/GetHashCode basados en el valor
+/// 5. Métodos Factory para creación con validación
+/// </summary>
+public sealed class TimeSlot : IEquatable<TimeSlot>
+{
+    // Propiedades inmutables (solo getters)
+    public TimeOnly StartTime { get; }
+    public TimeOnly EndTime { get; }
+    
+    // Propiedad calculada para la duración
+    public TimeSpan Duration => EndTime.ToTimeSpan() - StartTime.ToTimeSpan();
+
+    // Constructor privado - solo accesible a través del método factory
+    private TimeSlot(TimeOnly startTime, TimeOnly endTime)
+    {
+        StartTime = startTime;
+        EndTime = endTime;
+    }
+
+    // Método Factory con validación
+    public static TimeSlot Create(TimeOnly startTime, TimeOnly endTime)
+    {
+        // Validar que la hora de fin sea posterior a la de inicio
+        if (endTime <= startTime)
+        {
+            throw new InvalidValueException("End time must be after start time.");
+        }
+
+        return new TimeSlot(startTime, endTime);
+    }
+
+    // Método Factory alternativo con TimeSpan
+    public static TimeSlot Create(TimeOnly startTime, TimeSpan duration)
+    {
+        if (duration <= TimeSpan.Zero)
+        {
+            throw new InvalidValueException("Duration must be positive.");
+        }
+
+        TimeOnly endTime = startTime.Add(duration);
+        return new TimeSlot(startTime, endTime);
+    }
+
+    // Método Factory utilizando DateTime (convierte a TimeOnly)
+    public static TimeSlot Create(DateTime startDateTime, DateTime endDateTime)
+    {
+        return Create(
+            TimeOnly.FromDateTime(startDateTime),
+            TimeOnly.FromDateTime(endDateTime));
+    }
+
+    // Verificar si se solapa con otro TimeSlot
+    public bool OverlapsWith(TimeSlot other)
+    {
+        // Hay solapamiento si:
+        // - El inicio de este está antes del final del otro, Y
+        // - El final de este está después del inicio del otro
+        return StartTime < other.EndTime && EndTime > other.StartTime;
+    }
+
+    // Verificar si este TimeSlot contiene a otro completamente
+    public bool Contains(TimeSlot other)
+    {
+        return StartTime <= other.StartTime && EndTime >= other.EndTime;
+    }
+
+    // Verificar si un tiempo específico está dentro de este TimeSlot
+    public bool Contains(TimeOnly time)
+    {
+        return time >= StartTime && time < EndTime;
+    }
+
+    // Representación como string
+    public override string ToString()
+    {
+        return $"{StartTime:HH:mm} - {EndTime:HH:mm}";
+    }
+
+    // Implementación de IEquatable<T>
+    public bool Equals(TimeSlot other)
+    {
+        if (other is null)
+            return false;
+
+        return StartTime.Equals(other.StartTime) && 
+               EndTime.Equals(other.EndTime);
+    }
+
+    // Sobreescritura de Object.Equals
+    public override bool Equals(object obj)
+    {
+        return obj is TimeSlot other && Equals(other);
+    }
+
+    // Sobreescritura de Object.GetHashCode
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(StartTime, EndTime);
+    }
+
+    // Operadores de igualdad
+    public static bool operator ==(TimeSlot left, TimeSlot right)
+    {
+        if (left is null)
+            return right is null;
+
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(TimeSlot left, TimeSlot right)
+    {
+        return !(left == right);
+    }
+}
