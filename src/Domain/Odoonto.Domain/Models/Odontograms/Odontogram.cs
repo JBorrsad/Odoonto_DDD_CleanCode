@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Odoonto.Domain.Core.Abstractions;
 using Odoonto.Domain.Core.Models.Exceptions;
 
 namespace Odoonto.Domain.Models.Odontograms
@@ -8,16 +9,43 @@ namespace Odoonto.Domain.Models.Odontograms
     /// <summary>
     /// Representa el mapa dental completo del paciente y agrupa el historial individual de cada diente
     /// </summary>
-    public class Odontogram
+    public class Odontogram : Entity
     {
         private readonly Dictionary<int, ToothRecord> _toothRecords;
 
+        /// <summary>
+        /// Identificador del paciente al que pertenece este odontograma
+        /// </summary>
+        public Guid PatientId { get; private set; }
+
+        /// <summary>
+        /// Colección de registros dentales
+        /// </summary>
         public IReadOnlyCollection<ToothRecord> ToothRecords => _toothRecords.Values;
 
-        // Constructor
-        public Odontogram()
+        // Constructor privado para serialización
+        private Odontogram()
         {
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
             _toothRecords = new Dictionary<int, ToothRecord>();
+        }
+
+        // Constructor para crear un nuevo odontograma
+        public Odontogram(Guid id, Guid patientId)
+        {
+            Id = id;
+            PatientId = patientId;
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+            _toothRecords = new Dictionary<int, ToothRecord>();
+        }
+
+        // Método factory para crear un nuevo odontograma
+        public static Odontogram Create(Guid patientId)
+        {
+            return new Odontogram(Guid.NewGuid(), patientId);
         }
 
         // Método para añadir un registro dental
@@ -33,14 +61,15 @@ namespace Odoonto.Domain.Models.Odontograms
                 throw new DuplicatedValueException($"Ya existe un registro para el diente {toothNumber}.");
 
             _toothRecords.Add(toothNumber, toothRecord);
+            UpdatedAt = DateTime.UtcNow;
         }
 
         // Método para obtener un registro dental
-        public ToothRecord GetToothRecord(int toothNumber)
+        public ToothRecord? GetToothRecord(int toothNumber)
         {
             ValidateToothNumber(toothNumber);
 
-            if (_toothRecords.TryGetValue(toothNumber, out ToothRecord toothRecord))
+            if (_toothRecords.TryGetValue(toothNumber, out var toothRecord))
                 return toothRecord;
 
             return null;
@@ -59,6 +88,7 @@ namespace Odoonto.Domain.Models.Odontograms
                 throw new WrongOperationException($"No existe un registro para el diente {toothNumber}.");
 
             _toothRecords[toothNumber] = toothRecord;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         // Método para verificar si existe un registro dental
@@ -90,4 +120,4 @@ namespace Odoonto.Domain.Models.Odontograms
             return _toothRecords.Values.Where(tr => tr.HasCompletedProcedures);
         }
     }
-} 
+}

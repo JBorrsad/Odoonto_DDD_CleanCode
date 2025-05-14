@@ -18,17 +18,22 @@ namespace Odoonto.Domain.Core.Abstractions
         /// </summary>
         /// <param name="id">Identificador único de la entidad</param>
         /// <param name="order">Orden inicial de la entidad (por defecto 0)</param>
-        protected SortedEntity(Guid id, int order = 0) : base(id)
+        protected SortedEntity(Guid id, int order = 0)
         {
+            Id = id;
             Order = order;
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         /// <summary>
         /// Constructor protegido sin parámetros para EF Core
         /// </summary>
-        protected SortedEntity() : base()
+        protected SortedEntity()
         {
             Order = 0;
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -38,7 +43,7 @@ namespace Odoonto.Domain.Core.Abstractions
         public void SetOrder(int order)
         {
             Order = order;
-            UpdateEditDate();
+            UpdatedAt = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -53,14 +58,14 @@ namespace Odoonto.Domain.Core.Abstractions
         public int CompareTo(SortedEntity other)
         {
             if (other is null) return 1;
-            
+
             // Comparar primero por Order
             int orderComparison = Order.CompareTo(other.Order);
             if (orderComparison != 0)
                 return orderComparison;
-            
+
             // Si el Order es igual, compara por fecha de creación
-            return CreationDate.CompareTo(other.CreationDate);
+            return CreatedAt.CompareTo(other.CreatedAt);
         }
 
         /// <summary>
@@ -99,4 +104,4 @@ namespace Odoonto.Domain.Core.Abstractions
             return left.CompareTo(right) >= 0;
         }
     }
-} 
+}

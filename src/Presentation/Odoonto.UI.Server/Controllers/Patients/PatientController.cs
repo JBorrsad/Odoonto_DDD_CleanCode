@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Odoonto.Application.DTOs.Patients;
 using Odoonto.Application.Interfaces;
+using Odoonto.UI.Server.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,11 +11,12 @@ namespace Odoonto.UI.Server.Controllers.Patients
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PatientController : ControllerBase
+    public class PatientController : BaseApiController
     {
         private readonly IPatientService _patientService;
 
-        public PatientController(IPatientService patientService)
+        public PatientController(IPatientService patientService, ILogger<PatientController> logger)
+            : base(logger)
         {
             _patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
         }
@@ -27,8 +30,8 @@ namespace Odoonto.UI.Server.Controllers.Patients
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
         {
-            var patients = await _patientService.GetAllPatientsAsync();
-            return Ok(patients);
+            return await ExecuteAsync(async () => await _patientService.GetAllPatientsAsync(),
+                "Error al obtener los pacientes.");
         }
 
         /// <summary>
@@ -42,12 +45,15 @@ namespace Odoonto.UI.Server.Controllers.Patients
         [ProducesResponseType(500)]
         public async Task<ActionResult<PatientDto>> GetById(Guid id)
         {
-            var patient = await _patientService.GetPatientByIdAsync(id);
-            if (patient == null)
+            return await ExecuteAsync(async () =>
             {
-                return NotFound($"Paciente con ID {id} no encontrado.");
-            }
-            return Ok(patient);
+                var patient = await _patientService.GetPatientByIdAsync(id);
+                if (patient == null)
+                {
+                    throw new KeyNotFoundException($"Paciente con ID {id} no encontrado.");
+                }
+                return patient;
+            }, $"Error al obtener el paciente con ID {id}.");
         }
 
         /// <summary>
@@ -61,8 +67,11 @@ namespace Odoonto.UI.Server.Controllers.Patients
         [ProducesResponseType(500)]
         public async Task<ActionResult<PatientDto>> Create([FromBody] CreatePatientDto patientDto)
         {
-            var createdPatient = await _patientService.CreatePatientAsync(patientDto);
-            return CreatedAtAction(nameof(GetById), new { id = createdPatient.Id }, createdPatient);
+            return await ExecuteAsync(async () =>
+            {
+                var createdPatient = await _patientService.CreatePatientAsync(patientDto);
+                return CreatedAtAction(nameof(GetById), new { id = createdPatient.Id }, createdPatient).Value;
+            }, "Error al crear el paciente.");
         }
 
         /// <summary>
@@ -76,17 +85,10 @@ namespace Odoonto.UI.Server.Controllers.Patients
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<PatientDto>> Update(Guid id, [FromBody] UpdatePatientDto patientDto)
+        public async Task<ActionResult<PatientDto>> Update(Guid id, [FromBody] CreatePatientDto patientDto)
         {
-            try
-            {
-                var updatedPatient = await _patientService.UpdatePatientAsync(id, patientDto);
-                return Ok(updatedPatient);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound($"Paciente con ID {id} no encontrado.");
-            }
+            return await ExecuteAsync(async () => await _patientService.UpdatePatientAsync(id, patientDto),
+                $"Error al actualizar el paciente con ID {id}.");
         }
 
         /// <summary>
@@ -96,16 +98,18 @@ namespace Odoonto.UI.Server.Controllers.Patients
         /// <returns>Lista de pacientes que coinciden con la búsqueda</returns>
         [HttpGet("search", Name = "SearchPatients")]
         [ProducesResponseType(typeof(IEnumerable<PatientDto>), 200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<IEnumerable<PatientDto>>> Search([FromQuery] string searchTerm)
         {
-            if (string.IsNullOrWhiteSpace(searchTerm))
+            return await ExecuteAsync(async () =>
             {
-                return BadRequest("El término de búsqueda no puede estar vacío.");
-            }
-
-            var patients = await _patientService.SearchPatientsAsync(searchTerm);
-            return Ok(patients);
+                if (string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    throw new ArgumentException("El término de búsqueda no puede estar vacío.");
+                }
+                return await _patientService.SearchPatientsAsync(searchTerm);
+            }, "Error al buscar pacientes.");
         }
 
         /// <summary>
@@ -121,15 +125,8 @@ namespace Odoonto.UI.Server.Controllers.Patients
         [ProducesResponseType(500)]
         public async Task<ActionResult<PatientDto>> UpdateMedicalHistory(Guid id, [FromBody] string medicalHistory)
         {
-            try
-            {
-                var updatedPatient = await _patientService.UpdateMedicalHistoryAsync(id, medicalHistory);
-                return Ok(updatedPatient);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound($"Paciente con ID {id} no encontrado.");
-            }
+            return await ExecuteAsync(async () => await _patientService.UpdateMedicalHistoryAsync(id, medicalHistory),
+                $"Error al actualizar el historial médico del paciente con ID {id}.");
         }
 
         /// <summary>
@@ -145,19 +142,8 @@ namespace Odoonto.UI.Server.Controllers.Patients
         [ProducesResponseType(500)]
         public async Task<ActionResult<PatientDto>> AddAllergy(Guid id, [FromBody] string allergy)
         {
-            try
-            {
-                var updatedPatient = await _patientService.AddAllergyAsync(id, allergy);
-                return Ok(updatedPatient);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound($"Paciente con ID {id} no encontrado.");
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return await ExecuteAsync(async () => await _patientService.AddAllergyAsync(id, allergy),
+                $"Error al añadir alergia al paciente con ID {id}.");
         }
 
         /// <summary>
@@ -173,15 +159,8 @@ namespace Odoonto.UI.Server.Controllers.Patients
         [ProducesResponseType(500)]
         public async Task<ActionResult<PatientDto>> RemoveAllergy(Guid id, [FromBody] string allergy)
         {
-            try
-            {
-                var updatedPatient = await _patientService.RemoveAllergyAsync(id, allergy);
-                return Ok(updatedPatient);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound($"Paciente con ID {id} no encontrado.");
-            }
+            return await ExecuteAsync(async () => await _patientService.RemoveAllergyAsync(id, allergy),
+                $"Error al eliminar alergia del paciente con ID {id}.");
         }
     }
 }

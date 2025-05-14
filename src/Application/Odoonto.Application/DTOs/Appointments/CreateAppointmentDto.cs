@@ -24,8 +24,8 @@ namespace Odoonto.Application.DTOs.Appointments
         [Required(ErrorMessage = "La hora de fin es obligatoria")]
         public TimeSpan EndTime { get; set; }
 
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
 
         public List<PlannedProcedureCreateDto> Procedures { get; set; } = new List<PlannedProcedureCreateDto>();
     }
-} 
+}

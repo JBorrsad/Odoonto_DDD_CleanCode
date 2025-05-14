@@ -1,0 +1,539 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\Odoonto.Infrastructure.InversionOfControl.csproj": {}
+  },
+  "projects": {
+    "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj",
+        "projectName": "Odoonto.Application",
+        "projectPath": "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj",
+        "projectName": "Odoonto.Data.Core",
+        "projectPath": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj"
+              },
+              "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Google.Cloud.Firestore": {
+              "target": "Package",
+              "version": "[3.5.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj",
+        "projectName": "Odoonto.Data",
+        "projectPath": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj"
+              },
+              "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj",
+        "projectName": "Odoonto.Domain.Core",
+        "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj",
+        "projectName": "Odoonto.Domain",
+        "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj",
+        "projectName": "Odoonto.Infrastructure.Configuration",
+        "projectPath": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Firebase.Auth": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "FirebaseDatabase.net": {
+              "target": "Package",
+              "version": "[4.2.0, )"
+            },
+            "FirebaseStorage.net": {
+              "target": "Package",
+              "version": "[1.0.3, )"
+            },
+            "Google.Cloud.Firestore": {
+              "target": "Package",
+              "version": "[3.5.1, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\Odoonto.Infrastructure.InversionOfControl.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\Odoonto.Infrastructure.InversionOfControl.csproj",
+        "projectName": "Odoonto.Infrastructure.InversionOfControl",
+        "projectPath": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\Odoonto.Infrastructure.InversionOfControl.csproj",
+        "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
+        "outputPath": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj"
+              },
+              "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj"
+              },
+              "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj"
+              },
+              "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj": {
+                "projectPath": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -24,6 +24,7 @@ namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<ITreatmentService, TreatmentService>();
             services.AddScoped<ILesionService, LesionService>();
+            services.AddScoped<IOdontogramService, OdontogramService>();
 
             // Configuración de AutoMapper
             InyectProfiles(services);

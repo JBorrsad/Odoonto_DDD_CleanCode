@@ -1,88 +1,128 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Odoonto.Infrastructure.Configuration.Firebase;
 using Odoonto.Infrastructure.InversionOfControl.Inyectors;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración Firebase
-var firebaseApiKey = builder.Configuration["Firebase:ApiKey"];
-var firebaseCredentialsPath = builder.Configuration["Firebase:CredentialsPath"];
-builder.Services.AddFirebaseServices(firebaseApiKey, firebaseCredentialsPath);
+// Configuration
+var configuration = builder.Configuration;
 
-// Agregar servicios al contenedor
-builder.Services.AddControllers();
-
-// Configurar Swagger
-builder.Services.AddSwaggerGen(c =>
+// Configure Firebase
+var firebaseSection = configuration.GetSection("Firebase");
+if (firebaseSection.Exists())
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    string apiKey = firebaseSection["ApiKey"] ?? string.Empty;
+    string credentialsPath = firebaseSection["CredentialsPath"] ?? "firebase-credentials.json";
+    var credentialsFullPath = Path.Combine(builder.Environment.ContentRootPath, credentialsPath);
+
+    try
+    {
+        FirebaseConfiguration.Instance.Initialize(apiKey, credentialsFullPath, null);
+        builder.Services.AddSingleton(FirebaseConfiguration.Instance);
+        builder.Services.AddSingleton(FirebaseConfiguration.Instance.GetFirestoreDb());
+        Console.WriteLine($"Firebase configured successfully with credentials at {credentialsFullPath}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Warning: Firebase configuration failed: {ex.Message}");
+        Console.WriteLine("The application will continue, but Firebase functionalities will not be available.");
+    }
+}
+
+// Add services to the container
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
+
+// Configure CORS
+var corsSection = configuration.GetSection("Cors");
+if (corsSection.Exists())
+{
+    var allowedOrigins = corsSection.GetSection("AllowedOrigins").Get<string[]>();
+    if (allowedOrigins != null && allowedOrigins.Length > 0)
+    {
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", policy =>
+            {
+                policy.WithOrigins(allowedOrigins)
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
+        Console.WriteLine($"CORS configured with {allowedOrigins.Length} allowed origins");
+    }
+}
+
+// Configure Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Odoonto API",
         Version = "v1",
-        Description = "API REST para el sistema de gestión odontológica Odoonto",
+        Description = "API REST para la gestión de consultas odontológicas",
         Contact = new OpenApiContact
         {
-            Name = "Equipo de Desarrollo",
-            Email = "soporte@odoonto.com"
+            Name = "Equipo Odoonto",
+            Email = "contacto@odoonto.com",
+            Url = new Uri("https://odoonto.com/contact")
         }
     });
 
-    // Configurar la generación de documentación XML para Swagger
+    // Set the comments path for the Swagger JSON and UI
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    if (File.Exists(xmlPath))
-    {
-        c.IncludeXmlComments(xmlPath);
-    }
+    options.IncludeXmlComments(xmlPath);
 });
 
-// Agregar servicios de CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
-
-// Agregar servicios de aplicación
-ApplicationInyector.Inyect(builder.Services);
-
-// Agregar servicios de dominio
-DomainInyector.Inyect(builder.Services);
-
-// Agregar repositorios
+// Register application services
 builder.Services.AddRepositories();
 
 var app = builder.Build();
 
-// Configurar el middleware HTTP
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
-
-    // Habilitar Swagger solo en desarrollo
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Odoonto API v1"));
-}
-else
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
+    app.UseSwaggerUI();
 }
 
-// Habilitar CORS
-app.UseCors("AllowAll");
+// Configurar el manejo de errores
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        var exceptionHandlerPathFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+        var exception = exceptionHandlerPathFeature?.Error;
+
+        await context.Response.WriteAsJsonAsync(new
+        {
+            error = "Ha ocurrido un error al procesar la solicitud",
+            detail = app.Environment.IsDevelopment() ? exception?.Message : null
+        });
+    });
+});
 
 app.UseHttpsRedirection();
-app.UseRouting();
+
+// Use CORS
+app.UseCors("CorsPolicy");
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Google.Cloud.Firestore;
 using Odoonto.Domain.Models.Odontograms;
-using Odoonto.Domain.Models.ValueObjects;
+using Odoonto.Domain.Models.Treatments;
 
 namespace Odoonto.Data.Mappings
 {
@@ -21,113 +21,32 @@ namespace Odoonto.Data.Mappings
                 return null;
 
             var data = document.ToDictionary();
-            var odontogram = new Odontogram();
+            var id = Guid.Parse(document.Id);
 
-            // Extraer registros de dientes
-            if (data.TryGetValue("TeethRecords", out var teethObj) &&
-                teethObj is Dictionary<string, object> teethDict)
+            // Obtener el PatientId
+            Guid patientId = Guid.Empty;
+            if (data.TryGetValue("PatientId", out var patientIdObj) && patientIdObj is string patientIdStr)
             {
-                foreach (var entry in teethDict)
+                patientId = Guid.Parse(patientIdStr);
+            }
+
+            // Crear el odontograma
+            var odontogram = new Odontogram(id, patientId);
+
+            // Cargar los registros dentales si existen
+            if (data.TryGetValue("ToothRecords", out var toothRecordsObj) &&
+                toothRecordsObj is Dictionary<string, object> toothRecordsDict)
+            {
+                foreach (var kvp in toothRecordsDict)
                 {
-                    if (int.TryParse(entry.Key, out var toothNumber) &&
-                        entry.Value is Dictionary<string, object> toothData)
+                    if (int.TryParse(kvp.Key, out int toothNumber) &&
+                        kvp.Value is Dictionary<string, object> toothRecordData)
                     {
-                        // Crear registro dental
-                        var toothRecord = new ToothRecord(toothNumber);
-
-                        // Extraer lesiones
-                        if (toothData.TryGetValue("Lesions", out var lesionsObj) &&
-                            lesionsObj is List<object> lesionsList)
+                        var toothRecord = ToothRecordMapper.FromDictionary(toothNumber, toothRecordData);
+                        if (toothRecord != null)
                         {
-                            foreach (var lesionObj in lesionsList)
-                            {
-                                if (lesionObj is Dictionary<string, object> lesionDict)
-                                {
-                                    var lesionId = GetGuidValue(lesionDict, "LesionId");
-                                    var detectionDate = lesionDict.GetValueOrDefault("DetectionDate") is Timestamp timestamp
-                                        ? timestamp.ToDateTime()
-                                        : DateTime.Now;
-                                    var notes = lesionDict.GetValueOrDefault("Notes")?.ToString() ?? "";
-
-                                    // Extraer superficies afectadas
-                                    var surfaces = new List<string>();
-                                    if (lesionDict.TryGetValue("Surfaces", out var surfacesObj) &&
-                                        surfacesObj is List<object> surfacesList)
-                                    {
-                                        surfaces = surfacesList
-                                            .Select(s => s?.ToString() ?? "")
-                                            .Where(s => !string.IsNullOrEmpty(s))
-                                            .ToList();
-                                    }
-
-                                    // Crear y añadir registro de lesión
-                                    var lesionRecord = new LesionRecord(lesionId);
-                                    lesionRecord.SetDetectionDate(detectionDate);
-                                    lesionRecord.SetNotes(notes);
-
-                                    foreach (var surface in surfaces)
-                                    {
-                                        lesionRecord.AddAffectedSurface(surface);
-                                    }
-
-                                    toothRecord.AddLesion(lesionRecord);
-                                }
-                            }
+                            odontogram.AddToothRecord(toothRecord);
                         }
-
-                        // Extraer procedimientos completados
-                        if (toothData.TryGetValue("CompletedProcedures", out var proceduresObj) &&
-                            proceduresObj is List<object> proceduresList)
-                        {
-                            var completedProcedures = new CompletedProcedures();
-
-                            foreach (var procObj in proceduresList)
-                            {
-                                if (procObj is Dictionary<string, object> procDict)
-                                {
-                                    var procedureId = GetGuidValue(procDict, "ProcedureId");
-                                    var treatmentId = GetGuidValue(procDict, "TreatmentId");
-                                    var completionDate = procDict.GetValueOrDefault("CompletionDate") is Timestamp procTimestamp
-                                        ? procTimestamp.ToDateTime()
-                                        : DateTime.Now;
-                                    var notes = procDict.GetValueOrDefault("Notes")?.ToString() ?? "";
-
-                                    // Extraer superficies tratadas
-                                    var surfaces = new List<string>();
-                                    if (procDict.TryGetValue("Surfaces", out var surfacesObj) &&
-                                        surfacesObj is List<object> surfacesList)
-                                    {
-                                        surfaces = surfacesList
-                                            .Select(s => s?.ToString() ?? "")
-                                            .Where(s => !string.IsNullOrEmpty(s))
-                                            .ToList();
-                                    }
-
-                                    // Crear y añadir procedimiento realizado
-                                    var performedProcedure = new PerformedProcedure(procedureId);
-                                    performedProcedure.SetTreatmentId(treatmentId);
-                                    performedProcedure.SetCompletionDate(completionDate);
-                                    performedProcedure.SetNotes(notes);
-
-                                    if (surfaces.Any())
-                                    {
-                                        var toothSurfaces = new ToothSurfaces();
-                                        foreach (var surface in surfaces)
-                                        {
-                                            toothSurfaces.AddSurface(surface);
-                                        }
-                                        performedProcedure.SetSurfaces(toothSurfaces);
-                                    }
-
-                                    completedProcedures.AddProcedure(performedProcedure);
-                                }
-                            }
-
-                            toothRecord.SetCompletedProcedures(completedProcedures);
-                        }
-
-                        // Añadir registro dental al odontograma
-                        odontogram.AddToothRecord(toothRecord);
                     }
                 }
             }
@@ -143,83 +62,233 @@ namespace Odoonto.Data.Mappings
             if (odontogram == null)
                 return null;
 
-            var data = new Dictionary<string, object>();
-            var teethRecords = new Dictionary<string, object>();
+            var data = new Dictionary<string, object>
+            {
+                { "PatientId", odontogram.PatientId.ToString() },
+                { "CreationDate", Timestamp.FromDateTime(odontogram.CreatedAt.ToUniversalTime()) },
+                { "EditDate", Timestamp.FromDateTime(odontogram.UpdatedAt.ToUniversalTime()) }
+            };
 
-            // Mapear cada registro dental
+            // Convertir los registros dentales
+            var toothRecordsDict = new Dictionary<string, object>();
             foreach (var toothRecord in odontogram.ToothRecords)
             {
-                var toothData = new Dictionary<string, object>();
-
-                // Mapear lesiones
-                if (toothRecord.HasLesions)
-                {
-                    var lesionsList = toothRecord.Lesions.Select(lesion =>
-                    {
-                        var lesionDict = new Dictionary<string, object>
-                        {
-                            { "LesionId", lesion.LesionId.ToString() },
-                            { "DetectionDate", Timestamp.FromDateTime(lesion.DetectionDate.ToUniversalTime()) },
-                            { "Notes", lesion.Notes ?? "" }
-                        };
-
-                        if (lesion.AffectedSurfaces.Any())
-                        {
-                            lesionDict["Surfaces"] = lesion.AffectedSurfaces.ToList<object>();
-                        }
-
-                        return lesionDict;
-                    }).ToList<object>();
-
-                    toothData["Lesions"] = lesionsList;
-                }
-
-                // Mapear procedimientos completados
-                if (toothRecord.HasCompletedProcedures)
-                {
-                    var proceduresList = toothRecord.CompletedProcedures.Procedures.Select(proc =>
-                    {
-                        var procDict = new Dictionary<string, object>
-                        {
-                            { "ProcedureId", proc.Id.ToString() },
-                            { "TreatmentId", proc.TreatmentId.ToString() },
-                            { "CompletionDate", Timestamp.FromDateTime(proc.CompletionDate.ToUniversalTime()) },
-                            { "Notes", proc.Notes ?? "" }
-                        };
-
-                        if (proc.Surfaces?.GetSurfaces()?.Any() == true)
-                        {
-                            procDict["Surfaces"] = proc.Surfaces.GetSurfaces().ToList<object>();
-                        }
-
-                        return procDict;
-                    }).ToList<object>();
-
-                    toothData["CompletedProcedures"] = proceduresList;
-                }
-
-                // Añadir datos del diente si hay algún dato registrado
-                if (toothData.Count > 0)
-                {
-                    teethRecords[toothRecord.ToothNumber.ToString()] = toothData;
-                }
+                toothRecordsDict.Add(
+                    toothRecord.ToothNumber.ToString(),
+                    ToothRecordMapper.ToDictionary(toothRecord)
+                );
             }
 
-            if (teethRecords.Count > 0)
-            {
-                data["TeethRecords"] = teethRecords;
-            }
+            data.Add("ToothRecords", toothRecordsDict);
 
             return data;
         }
+    }
 
-        // Método de utilidad para extraer un Guid de un diccionario
-        private static Guid GetGuidValue(Dictionary<string, object> dict, string key)
+    /// <summary>
+    /// Clase auxiliar para mapear ToothRecord
+    /// </summary>
+    public static class ToothRecordMapper
+    {
+        /// <summary>
+        /// Convierte un diccionario a una entidad ToothRecord
+        /// </summary>
+        public static ToothRecord FromDictionary(int toothNumber, Dictionary<string, object> data)
         {
-            var guidStr = dict.GetValueOrDefault(key)?.ToString();
-            return !string.IsNullOrEmpty(guidStr) && Guid.TryParse(guidStr, out var guid)
-                ? guid
-                : Guid.Empty;
+            if (data == null)
+                return null;
+
+            var toothRecord = new ToothRecord(toothNumber);
+
+            // Cargar lesiones
+            if (data.TryGetValue("Lesions", out var lesionsObj) &&
+                lesionsObj is List<object> lesionsList)
+            {
+                foreach (var lesionObj in lesionsList)
+                {
+                    if (lesionObj is Dictionary<string, object> lesionDict)
+                    {
+                        var lesionRecord = LesionRecordMapper.FromDictionary(lesionDict);
+                        if (lesionRecord != null)
+                        {
+                            toothRecord.AddLesionRecord(lesionRecord);
+                        }
+                    }
+                }
+            }
+
+            // Cargar procedimientos realizados
+            if (data.TryGetValue("CompletedProcedures", out var proceduresObj) &&
+                proceduresObj is List<object> proceduresList)
+            {
+                foreach (var procedureObj in proceduresList)
+                {
+                    if (procedureObj is Dictionary<string, object> procedureDict)
+                    {
+                        var performedProcedure = PerformedProcedureMapper.FromDictionary(procedureDict);
+                        if (performedProcedure != null)
+                        {
+                            toothRecord.AddPerformedProcedure(performedProcedure);
+                        }
+                    }
+                }
+            }
+
+            return toothRecord;
+        }
+
+        /// <summary>
+        /// Convierte una entidad ToothRecord a un diccionario
+        /// </summary>
+        public static Dictionary<string, object> ToDictionary(ToothRecord toothRecord)
+        {
+            if (toothRecord == null)
+                return null;
+
+            var data = new Dictionary<string, object>
+            {
+                { "ToothNumber", toothRecord.ToothNumber }
+            };
+
+            // Convertir lesiones
+            var lesionsList = new List<object>();
+            foreach (var lesion in toothRecord.RecordedLesions)
+            {
+                lesionsList.Add(LesionRecordMapper.ToDictionary(lesion));
+            }
+            data.Add("Lesions", lesionsList);
+
+            // Convertir procedimientos realizados
+            var proceduresList = new List<object>();
+            foreach (var procedure in toothRecord.CompletedProcedures)
+            {
+                proceduresList.Add(PerformedProcedureMapper.ToDictionary(procedure));
+            }
+            data.Add("CompletedProcedures", proceduresList);
+
+            return data;
+        }
+    }
+
+    /// <summary>
+    /// Clase auxiliar para mapear LesionRecord
+    /// </summary>
+    public static class LesionRecordMapper
+    {
+        /// <summary>
+        /// Convierte un diccionario a una entidad LesionRecord
+        /// </summary>
+        public static LesionRecord FromDictionary(Dictionary<string, object> data)
+        {
+            if (data == null)
+                return null;
+
+            // Obtener LesionId
+            Guid lesionId = Guid.Empty;
+            if (data.TryGetValue("LesionId", out var lesionIdObj) && lesionIdObj is string lesionIdStr)
+            {
+                lesionId = Guid.Parse(lesionIdStr);
+            }
+
+            // Obtener DetectionDate
+            DateTime detectionDate = DateTime.Now;
+            if (data.TryGetValue("DetectionDate", out var dateObj) && dateObj is Timestamp timestamp)
+            {
+                detectionDate = timestamp.ToDateTime();
+            }
+
+            // Obtener las superficies afectadas
+            var affectedSurfaces = new List<string>();
+            if (data.TryGetValue("AffectedSurfaces", out var surfacesObj) && surfacesObj is List<object> surfacesList)
+            {
+                foreach (var surface in surfacesList)
+                {
+                    if (surface is string surfaceStr)
+                    {
+                        affectedSurfaces.Add(surfaceStr);
+                    }
+                }
+            }
+
+            // Crear y retornar el registro de lesión
+            return new LesionRecord(lesionId, affectedSurfaces, detectionDate);
+        }
+
+        /// <summary>
+        /// Convierte una entidad LesionRecord a un diccionario
+        /// </summary>
+        public static Dictionary<string, object> ToDictionary(LesionRecord lesionRecord)
+        {
+            if (lesionRecord == null)
+                return null;
+
+            return new Dictionary<string, object>
+            {
+                { "LesionId", lesionRecord.LesionId.ToString() },
+                { "DetectionDate", Timestamp.FromDateTime(lesionRecord.DetectionDate.ToUniversalTime()) },
+                { "AffectedSurfaces", lesionRecord.AffectedSurfaces.ToList() }
+            };
+        }
+    }
+
+    /// <summary>
+    /// Clase auxiliar para mapear PerformedProcedure
+    /// </summary>
+    public static class PerformedProcedureMapper
+    {
+        /// <summary>
+        /// Convierte un diccionario a una entidad PerformedProcedure
+        /// </summary>
+        public static PerformedProcedure FromDictionary(Dictionary<string, object> data)
+        {
+            if (data == null)
+                return null;
+
+            // Obtener TreatmentId
+            Guid treatmentId = Guid.Empty;
+            if (data.TryGetValue("TreatmentId", out var treatmentIdObj) && treatmentIdObj is string treatmentIdStr)
+            {
+                treatmentId = Guid.Parse(treatmentIdStr);
+            }
+
+            // Obtener CompletionDate
+            DateTime completionDate = DateTime.Now;
+            if (data.TryGetValue("CompletionDate", out var dateObj) && dateObj is Timestamp timestamp)
+            {
+                completionDate = timestamp.ToDateTime();
+            }
+
+            // Obtener las superficies tratadas
+            var treatedSurfaces = new List<string>();
+            if (data.TryGetValue("TreatedSurfaces", out var surfacesObj) && surfacesObj is List<object> surfacesList)
+            {
+                foreach (var surface in surfacesList)
+                {
+                    if (surface is string surfaceStr)
+                    {
+                        treatedSurfaces.Add(surfaceStr);
+                    }
+                }
+            }
+
+            // Crear y retornar el procedimiento realizado
+            return new PerformedProcedure(treatmentId, treatedSurfaces, completionDate);
+        }
+
+        /// <summary>
+        /// Convierte una entidad PerformedProcedure a un diccionario
+        /// </summary>
+        public static Dictionary<string, object> ToDictionary(PerformedProcedure performedProcedure)
+        {
+            if (performedProcedure == null)
+                return null;
+
+            return new Dictionary<string, object>
+            {
+                { "TreatmentId", performedProcedure.TreatmentId.ToString() },
+                { "CompletionDate", Timestamp.FromDateTime(performedProcedure.CompletionDate.ToUniversalTime()) },
+                { "TreatedSurfaces", performedProcedure.TreatedSurfaces.ToList() }
+            };
         }
     }
 }

@@ -1,0 +1,87 @@
+quiero que me ayudes a redefinir las normas para implementar en mi editor de codigo cursor
+
+las normas que estoy usando actualmente, las puedes encontrar aqui: https://github.com/JBorrsad/Odoonto_DDD_CleanCode/tree/main
+
+mira el repositorio de hgithub que te pe pasado, para que veas como estan organizadas mis normas
+
+
+
+estas normas, las he hecho para replicar la estructura driven domain design de otro repositorio, ya que me quiero replicar exactamente la estructura DDD que esta definida en los repositorios que te voy a pasar
+
+los repositorios que tienen la estructura que quiero replicar de driven domain design, estan en este repositorio: https://github.com/JBorrsad/exampledddcc/tree/main
+las normas que tengo definidas en mi proyecto, estan hechas a partir de las entidades driven domain design definidas en este repositorio. 
+
+la cosa, es que no me gustan algunas cosas de mis normas, ya que parece que no siempre se estan aplicando. quiero dejar bien definidas varias cosas.
+
+
+
+quiero dos secciones de normas. todas las normas para cursor que me des, tienen que estar en formato mdc, y tienes que poner que se apliquen cuando sea necesario en cada caso. 
+por ejemplo, me gustaria que algunos archivos que hagan referencia a la estructura global de mi aplicacion, y de como estan separadas las capas ddd, y sus responsabilidades en genera, me gustaria que se leyeran siempre que hago una request.
+ por otro lado ,las normas especificas se tienen que cargar para cada tipo de archivo y entidad en concreto. por ejemplo, me gustaria que hubiera un archivo de normas para cada entidad ddd(uno para dto, otro para model, otro para repository y su interfaz.... y asi con todas las entidades ddd que tiene que tener mi aplicacion.)
+entonces, por tanto, quiero que las normas que me des esten organizadas asi: (siendo todas mdc, y modificando su trigger o visibilidad para que funcionen cuando creas que van a ser necesario que se lean)
+ 
+
+-una seccion que:
+	-tenga las reglas para cada entidad ddd en concreto, con un ejemplo de su codigo y donde tiene que crearse, y las responsabilidades que tiene que tener.
+	-que tenga definida la estructura global del proyecto. (por ejemplo, que tengo que usar firebase en vez de sql server para la base de datos, que en la capa de presentacion va a estar como la API rest, como todo el frontend. que el frontend es react y typescript con modelo mvp... y todo este tipo de cosas. tambien tiene que poner lo de que el front y el back se comunican a traves de la api rest.... en fin. esas cosas)
+-que tenga bien definidas las normas de clean code, como hacer y modificar las clases, como se tienen que llamar... los principios solid y dry....
+-que tenga bien definidas tanto las funcionalidades que tiene que tener mi proyecto, como las diferentes entidades que tiene que tener mi proyecto. 
+
+-otra seccion para cada entidad DDD en concreto. de tal manera que funcionen asi: cuando el editor de codigo (cursor)detecte que se vayan a crear, editar, modificar, o eliminar archivos o contenido relacionados
+ con una entidad o estructura DDD en concreto, tiene que haber una norma en formato mdc concreta para esa entidad o esa capa concretamente, diciendo las responsabilidades que tiene que tener esa capa o esa entidad en concreto,
+ y tambien dando un codigo de ejemplo a modo de plantilla, para que se vea la estructura claramente de la entidad que se tiene que crear, y como tiene que funcionar. 
+(ahora mismo, las normas para archivos en concreto, usan archivos de ejemplo que estan en DDD_Ejemplos_Codigo)) 
+
+
+
+mas cosas que tienes que saber: 
+
+en el programa que estoy creando, las entidades que supuestamente necesito, las puedes encontrar en este repositorio: https://github.com/JBorrsad/Odoonto_DDD_CleanCode/tree/main en un listado de normas que se llama entities. 
+
+la aplicacion que quiero crear y para la que quiero que me ayudes a generar las normas, tiene dos partes:
+una parte va a ser la aplicacion back, en c# y con .net 
+otra parte de front (que va a estar contenida y encapsulada dentro de una carpeta de la capa de presentación), con react, typescript y modelo mvp y ddd implementado, como en los ejemplos de codigo de: https://github.com/JBorrsad/exampledddcc/tree/main
+
+la aplicacion tiene que hacer lo siguiente. te voy a dar datos generales, pero hay datos mas especificos en el repositorio de https://github.com/JBorrsad/Odoonto_DDD_CleanCode/tree/main
+
+la aplicacion que quiero crear, va a ser un ERP/CRM para la gestion de clinicas dentales. de momento, solamente tiene que tener dos funcionalidades:
+una pestaña que tenga una vista diaria del horario de citas de mi clinica dental, organizadas por doctor. es decir, saldrá el horario de cada doctor organizado en el tiempo, mostrnado las citas que tiene ese dia, y a la hora que son
+esa pestaña tiene que recoger el horario de los doctores que trabajen en la clinica. 
+otra pestaña en la que tenga el listado de mis pacientes, y poder buscarlos
+en el horario, cuando hago click en una cita, se tiene que abrir un modal con los datos de esa cita , concretamente estos: tipo de tratamiento que se va a hacer, paciente, doctor, hora, tiempo que va a durar, dientesque se van a tocar
+
+en la pestaña del listado de mis pacientes, cuando haga click en uno de ellos, se abrira la vista de ese paciente, que contendra: sus datos de filiacion y de contacto (en una pestañita) 
+y luego abajo, o en otra pestaña, saldrán los tratamientos que tiene planeado hacerse, las citas que tiene planeadas, tambien su odontograma con las lesiones que tiene en la boca pintadas en la superficie de cada diente en rojo, y los tratamientos que tiene hechos en la boca en azul.
+
+tambien en la pestaña del horario diario, tienes que tener en cuenta que saldran las citas para varios doctores, pero habrá un boton para cambiar el horario diario y ponerlo en modo "semanal" y modo "mes"
+en estos dos modos, solo se podra tener seleccionado un doctor. y habra un select para seleccionar el doctor del cual queremos ver el horario. 
+
+tambien me gustaria tener las funcionalidades de añadir citas bien definida, y la funcionalidad de ver los pacientes, los tipos de tratamiento, los doctores con sus datos y su horario...
+
+en resumen, lo que quiero que hagas es lo siguiente: coje las normas de mi repositorio actual en el que estoy trabajando y leelas bien: https://github.com/JBorrsad/Odoonto_DDD_CleanCode/tree/main en un listado de normas que se llama entities.
+
+y fijate muy profundamente en las entidades driven domain design de este repositorio, y como tiene la estructura hecha: https://github.com/JBorrsad/exampledddcc/tree/main
+
+entonces, coge las normas de mi repositorio actual , y refactorizalas todas para que esten todas en formato mdc, se apliquen cada una cuando les toque aplicarse (algunas se aplicaran siempre, otras solo cuando el archivo tenga X caracteres en su nombre o ruta, o este en una capa ddd en concreto)
+
+lo mas importante es que te fijes en el contenido de las normas que ya tengo hechas, y que las modifiques para que sean super optimas y respeten bien lo que ya tenia marcado como normas, pero que se apliquen siempre que sea necesario. 
+
+necesito que me devuelvas un archivo comprimido con todas las normas en formato zip, o bien que me escribas las normas una a una. pero me gustaria que me las dieras en formato zip.
+
+¿Quieres que el nombre del archivo .mdc de cada regla específica refleje el tipo de entidad/capa? Por ejemplo: domain_entity.mdc, dto.mdc, application_service.mdc, etc.
+si, quiero que hagas uno por cada entidad ddd, y puede que tambien otro para cada capa ddd. 
+
+¿Deseas que el contenido de cada archivo .mdc contenga secciones como: descripción, globs (para activar por tipo de archivo o nombre), cuándo debe activarse, código de ejemplo, responsabilidades, buenas prácticas, etc.?
+si, como te he dicho tiene que haber 2 "clases" o "tipos de normas: unas que se apliquen siempre, ya que van a tener las ideas , conceptos y normas globales para todo el proyecto, que van a ser:clean_code.mdc, DDD_estructura.mdc,domain_entities.mdc (esta contiene todas las clases que quiero crear)
+y otra categoria, que se aplique cuando voy a tocar una capa o una entidad ddd: estos archivos son espeficicos para cada entidad/capa, y contiene: cual es su funcion y responsabilidad, como tiene que funcionar, como tiene que estar construida, y un ejemplo de codigo (el ejemplo de codigo que quiero que apliques para cada entidad ddd, esta ahora mismo en la carpeta: ddd_ejemplo_codigo. ahi puedes ver cada entidad y su ejemplo de codigo que tendra que ir en el mdc especifico para ese archivo.) 
+
+¿Confirmas que quieres incluir también las reglas específicas para carpetas de frontend (React/TypeScript), incluyendo presenter, model, service y view, usando el patrón MVP dentro de la capa de presentación?
+de momento, deja estas reglas vacias, ya que las voy a implementar mas adelante. ahora solo quiero hacer las normas para el backend y mi api rest y mi conexion con firebase para la persistencia de los datos. 
+
+¿Deseas que la regla global (como la estructura del DDD, la integración con Firebase, principios Clean Code, lista de entidades, etc.) se aplique siempre (es decir, que tengan alwaysApply: true)?
+no lo se, no se si deberian de aplicarse siempre estrictamente, o hacer que el propio editor de codigo mire cuando es necesario usarlo... o puede que algunos de los archivos globales tengan que aplicarse siempre y otros en ciertos casos, como a la hora de querer mirar como tiene que ser la estructura ddd. por ejemplo, las normas de cleancode quiero que siempre se apliquen 
+
+¿Tienes alguna preferencia de idioma (¿español o inglés) para los .mdc finales?)
+lo que sea mas optimo para los llm. creo que es mejor en ingles
+
+

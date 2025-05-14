@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Odoonto.Data.Core.Contexts;
 using Odoonto.Data.Mappings;
 using Odoonto.Data.Repositories;
+using Odoonto.Data.Repositories.Firebase;
 using Odoonto.Domain.Repositories;
 using Odoonto.Domain.Services.Appointments;
 using Odoonto.Domain.Services.Doctors;
@@ -25,12 +26,8 @@ namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
             // Registrar mappers
             RegisterMappers(services);
 
-            // Registrar repositorios implementados
-            services.AddScoped<IPatientRepository, PatientRepository>();
-            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-            services.AddScoped<IDoctorRepository, DoctorRepository>();
-            services.AddScoped<ILesionRepository, LesionRepository>();
-            services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+            // Registrar los repositorios base de Firebase
+            services.AddFirebaseRepositories();
 
             return services;
         }
@@ -49,6 +46,19 @@ namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
             // services.AddSingleton<IAppointmentMapper, AppointmentMapper>();
             // services.AddSingleton<ITreatmentMapper, TreatmentMapper>();
             // services.AddSingleton<ILesionMapper, LesionMapper>();
+        }
+
+        private static IServiceCollection AddFirebaseRepositories(this IServiceCollection services)
+        {
+            // Registrar implementaciones específicas de repositorios
+            services.AddScoped<IPatientRepository, FirebasePatientRepository>();
+            services.AddScoped<IDoctorRepository, FirebaseDoctorRepository>();
+            services.AddScoped<IAppointmentRepository, FirebaseAppointmentRepository>();
+            services.AddScoped<IOdontogramRepository, FirebaseOdontogramRepository>();
+            services.AddScoped<ILesionRepository, FirebaseLesionRepository>();
+            services.AddScoped<ITreatmentRepository, FirebaseTreatmentRepository>();
+
+            return services;
         }
     }
 }

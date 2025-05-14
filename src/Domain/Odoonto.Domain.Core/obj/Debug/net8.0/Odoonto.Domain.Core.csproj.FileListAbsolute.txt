@@ -1,0 +1,12 @@
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\Odoonto.Domain.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\Odoonto.Domain.Core.AssemblyInfoInputs.cache
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\Odoonto.Domain.Core.AssemblyInfo.cs
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\Odoonto.Domain.Core.csproj.CoreCompileInputs.cache
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\Odoonto.Domain.Core.sourcelink.json
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\bin\Debug\net8.0\Odoonto.Domain.Core.deps.json
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\bin\Debug\net8.0\Odoonto.Domain.Core.dll
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\bin\Debug\net8.0\Odoonto.Domain.Core.pdb
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\Odoonto.Domain.Core.dll
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\refint\Odoonto.Domain.Core.dll
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\Odoonto.Domain.Core.pdb
+C:\Repos\Odoonto\src\Domain\Odoonto.Domain.Core\obj\Debug\net8.0\ref\Odoonto.Domain.Core.dll

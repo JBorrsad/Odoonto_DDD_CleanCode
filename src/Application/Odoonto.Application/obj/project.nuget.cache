@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "uO7JMt37DOecbE6SVulwpe/7yum9tEnqlwd/w8Af2tzkay6EdJeFvs1vtlgG2WZvnKC2wk+miYIPBB5f0KGDeA==",
+  "success": true,
+  "projectFilePath": "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jborras\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
+    "C:\\Users\\jborras\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\jborras\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
+    "C:\\Users\\jborras\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\jborras\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
