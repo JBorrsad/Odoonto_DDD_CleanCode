@@ -6,7 +6,7 @@ using Google.Cloud.Firestore;
 using Odoonto.Data.Core.Contexts;
 using Odoonto.Data.Core.Repositories;
 using Odoonto.Data.Mappings;
-using Odoonto.Domain.Core.Models.Exceptions;
+using Odoonto.Domain.Core.Specifications;
 using Odoonto.Domain.Models.Appointments;
 using Odoonto.Domain.Models.ValueObjects;
 using Odoonto.Domain.Repositories;
@@ -19,6 +19,8 @@ namespace Odoonto.Data.Repositories
     /// </summary>
     public class AppointmentRepository : BaseRepository<Appointment>, IAppointmentRepository
     {
+        private readonly IAppointmentOverlapService _overlapService;
+
         public AppointmentRepository(FirestoreContext context)
             : base(context, "appointments")
         {
@@ -83,6 +85,72 @@ namespace Odoonto.Data.Repositories
         {
             var spec = new AppointmentByDoctorAndDateSpecification(doctorId, date);
             return await FindAsync(spec);
+        }
+
+        /// <summary>
+        /// Busca citas con paginación basada en una especificación
+        /// </summary>
+        public async Task<(IEnumerable<Appointment> Items, string NextPageToken)> FindPaginatedAsync(
+            ISpecification<Appointment> specification,
+            int pageSize = 20,
+            string pageToken = null)
+        {
+            Query query = _context.Collection(_collectionName).Limit(pageSize);
+
+            // Aplicar filtros de la especificación si es posible
+            if (specification is AppointmentByPatientAndDateRangeSpecification patientSpec)
+            {
+                query = query.WhereEqualTo("PatientId", patientSpec.PatientId.ToString())
+                             .WhereGreaterThanOrEqualTo("Date", Timestamp.FromDateTime(patientSpec.StartDate))
+                             .WhereLessThanOrEqualTo("Date", Timestamp.FromDateTime(patientSpec.EndDate));
+            }
+            else if (specification is AppointmentByDoctorAndDateRangeSpecification doctorRangeSpec)
+            {
+                query = query.WhereEqualTo("DoctorId", doctorRangeSpec.DoctorId.ToString())
+                             .WhereGreaterThanOrEqualTo("Date", Timestamp.FromDateTime(doctorRangeSpec.StartDate))
+                             .WhereLessThanOrEqualTo("Date", Timestamp.FromDateTime(doctorRangeSpec.EndDate));
+            }
+            else if (specification is AppointmentByDoctorAndDateSpecification doctorDateSpec)
+            {
+                // Crear timestamp para la fecha específica
+                var date = Timestamp.FromDateTime(doctorDateSpec.Date.Date);
+                var nextDay = Timestamp.FromDateTime(doctorDateSpec.Date.Date.AddDays(1));
+
+                query = query.WhereEqualTo("DoctorId", doctorDateSpec.DoctorId.ToString())
+                             .WhereGreaterThanOrEqualTo("Date", date)
+                             .WhereLessThan("Date", nextDay);
+            }
+
+            // Implementar token de paginación
+            if (!string.IsNullOrEmpty(pageToken))
+            {
+                var startAfterDoc = await _context.GetDocumentByIdAsync(_collectionName, pageToken);
+                if (startAfterDoc.Exists)
+                {
+                    query = query.StartAfter(startAfterDoc);
+                }
+            }
+
+            // Ejecutamos la consulta
+            var querySnapshot = await query.GetSnapshotAsync();
+
+            if (querySnapshot.Count == 0)
+            {
+                return (Enumerable.Empty<Appointment>(), null);
+            }
+
+            // Convertimos los documentos a entidades
+            var items = querySnapshot.Documents
+                .Select(doc => ConvertToEntity(doc))
+                .Where(appointment => specification.IsSatisfiedBy(appointment))
+                .ToList();
+
+            // Determinamos el token para la siguiente página
+            string nextPageToken = querySnapshot.Count < pageSize
+                ? null
+                : querySnapshot.Documents.Last().Id;
+
+            return (items, nextPageToken);
         }
     }
 }

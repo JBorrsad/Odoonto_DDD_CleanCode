@@ -5,21 +5,23 @@ namespace TuProyecto.Data.Repositories.Categories;
 
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using TuProyecto.Data.Core.Contexts;
 using TuProyecto.Data.Core.Repositories;
-using TuProyecto.Domain.Core.Models.Exceptions;
 using TuProyecto.Domain.Models.Categories;
 using TuProyecto.Domain.Models.Flows;
 using TuProyecto.Domain.Repositories.Categories;
+using TuProyecto.Domain.Core.Specifications;
 
 /// <summary>
 /// Características clave de una implementación de repositorio en DDD:
 /// 1. Implementa la interfaz definida en el dominio
 /// 2. Hereda de una clase base Repository<T> que implementa operaciones comunes
 /// 3. Utiliza Entity Framework Core para acceso a datos
-/// 4. Maneja detalles específicos de carga y persistencia
-/// 5. Maneja excepciones específicas del dominio
+/// 4. Utiliza especificaciones para definir includes y filtros
+/// 5. No lanza excepciones de dominio directamente - esto es responsabilidad de la capa de aplicación
 /// </summary>
 public class CategoryRepository : Repository<Category>, ICategoryRepository
 {
@@ -30,25 +32,44 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
         _context = context;
     }
 
-    // Sobrescribimos el método base para incluir relaciones
-    public override Task<Category> GetById(Guid id)
+    // Método genérico para buscar entidades utilizando una especificación
+    public async Task<Category> FindAsync(ISpecification<Category> specification)
     {
-        return _context.Set<Category>()
-            .Include(category => category.Flows)
-            .FirstOrDefaultAsync(category => category.Id == id);
+        return await ApplySpecification(specification).FirstOrDefaultAsync();
     }
 
-    // Implementación de método específico definido en la interfaz
-    public async Task<Category> GetByIdWithFlowsOrThrow(Guid id)
+    // Método genérico para buscar múltiples entidades utilizando una especificación
+    public async Task<IEnumerable<Category>> FindAllAsync(ISpecification<Category> specification)
     {
-        Category category = await GetById(id);
+        return await ApplySpecification(specification).ToListAsync();
+    }
 
-        if (category is null)
+    // Método base para aplicar una especificación a un query
+    private IQueryable<Category> ApplySpecification(ISpecification<Category> specification)
+    {
+        var query = _context.Set<Category>().AsQueryable();
+
+        // Aplicar los includes definidos en la especificación
+        if (specification.Includes.Any())
         {
-            throw new ValueNotFoundException($"The {nameof(Category)} (Id: {id}) not found.");
+            query = specification.Includes.Aggregate(query,
+                (current, include) => current.Include(include));
         }
 
-        return category;
+        // Aplicar los filtros definidos en la especificación
+        if (specification.Criteria != null)
+        {
+            query = query.Where(specification.Criteria);
+        }
+
+        return query;
+    }
+
+    // Sobrescribimos el método base para incluir relaciones usando especificaciones
+    public override Task<Category> GetById(Guid id)
+    {
+        // Usamos una especificación predefinida para obtener categoría con sus flujos
+        return FindAsync(new CategoryWithFlowsSpecification(id));
     }
 
     // Método para obtener sin incluir las relaciones
@@ -59,24 +80,24 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
             .FirstOrDefaultAsync(category => category.Id == id);
     }
 
-    // Implementación de operación específica
+    // Implementación de operación específica sin lanzar excepciones de dominio
     public async Task AddFlowToCategory(Guid categoryId, Guid flowId)
     {
         Category category = await _context.Set<Category>()
             .Include(c => c.Flows)
             .FirstOrDefaultAsync(c => c.Id == categoryId);
 
-        if (category is null)
+        if (category == null)
         {
-            throw new ValueNotFoundException($"The {nameof(Category)} (Id: {categoryId}) not found.");
+            return; // No lanzamos excepciones, el servicio de aplicación manejará el caso null
         }
 
         Flow flow = await _context.Set<Flow>()
             .FirstOrDefaultAsync(f => f.Id == flowId);
 
-        if (flow is null)
+        if (flow == null)
         {
-            throw new ValueNotFoundException($"The {nameof(Flow)} (Id: {flowId}) not found.");
+            return; // No lanzamos excepciones, el servicio de aplicación manejará el caso null
         }
 
         category.AddFlow(flow);
@@ -84,28 +105,38 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
         await _context.SaveChangesAsync();
     }
 
-    // Implementación de operación específica
+    // Implementación de operación específica sin lanzar excepciones de dominio
     public async Task RemoveFlowFromCategory(Guid categoryId, Guid flowId)
     {
         Category category = await _context.Set<Category>()
             .Include(c => c.Flows)
             .FirstOrDefaultAsync(c => c.Id == categoryId);
 
-        if (category is null)
+        if (category == null)
         {
-            throw new ValueNotFoundException($"The {nameof(Category)} (Id: {categoryId}) not found.");
+            return; // No lanzamos excepciones, el servicio de aplicación manejará el caso null
         }
 
         Flow flow = await _context.Set<Flow>()
             .FirstOrDefaultAsync(f => f.Id == flowId);
 
-        if (flow is null)
+        if (flow == null)
         {
-            throw new ValueNotFoundException($"The {nameof(Flow)} (Id: {flowId}) not found.");
+            return; // No lanzamos excepciones, el servicio de aplicación manejará el caso null
         }
 
         category.RemoveFlow(flow);
         _context.Update(category);
         await _context.SaveChangesAsync();
+    }
+}
+
+// Ejemplo de una especificación para consultas con includes específicos
+public class CategoryWithFlowsSpecification : BaseSpecification<Category>
+{
+    public CategoryWithFlowsSpecification(Guid id)
+    {
+        Criteria = c => c.Id == id;
+        AddInclude(c => c.Flows);
     }
 }

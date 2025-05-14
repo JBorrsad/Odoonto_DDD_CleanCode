@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Odoonto.Domain.Core.Specifications
@@ -13,6 +14,26 @@ namespace Odoonto.Domain.Core.Specifications
         /// Obtiene la expresión que define la especificación
         /// </summary>
         Expression<Func<T, bool>> Criteria { get; }
+
+        /// <summary>
+        /// Obtiene las expresiones de include para esta especificación
+        /// </summary>
+        List<Expression<Func<T, object>>> Includes { get; }
+
+        /// <summary>
+        /// Obtiene las expresiones de include como strings
+        /// </summary>
+        List<string> IncludeStrings { get; }
+
+        /// <summary>
+        /// Obtiene la expresión de orden para esta especificación
+        /// </summary>
+        Expression<Func<T, object>> OrderBy { get; }
+
+        /// <summary>
+        /// Obtiene la expresión de orden descendente para esta especificación
+        /// </summary>
+        Expression<Func<T, object>> OrderByDescending { get; }
 
         /// <summary>
         /// Aplica la especificación a una entidad

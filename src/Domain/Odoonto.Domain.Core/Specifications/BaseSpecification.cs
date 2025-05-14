@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Odoonto.Domain.Core.Specifications
@@ -12,7 +13,27 @@ namespace Odoonto.Domain.Core.Specifications
         /// <summary>
         /// Obtiene la expresión que define la especificación
         /// </summary>
-        public Expression<Func<T, bool>> Criteria { get; }
+        public Expression<Func<T, bool>> Criteria { get; protected set; }
+
+        /// <summary>
+        /// Obtiene las expresiones de include para esta especificación
+        /// </summary>
+        public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>();
+
+        /// <summary>
+        /// Obtiene las expresiones de include como strings
+        /// </summary>
+        public List<string> IncludeStrings { get; } = new List<string>();
+
+        /// <summary>
+        /// Obtiene la expresión de orden para esta especificación
+        /// </summary>
+        public Expression<Func<T, object>> OrderBy { get; private set; }
+
+        /// <summary>
+        /// Obtiene la expresión de orden descendente para esta especificación
+        /// </summary>
+        public Expression<Func<T, object>> OrderByDescending { get; private set; }
 
         /// <summary>
         /// Constructor por defecto
@@ -40,6 +61,42 @@ namespace Odoonto.Domain.Core.Specifications
         {
             var predicate = Criteria.Compile();
             return predicate(entity);
+        }
+
+        /// <summary>
+        /// Añade una expresión de include
+        /// </summary>
+        /// <param name="includeExpression">Expresión de include</param>
+        protected virtual void AddInclude(Expression<Func<T, object>> includeExpression)
+        {
+            Includes.Add(includeExpression);
+        }
+
+        /// <summary>
+        /// Añade un include como string
+        /// </summary>
+        /// <param name="includeString">String de include</param>
+        protected virtual void AddInclude(string includeString)
+        {
+            IncludeStrings.Add(includeString);
+        }
+
+        /// <summary>
+        /// Añade un criterio de ordenación ascendente
+        /// </summary>
+        /// <param name="orderByExpression">Expresión de ordenación</param>
+        protected virtual void ApplyOrderBy(Expression<Func<T, object>> orderByExpression)
+        {
+            OrderBy = orderByExpression;
+        }
+
+        /// <summary>
+        /// Añade un criterio de ordenación descendente
+        /// </summary>
+        /// <param name="orderByDescendingExpression">Expresión de ordenación descendente</param>
+        protected virtual void ApplyOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
+        {
+            OrderByDescending = orderByDescendingExpression;
         }
 
         /// <summary>
@@ -88,6 +145,27 @@ namespace Odoonto.Domain.Core.Specifications
 
             var expr = Expression.Lambda<Func<T, bool>>(exprBody, paramExpr);
             Criteria = expr;
+
+            // Combinar los includes de ambas especificaciones
+            foreach (var include in left.Includes)
+            {
+                AddInclude(include);
+            }
+
+            foreach (var include in right.Includes)
+            {
+                AddInclude(include);
+            }
+
+            foreach (var includeString in left.IncludeStrings)
+            {
+                AddInclude(includeString);
+            }
+
+            foreach (var includeString in right.IncludeStrings)
+            {
+                AddInclude(includeString);
+            }
         }
     }
 
@@ -107,6 +185,27 @@ namespace Odoonto.Domain.Core.Specifications
 
             var expr = Expression.Lambda<Func<T, bool>>(exprBody, paramExpr);
             Criteria = expr;
+
+            // Combinar los includes de ambas especificaciones
+            foreach (var include in left.Includes)
+            {
+                AddInclude(include);
+            }
+
+            foreach (var include in right.Includes)
+            {
+                AddInclude(include);
+            }
+
+            foreach (var includeString in left.IncludeStrings)
+            {
+                AddInclude(includeString);
+            }
+
+            foreach (var includeString in right.IncludeStrings)
+            {
+                AddInclude(includeString);
+            }
         }
     }
 
@@ -125,6 +224,17 @@ namespace Odoonto.Domain.Core.Specifications
 
             var expr = Expression.Lambda<Func<T, bool>>(exprBody, paramExpr);
             Criteria = expr;
+
+            // Mantener los includes de la especificación original
+            foreach (var include in specification.Includes)
+            {
+                AddInclude(include);
+            }
+
+            foreach (var includeString in specification.IncludeStrings)
+            {
+                AddInclude(includeString);
+            }
         }
     }
 }

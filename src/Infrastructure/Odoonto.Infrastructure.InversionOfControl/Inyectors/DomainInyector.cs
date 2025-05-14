@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Odoonto.Domain.Services.Appointments;
+using Odoonto.Domain.Services.Doctors;
 using Odoonto.Domain.Services.Patients;
 
 namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
@@ -18,6 +19,7 @@ namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
             // Registrar los servicios de dominio
             RegisterPatientServices(services);
             RegisterAppointmentServices(services);
+            RegisterDoctorServices(services);
 
             // Aquí se pueden añadir más servicios de dominio en el futuro
         }
@@ -41,6 +43,16 @@ namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
             services.AddScoped<IAppointmentOverlapService, AppointmentOverlapService>();
             services.AddScoped<IAppointmentQueryService, AppointmentQueryService>();
             services.AddScoped<IAppointmentSchedulingService, AppointmentSchedulingService>();
+        }
+
+        /// <summary>
+        /// Registra los servicios de doctores
+        /// </summary>
+        private static void RegisterDoctorServices(IServiceCollection services)
+        {
+            // Servicios de doctores
+            services.AddScoped<IDoctorAvailabilityService, DoctorAvailabilityService>();
+            services.AddScoped<IDoctorQueryService, DoctorQueryService>();
         }
     }
 }

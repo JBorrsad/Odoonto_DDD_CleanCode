@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TuProyecto.Data.Core.Firebase;
-using TuProyecto.Domain.Core.Models.Exceptions;
+using TuProyecto.Data.Mappings; // Referencia a la capa de mapeos centralizada
+using TuProyecto.Domain.Core.Specifications;
 using TuProyecto.Domain.Models.Categories;
 using TuProyecto.Domain.Models.Flows;
 using TuProyecto.Domain.Repositories.Categories;
@@ -18,24 +19,34 @@ using TuProyecto.Domain.Repositories.Categories;
 /// Características clave de una implementación de repositorio para Firebase en DDD:
 /// 1. Implementa la interfaz definida en el dominio
 /// 2. Utiliza Firebase SDK para acceso a datos
-/// 3. Gestiona la conversión entre documentos de Firebase y entidades de dominio
-/// 4. Maneja las relaciones entre entidades aunque Firebase sea NoSQL
-/// 5. Implementa transacciones cuando es necesario
+/// 3. Utiliza mappers centralizados para convertir entre documentos y entidades
+/// 4. Aprovecha WithConverter<T> para simplificar las conversiones
+/// 5. Soporta consultas basadas en Specification pattern
+/// 6. No lanza excepciones de dominio directamente - responsabilidad de Application
 /// </summary>
 public class CategoryRepository : ICategoryRepository
 {
     private readonly FirebaseDbContext _firebaseContext;
     private readonly string _collectionName = "categories";
+    private readonly ICategoryMapper _mapper; // Inyectamos un mapper centralizado
 
-    public CategoryRepository(FirebaseDbContext firebaseContext)
+    public CategoryRepository(FirebaseDbContext firebaseContext, ICategoryMapper mapper)
     {
         _firebaseContext = firebaseContext;
+        _mapper = mapper;
+
+        // Configuramos conversor para la colección categories
+        _firebaseContext.ConfigureCollection<Category, CategoryDocument>(
+            _collectionName,
+            entity => _mapper.ToDocument(entity),
+            document => _mapper.ToDomainEntity(document)
+        );
     }
 
     public async Task<Category> GetById(Guid id)
     {
-        DocumentSnapshot document = await _firebaseContext.FirestoreDb
-            .Collection(_collectionName)
+        // Usamos la colección con converter ya configurado
+        DocumentSnapshot document = await _firebaseContext.GetCollection<Category>()
             .Document(id.ToString())
             .GetSnapshotAsync();
 
@@ -44,26 +55,14 @@ public class CategoryRepository : ICategoryRepository
             return null;
         }
 
-        var categoryData = document.ConvertTo<CategoryDocument>();
-        return MapToDomainEntity(categoryData);
-    }
-
-    public async Task<Category> GetByIdOrThrow(Guid id)
-    {
-        Category category = await GetById(id);
-
-        if (category is null)
-        {
-            throw new ValueNotFoundException($"The {nameof(Category)} (Id: {id}) not found.");
-        }
-
-        return category;
+        // La conversión la realiza automáticamente el WithConverter configurado
+        return document.ConvertTo<Category>();
     }
 
     public async Task<IEnumerable<Category>> GetAll()
     {
-        QuerySnapshot querySnapshot = await _firebaseContext.FirestoreDb
-            .Collection(_collectionName)
+        // Usamos la colección con converter ya configurado
+        QuerySnapshot querySnapshot = await _firebaseContext.GetCollection<Category>()
             .GetSnapshotAsync();
 
         if (querySnapshot.Count == 0)
@@ -71,76 +70,86 @@ public class CategoryRepository : ICategoryRepository
             return Enumerable.Empty<Category>();
         }
 
-        var categories = new List<Category>();
-        foreach (DocumentSnapshot document in querySnapshot.Documents)
-        {
-            var categoryData = document.ConvertTo<CategoryDocument>();
-            categories.Add(MapToDomainEntity(categoryData));
-        }
-
-        return categories;
+        // La conversión la realiza automáticamente el WithConverter configurado
+        return querySnapshot.Documents.Select(doc => doc.ConvertTo<Category>());
     }
 
-    public async Task<Category> GetByIdWithFlowsOrThrow(Guid id)
+    // Implementación para usar Specifications
+    public async Task<Category> FindAsync(ISpecification<Category> specification)
     {
-        Category category = await GetByIdOrThrow(id);
+        // Este método es un ejemplo y podría requerir adaptaciones según el caso
+        // Las especificaciones para Firebase son diferentes a las de EF
 
-        // Cargar los flows relacionados
-        QuerySnapshot flowsSnapshot = await _firebaseContext.FirestoreDb
-            .Collection("flows")
-            .WhereEqualTo("categoryId", id.ToString())
-            .GetSnapshotAsync();
-
-        foreach (DocumentSnapshot flowDoc in flowsSnapshot.Documents)
-        {
-            var flowData = flowDoc.ConvertTo<FlowDocument>();
-            Flow flow = MapFlowToDomainEntity(flowData);
-
-            // Como la entidad ya tiene el flujo configurado con su categoría,
-            // usamos un método interno que no dispare el evento SetCategory
-            AddFlowWithoutSettingCategory(category, flow);
-        }
-
-        return category;
+        var allItems = await GetAll();
+        return allItems.FirstOrDefault(item => specification.IsSatisfiedBy(item));
     }
 
-    public async Task<Category> GetByIdWithoutFlows(Guid id)
+    // Método para búsqueda paginada
+    public async Task<(IEnumerable<Category> Items, string NextPageToken)> GetPaginatedAsync(
+        int pageSize = 20,
+        string pageToken = null)
     {
-        return await GetByIdOrThrow(id);
+        Query query = _firebaseContext.GetCollection<Category>().Limit(pageSize);
+
+        // Si tenemos un token de paginación, lo aplicamos
+        if (!string.IsNullOrEmpty(pageToken))
+        {
+            DocumentSnapshot startAfterDoc = await _firebaseContext.FirestoreDb
+                .Collection(_collectionName)
+                .Document(pageToken)
+                .GetSnapshotAsync();
+
+            if (startAfterDoc.Exists)
+            {
+                query = query.StartAfter(startAfterDoc);
+            }
+        }
+
+        // Ejecutar la consulta
+        QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+        if (querySnapshot.Count == 0)
+        {
+            return (Enumerable.Empty<Category>(), null);
+        }
+
+        // Convertir documentos a entidades de dominio
+        var items = querySnapshot.Documents.Select(doc => doc.ConvertTo<Category>()).ToList();
+
+        // Determinar el token para la siguiente página
+        string nextPageToken = querySnapshot.Count < pageSize
+            ? null
+            : querySnapshot.Documents.Last().Id;
+
+        return (items, nextPageToken);
     }
 
     public async Task Create(Category entity)
     {
-        var categoryDocument = MapToDocument(entity);
-
-        await _firebaseContext.FirestoreDb
-            .Collection(_collectionName)
+        // Usar directamente el WithConverter configurado
+        await _firebaseContext.GetCollection<Category>()
             .Document(entity.Id.ToString())
-            .SetAsync(categoryDocument);
+            .SetAsync(entity);
     }
 
     public async Task Update(Category entity)
     {
-        var categoryDocument = MapToDocument(entity);
-
-        await _firebaseContext.FirestoreDb
-            .Collection(_collectionName)
+        // Usar directamente el WithConverter configurado
+        await _firebaseContext.GetCollection<Category>()
             .Document(entity.Id.ToString())
-            .SetAsync(categoryDocument, SetOptions.MergeAll);
+            .SetAsync(entity, SetOptions.MergeAll);
     }
 
     public async Task Delete(Category entity)
     {
-        await _firebaseContext.FirestoreDb
-            .Collection(_collectionName)
+        await _firebaseContext.GetCollection<Category>()
             .Document(entity.Id.ToString())
             .DeleteAsync();
     }
 
     public async Task<bool> Exists(Guid id)
     {
-        DocumentSnapshot document = await _firebaseContext.FirestoreDb
-            .Collection(_collectionName)
+        DocumentSnapshot document = await _firebaseContext.GetCollection<Category>()
             .Document(id.ToString())
             .GetSnapshotAsync();
 
@@ -153,27 +162,25 @@ public class CategoryRepository : ICategoryRepository
         await _firebaseContext.FirestoreDb.RunTransactionAsync(async transaction =>
         {
             // Obtener la categoría
-            var categoryRef = _firebaseContext.FirestoreDb
-                .Collection(_collectionName)
+            var categoryRef = _firebaseContext.GetCollection<Category>()
                 .Document(categoryId.ToString());
 
             DocumentSnapshot categorySnapshot = await transaction.GetSnapshotAsync(categoryRef);
 
             if (!categorySnapshot.Exists)
             {
-                throw new ValueNotFoundException($"The {nameof(Category)} (Id: {categoryId}) not found.");
+                return; // No lanzamos excepciones, el servicio de aplicación manejará esto
             }
 
             // Obtener el flow
-            var flowRef = _firebaseContext.FirestoreDb
-                .Collection("flows")
+            var flowRef = _firebaseContext.GetCollection<Flow>()
                 .Document(flowId.ToString());
 
             DocumentSnapshot flowSnapshot = await transaction.GetSnapshotAsync(flowRef);
 
             if (!flowSnapshot.Exists)
             {
-                throw new ValueNotFoundException($"The {nameof(Flow)} (Id: {flowId}) not found.");
+                return; // No lanzamos excepciones, el servicio de aplicación manejará esto
             }
 
             // Actualizar el flow para establecer su categoría
@@ -190,34 +197,32 @@ public class CategoryRepository : ICategoryRepository
         await _firebaseContext.FirestoreDb.RunTransactionAsync(async transaction =>
         {
             // Obtener la categoría
-            var categoryRef = _firebaseContext.FirestoreDb
-                .Collection(_collectionName)
+            var categoryRef = _firebaseContext.GetCollection<Category>()
                 .Document(categoryId.ToString());
 
             DocumentSnapshot categorySnapshot = await transaction.GetSnapshotAsync(categoryRef);
 
             if (!categorySnapshot.Exists)
             {
-                throw new ValueNotFoundException($"The {nameof(Category)} (Id: {categoryId}) not found.");
+                return; // No lanzamos excepciones, el servicio de aplicación manejará esto
             }
 
             // Obtener el flow
-            var flowRef = _firebaseContext.FirestoreDb
-                .Collection("flows")
+            var flowRef = _firebaseContext.GetCollection<Flow>()
                 .Document(flowId.ToString());
 
             DocumentSnapshot flowSnapshot = await transaction.GetSnapshotAsync(flowRef);
 
             if (!flowSnapshot.Exists)
             {
-                throw new ValueNotFoundException($"The {nameof(Flow)} (Id: {flowId}) not found.");
+                return; // No lanzamos excepciones, el servicio de aplicación manejará esto
             }
 
             // Verificar que el flujo pertenece a esta categoría
             var flowData = flowSnapshot.ConvertTo<FlowDocument>();
             if (flowData.CategoryId != categoryId.ToString())
             {
-                throw new WrongOperationException("The flow doesn't belong to the category.");
+                return; // No lanzamos excepciones, el servicio de aplicación manejará esto
             }
 
             // Actualizar el flow para remover su categoría
@@ -227,74 +232,77 @@ public class CategoryRepository : ICategoryRepository
             });
         });
     }
+}
 
-    // Clases privadas para mapeo entre Firebase y entidades de dominio
-    private class CategoryDocument
+// Las clases de documentos se mueven al mapper centralizado
+// y los métodos de mapeo también
+
+// Ejemplo de extensiones para el FirebaseDbContext
+namespace TuProyecto.Data.Core.Firebase
+{
+    public static class FirebaseDbContextExtensions
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime EditDate { get; set; }
-    }
-
-    private class FlowDocument
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string CategoryId { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime EditDate { get; set; }
-    }
-
-    // Métodos de mapeo
-    private Category MapToDomainEntity(CategoryDocument document)
-    {
-        var category = Category.Create(Guid.Parse(document.Id));
-        category.SetName(document.Name);
-
-        // En caso de que necesitemos establecer las fechas desde la base de datos
-        // Esto requeriría métodos internos en la entidad o usar reflexión
-        // SetPrivateProperty(category, "CreationDate", document.CreationDate);
-        // SetPrivateProperty(category, "EditDate", document.EditDate);
-
-        return category;
-    }
-
-    private Flow MapFlowToDomainEntity(FlowDocument document)
-    {
-        var flow = Flow.Create(Guid.Parse(document.Id));
-        flow.SetName(document.Name);
-
-        if (!string.IsNullOrEmpty(document.CategoryId))
+        public static void ConfigureCollection<TEntity, TDocument>(
+            this FirebaseDbContext context,
+            string collectionName,
+            Func<TEntity, TDocument> toDocument,
+            Func<TDocument, TEntity> toDomainEntity)
         {
-            flow.SetCategory(Guid.Parse(document.CategoryId));
+            // Almacenar en el contexto la configuración para esta colección
+            context.RegisterConverter(collectionName, toDocument, toDomainEntity);
         }
 
-        return flow;
+        public static CollectionReference GetCollection<TEntity>(this FirebaseDbContext context)
+        {
+            // Obtener la colección configurada con WithConverter
+            return context.GetCollectionWithConverter<TEntity>();
+        }
+    }
+}
+
+// Ejemplo de interfaz para el mapper centralizado
+namespace TuProyecto.Data.Mappings
+{
+    public interface ICategoryMapper
+    {
+        Category ToDomainEntity(CategoryDocument document);
+        CategoryDocument ToDocument(Category entity);
     }
 
-    private CategoryDocument MapToDocument(Category entity)
+    // Esta clase se debe implementar en la capa de Mappings
+    public class CategoryDocument
     {
-        return new CategoryDocument
-        {
-            Id = entity.Id.ToString(),
-            Name = entity.Name,
-            CreationDate = entity.CreationDate,
-            EditDate = entity.EditDate
-        };
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime EditDate { get; set; }
     }
 
-    // Este método es solo para uso interno del repositorio
-    private void AddFlowWithoutSettingCategory(Category category, Flow flow)
+    // La implementación real estaría en otra parte, pero para propósitos de ejemplo:
+    public class CategoryMapper : ICategoryMapper
     {
-        // Se podría implementar usando reflexión para acceder al campo privado _flows
-        // o idealmente, la entidad debería exponer un método para este caso específico
-        var method = typeof(Category).GetMethod("AddFlowWithoutSettingCategory",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-        if (method != null)
+        public Category ToDomainEntity(CategoryDocument document)
         {
-            method.Invoke(category, new object[] { flow });
+            Category category = Category.Create(Guid.Parse(document.Id));
+            // Establecer propiedades usando métodos del dominio
+            category.SetName(document.Name);
+
+            // Las propiedades de auditoría se manejan así para evitar setters públicos
+            typeof(Category).GetProperty("CreationDate")?.SetValue(category, document.CreationDate);
+            typeof(Category).GetProperty("EditDate")?.SetValue(category, document.EditDate);
+
+            return category;
+        }
+
+        public CategoryDocument ToDocument(Category entity)
+        {
+            return new CategoryDocument
+            {
+                Id = entity.Id.ToString(),
+                Name = entity.Name,
+                CreationDate = entity.CreationDate,
+                EditDate = entity.EditDate
+            };
         }
     }
 }
