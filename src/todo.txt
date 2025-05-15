@@ -1,0 +1,34 @@
+# Tareas Pendientes para hacer funcionar el Backend
+
+## 1. Configuración de Firebase
+- Los valores en `appsettings.json` tienen placeholders (`your-api-key`) que deben ser reemplazados con las credenciales reales de Firebase.
+- El archivo `firebase-credentials.json` debe contener las credenciales correctas de Firebase.
+
+## 2. Referencias de Proyecto
+- El archivo `OdoontoAPI.csproj` en la raíz contiene referencias a proyectos que no existen en la estructura actual (`Models` y `Services`). 
+- Hay que ajustar estas referencias para que apunten a los proyectos correctos dentro de la arquitectura DDD.
+
+## 3. Implementación de Repositorios
+- Actualmente hay coexistencia de dos implementaciones de repositorios: una para Entity Framework (por ejemplo, `OdoontoDbContext`) y otra para Firebase. Esto puede causar conflictos.
+- Hay que asegurar que los inyectores estén configurados para usar exclusivamente los repositorios de Firebase.
+
+## 4. Configuración del Startup
+- El método `AddApplicationServices` está siendo llamado pero no vimos su implementación. 
+- Hay que asegurar que esté correctamente implementado y que configure todos los servicios necesarios.
+
+## 5. Integración Completa de Dominios
+- Hay que verificar que todas las entidades del dominio tienen sus correspondientes implementaciones de repositorio en Firebase.
+
+## 6. Arreglar problemas de namespaces y referencias
+- Algunas clases pueden tener problemas con el método `UpdateEditDate()`. 
+- Asegurar que todos los lugares donde se usa este método estén importando correctamente el namespace `Odoonto.Domain.Core.Abstractions`.
+
+## 7. Proyecto API principal
+- Crear un proyecto API que sea el punto de entrada de la aplicación y que referencie correctamente a todos los demás proyectos de la solución.
+- Configurarlo para usar el contexto y los repositorios de Firebase en lugar de Entity Framework.
+
+## 8. Configuración CORS y Autenticación
+- La configuración CORS y de autenticación JWT está presente pero hay que asegurar que funcione correctamente con Firebase.
+
+## 9. Integración completa de servicios
+- Verificar que todos los servicios de aplicación estén implementados y que usen los repositorios correctos. 
