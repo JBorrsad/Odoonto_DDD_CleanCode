@@ -8,24 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\jborras\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\juan-\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj",
+      "projectUniqueName": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj",
       "projectName": "Odoonto.Domain.Core",
-      "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj",
-      "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
-      "outputPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\obj\\",
+      "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj",
+      "packagesPath": "C:\\Users\\juan-\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain.Core\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\juan-\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -33,6 +28,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -71,7 +67,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

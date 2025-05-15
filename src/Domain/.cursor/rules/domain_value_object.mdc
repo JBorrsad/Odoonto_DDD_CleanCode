@@ -1,0 +1,327 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Value Objects (Objetos de Valor)
+
+Los Value Objects son objetos inmutables que representan conceptos del dominio sin identidad propia. Su igualdad se basa en sus atributos, no en su identidad.
+
+## Principios Clave
+
+1. **Inmutabilidad**: Una vez creados, no pueden cambiar su estado.
+2. **Igualdad por valor**: Dos objetos con los mismos atributos son considerados iguales.
+3. **Auto-validación**: Validan sus invariantes en el constructor.
+4. **Sin efectos secundarios**: Sus métodos no modifican el estado, retornan nuevas instancias.
+5. **Sin identidad**: No tienen un identificador único, son intercambiables.
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Domain.Models.ValueObjects;
+
+using System;
+using Odoonto.Domain.Core.Models.Exceptions;
+
+/// <summary>
+/// Representa [descripción del objeto de valor]
+/// </summary>
+public class Money : IEquatable<Money>
+{
+    // Propiedades inmutables - solo getters públicos
+    public decimal Amount { get; }
+    public string Currency { get; }
+    
+    // Constructor que valida todas las invariantes
+    public Money(decimal amount, string currency)
+    {
+        // Validación de invariantes
+        if (amount < 0)
+            throw new InvalidValueException("El monto no puede ser negativo");
+            
+        if (string.IsNullOrWhiteSpace(currency))
+            throw new InvalidValueException("La divisa no puede estar vacía");
+            
+        // Asignación de propiedades
+        Amount = amount;
+        Currency = currency;
+    }
+    
+    // Métodos que crean nuevas instancias (no modifican el estado)
+    public Money Add(Money other)
+    {
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+            
+        if (other.Currency != Currency)
+            throw new InvalidOperationException("No se pueden sumar montos en diferentes divisas");
+            
+        return new Money(Amount + other.Amount, Currency);
+    }
+    
+    public Money Subtract(Money other)
+    {
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+            
+        if (other.Currency != Currency)
+            throw new InvalidOperationException("No se pueden restar montos en diferentes divisas");
+            
+        decimal newAmount = Amount - other.Amount;
+        if (newAmount < 0)
+            throw new InvalidOperationException("El resultado de la resta no puede ser negativo");
+            
+        return new Money(newAmount, Currency);
+    }
+    
+    // Implementación de igualdad basada en valores
+    public bool Equals(Money other)
+    {
+        if (other is null) 
+            return false;
+            
+        return Amount == other.Amount && 
+               Currency == other.Currency;
+    }
+    
+    public override bool Equals(object obj)
+    {
+        return obj is Money other && Equals(other);
+    }
+    
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Amount, Currency);
+    }
+    
+    // Sobrecargar operadores para comparaciones intuitivas
+    public static bool operator ==(Money left, Money right)
+    {
+        if (left is null) return right is null;
+        return left.Equals(right);
+    }
+    
+    public static bool operator !=(Money left, Money right)
+    {
+        return !(left == right);
+    }
+    
+    // ToString para representación legible
+    public override string ToString()
+    {
+        return $"{Amount} {Currency}";
+    }
+}
+```
+
+## Ejemplos de Implementación
+
+### Value Object FullName
+
+```csharp
+public class FullName : IEquatable<FullName>
+{
+    public string FirstNames { get; }
+    public string LastNames { get; }
+    
+    public FullName(string firstNames, string lastNames)
+    {
+        if (string.IsNullOrWhiteSpace(firstNames))
+            throw new InvalidValueException("Los nombres no pueden estar vacíos");
+            
+        if (string.IsNullOrWhiteSpace(lastNames))
+            throw new InvalidValueException("Los apellidos no pueden estar vacíos");
+            
+        FirstNames = firstNames.Trim();
+        LastNames = lastNames.Trim();
+    }
+    
+    public string FullNameWithLastNameFirst => $"{LastNames}, {FirstNames}";
+    
+    public string FullNameWithFirstNameFirst => $"{FirstNames} {LastNames}";
+    
+    // Implementación de IEquatable<FullName>
+    public bool Equals(FullName other)
+    {
+        if (other is null) return false;
+        
+        return string.Equals(FirstNames, other.FirstNames, StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(LastNames, other.LastNames, StringComparison.OrdinalIgnoreCase);
+    }
+    
+    public override bool Equals(object obj)
+    {
+        return obj is FullName other && Equals(other);
+    }
+    
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(
+            FirstNames.ToLowerInvariant(), 
+            LastNames.ToLowerInvariant());
+    }
+    
+    public static bool operator ==(FullName left, FullName right)
+    {
+        if (left is null) return right is null;
+        return left.Equals(right);
+    }
+    
+    public static bool operator !=(FullName left, FullName right) => !(left == right);
+    
+    public override string ToString() => FullNameWithFirstNameFirst;
+}
+```
+
+### Value Object TimeSlot
+
+```csharp
+public class TimeSlot : IEquatable<TimeSlot>
+{
+    public TimeOnly StartTime { get; }
+    public TimeOnly EndTime { get; }
+    
+    public TimeSlot(TimeOnly startTime, TimeOnly endTime)
+    {
+        if (endTime <= startTime)
+            throw new InvalidValueException("La hora de fin debe ser posterior a la hora de inicio");
+            
+        StartTime = startTime;
+        EndTime = endTime;
+    }
+    
+    public TimeSpan Duration => EndTime - StartTime;
+    
+    public bool Overlaps(TimeSlot other)
+    {
+        if (other is null)
+            throw new ArgumentNullException(nameof(other));
+            
+        return (StartTime < other.EndTime && EndTime > other.StartTime);
+    }
+    
+    public bool Contains(TimeOnly time)
+    {
+        return time >= StartTime && time < EndTime;
+    }
+    
+    // Implementación de IEquatable<TimeSlot>
+    public bool Equals(TimeSlot other)
+    {
+        if (other is null) return false;
+        
+        return StartTime == other.StartTime && EndTime == other.EndTime;
+    }
+    
+    public override bool Equals(object obj)
+    {
+        return obj is TimeSlot slot && Equals(slot);
+    }
+    
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(StartTime, EndTime);
+    }
+    
+    public static bool operator ==(TimeSlot left, TimeSlot right)
+    {
+        if (left is null) return right is null;
+        return left.Equals(right);
+    }
+    
+    public static bool operator !=(TimeSlot left, TimeSlot right) => !(left == right);
+    
+    public override string ToString() => $"{StartTime:hh\\:mm} - {EndTime:hh\\:mm}";
+}
+```
+
+### Value Object ContactInfo
+
+```csharp
+public class ContactInfo : IEquatable<ContactInfo>
+{
+    public string PhoneNumber { get; }
+    public string Email { get; }
+    public string Address { get; }
+    
+    public ContactInfo(string phoneNumber, string email, string address = null)
+    {
+        // Validaciones
+        if (string.IsNullOrWhiteSpace(phoneNumber) && string.IsNullOrWhiteSpace(email))
+            throw new InvalidValueException("Se debe proporcionar al menos un teléfono o email");
+            
+        if (!string.IsNullOrWhiteSpace(email) && !IsValidEmail(email))
+            throw new InvalidValueException("El formato del email es inválido");
+            
+        if (!string.IsNullOrWhiteSpace(phoneNumber) && !IsValidPhoneNumber(phoneNumber))
+            throw new InvalidValueException("El formato del teléfono es inválido");
+            
+        // Asignaciones
+        PhoneNumber = phoneNumber?.Trim();
+        Email = email?.Trim().ToLowerInvariant();
+        Address = address?.Trim();
+    }
+    
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    
+    private bool IsValidPhoneNumber(string phoneNumber)
+    {
+        // Implementar validación según requisitos
+        return System.Text.RegularExpressions.Regex.IsMatch(
+            phoneNumber, @"^\+?[0-9]{9,15}$");
+    }
+    
+    public bool HasPhone => !string.IsNullOrWhiteSpace(PhoneNumber);
+    public bool HasEmail => !string.IsNullOrWhiteSpace(Email);
+    public bool HasAddress => !string.IsNullOrWhiteSpace(Address);
+    
+    // Implementación de IEquatable<ContactInfo>
+    public bool Equals(ContactInfo other)
+    {
+        if (other is null) return false;
+        
+        return string.Equals(PhoneNumber, other.PhoneNumber, StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(Email, other.Email, StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(Address, other.Address, StringComparison.OrdinalIgnoreCase);
+    }
+    
+    // Resto de implementación de igualdad...
+}
+```
+
+## Invariantes Comunes
+
+- Los montos monetarios no pueden ser negativos
+- Las fechas de nacimiento no pueden ser futuras
+- Los correos electrónicos deben tener un formato válido
+- Los rangos de tiempo deben tener inicio antes que fin
+- Los identificadores de entidades no pueden ser nulos o vacíos
+
+## Patrones Recomendados
+
+1. **Inmutabilidad total**: Solo getters, sin setters públicos ni privados
+2. **Validación en constructor**: Todas las validaciones al crear el objeto
+3. **Implementar IEquatable<T>**: Para una comparación eficiente por valor
+4. **Sobrecargar operadores == y !=**: Para comparaciones intuitivas
+5. **Métodos que retornan nuevas instancias**: Para operaciones que "modificarían" el estado
+
+## Antipatrones a Evitar
+
+1. ❌ **Propiedades con setters**
+2. ❌ **Métodos que modifican el estado interno**
+3. ❌ **Comparación basada en referencias en lugar de valores**
+4. ❌ **Validación incompleta en el constructor**
+5. ❌ **Exponer estado mutable interno**
+
+

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Odoonto.Infrastructure.Configuration")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8fedf6ce172113d4e9b69b340f6e2e498f383fd2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+408d09cb12d02512f993ea22346b2f19dda0e0d1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Odoonto.Infrastructure.Configuration")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Odoonto.Infrastructure.Configuration")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

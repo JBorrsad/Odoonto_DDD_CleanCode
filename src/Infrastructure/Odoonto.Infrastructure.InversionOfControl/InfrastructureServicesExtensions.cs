@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Odoonto.Infrastructure.InversionOfControl.Inyectors;
 
 namespace Odoonto.Infrastructure.InversionOfControl
 {
@@ -18,10 +19,11 @@ namespace Odoonto.Infrastructure.InversionOfControl
             Inyectors.ApplicationInyector.Inyect(services);
             
             // Inyectar repositorios de datos
-            Inyectors.RepositoryInyector.Inyect(services);
+            services.AddRepositories();
             
             // Inyectar infraestructura
-            Inyectors.FirebaseInyector.Inyect(services);
+            // Usando la sobrecarga sin parámetros, ya que son opcionales en la definición
+            services.AddFirebaseServices();
 
             return services;
         }

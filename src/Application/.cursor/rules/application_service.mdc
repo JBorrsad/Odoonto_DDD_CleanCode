@@ -1,0 +1,418 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para Servicios de Aplicación
+
+## Propósito
+
+Los servicios de aplicación (Application Services) son los encargados de coordinar la ejecución de casos de uso del sistema, orquestando entidades de dominio y repositorios. Actúan como fachada entre los controladores de la capa de presentación y la lógica de dominio.
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Application.Services.Patients;
+
+using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Odoonto.Application.DTO.Patients;
+using Odoonto.Application.Interfaces.Patients;
+using Odoonto.Domain.Entities.Patients;
+using Odoonto.Domain.Exceptions;
+using Odoonto.Domain.Repositories.Patients;
+
+/// <summary>
+/// Implementación del servicio de pacientes
+/// </summary>
+public class PatientAppService : IPatientAppService
+{
+    private readonly IPatientRepository _patientRepository;
+    private readonly IMapper _mapper;
+
+    /// <summary>
+    /// Constructor con inyección de dependencias
+    /// </summary>
+    public PatientAppService(
+        IPatientRepository patientRepository,
+        IMapper mapper)
+    {
+        _patientRepository = patientRepository;
+        _mapper = mapper;
+    }
+
+    /// <summary>
+    /// Obtiene todos los pacientes
+    /// </summary>
+    public async Task<IEnumerable<PatientQueryDto>> GetAllAsync()
+    {
+        var patients = await _patientRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<Patient>, IEnumerable<PatientQueryDto>>(patients);
+    }
+
+    /// <summary>
+    /// Obtiene un paciente por su ID
+    /// </summary>
+    public async Task<PatientDto> GetByIdAsync(Guid id)
+    {
+        var patient = await _patientRepository.GetByIdAsync(id);
+
+        if (patient == null)
+        {
+            throw new EntityNotFoundException($"No se encontró el paciente con ID {id}");
+        }
+
+        return _mapper.Map<Patient, PatientDto>(patient);
+    }
+
+    /// <summary>
+    /// Crea un nuevo paciente
+    /// </summary>
+    public async Task<Guid> CreateAsync(CreatePatientDto patientDto)
+    {
+        // Validar DTO
+        ValidateCreatePatientDto(patientDto);
+
+        // Crear valores complejos
+        var contactInfo = new ContactInfo(patientDto.Email, patientDto.Phone);
+        var fullName = new FullName(patientDto.FullName);
+        
+        // Parsear fecha de nacimiento
+        if (!DateTime.TryParse(patientDto.BirthDate, out DateTime birthDate))
+        {
+            throw new ValidationException("El formato de fecha de nacimiento no es válido");
+        }
+
+        // Crear entidad usando factory o constructor
+        var patient = new Patient(Guid.NewGuid(), fullName, contactInfo, birthDate);
+        patient.SetAddress(patientDto.Address);
+        patient.SetGender(patientDto.Gender);
+
+        // Persistir
+        await _patientRepository.AddAsync(patient);
+        await _patientRepository.SaveChangesAsync();
+
+        return patient.Id;
+    }
+
+    /// <summary>
+    /// Actualiza un paciente existente
+    /// </summary>
+    public async Task UpdateAsync(Guid id, UpdatePatientDto patientDto)
+    {
+        // Validar DTO
+        ValidateUpdatePatientDto(patientDto);
+
+        // Obtener entidad existente
+        var patient = await _patientRepository.GetByIdAsync(id);
+        if (patient == null)
+        {
+            throw new EntityNotFoundException($"No se encontró el paciente con ID {id}");
+        }
+
+        // Actualizar valores
+        patient.UpdateFullName(new FullName(patientDto.FullName));
+        patient.UpdateContactInfo(new ContactInfo(patientDto.Email, patientDto.Phone));
+        patient.SetAddress(patientDto.Address);
+
+        // Persistir cambios
+        await _patientRepository.UpdateAsync(patient);
+        await _patientRepository.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Elimina un paciente
+    /// </summary>
+    public async Task DeleteAsync(Guid id)
+    {
+        var patient = await _patientRepository.GetByIdAsync(id);
+        if (patient == null)
+        {
+            throw new EntityNotFoundException($"No se encontró el paciente con ID {id}");
+        }
+
+        await _patientRepository.RemoveAsync(patient);
+        await _patientRepository.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Valida los datos de creación de paciente
+    /// </summary>
+    private void ValidateCreatePatientDto(CreatePatientDto patientDto)
+    {
+        if (patientDto == null)
+        {
+            throw new ValidationException("Los datos del paciente no pueden ser nulos");
+        }
+
+        if (string.IsNullOrWhiteSpace(patientDto.FullName))
+        {
+            throw new ValidationException("El nombre del paciente es obligatorio");
+        }
+
+        if (string.IsNullOrWhiteSpace(patientDto.Email))
+        {
+            throw new ValidationException("El email es obligatorio");
+        }
+
+        if (string.IsNullOrWhiteSpace(patientDto.Phone))
+        {
+            throw new ValidationException("El teléfono es obligatorio");
+        }
+
+        if (string.IsNullOrWhiteSpace(patientDto.BirthDate))
+        {
+            throw new ValidationException("La fecha de nacimiento es obligatoria");
+        }
+    }
+
+    /// <summary>
+    /// Valida los datos de actualización de paciente
+    /// </summary>
+    private void ValidateUpdatePatientDto(UpdatePatientDto patientDto)
+    {
+        if (patientDto == null)
+        {
+            throw new ValidationException("Los datos del paciente no pueden ser nulos");
+        }
+
+        if (string.IsNullOrWhiteSpace(patientDto.FullName))
+        {
+            throw new ValidationException("El nombre del paciente es obligatorio");
+        }
+
+        if (string.IsNullOrWhiteSpace(patientDto.Email))
+        {
+            throw new ValidationException("El email es obligatorio");
+        }
+
+        if (string.IsNullOrWhiteSpace(patientDto.Phone))
+        {
+            throw new ValidationException("El teléfono es obligatorio");
+        }
+    }
+}
+```
+
+## Interfaces de Servicio
+
+Definir interfaces para todos los servicios de aplicación:
+
+```csharp
+namespace Odoonto.Application.Interfaces.Patients;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Odoonto.Application.DTO.Patients;
+
+/// <summary>
+/// Interfaz para el servicio de pacientes
+/// </summary>
+public interface IPatientAppService
+{
+    /// <summary>
+    /// Obtiene todos los pacientes
+    /// </summary>
+    Task<IEnumerable<PatientQueryDto>> GetAllAsync();
+
+    /// <summary>
+    /// Obtiene un paciente por su ID
+    /// </summary>
+    Task<PatientDto> GetByIdAsync(Guid id);
+
+    /// <summary>
+    /// Crea un nuevo paciente
+    /// </summary>
+    Task<Guid> CreateAsync(CreatePatientDto patientDto);
+
+    /// <summary>
+    /// Actualiza un paciente existente
+    /// </summary>
+    Task UpdateAsync(Guid id, UpdatePatientDto patientDto);
+
+    /// <summary>
+    /// Elimina un paciente
+    /// </summary>
+    Task DeleteAsync(Guid id);
+}
+```
+
+## Responsabilidades
+
+Los servicios de aplicación tienen las siguientes responsabilidades:
+
+1. **Orquestar casos de uso** aplicando la lógica de negocio del dominio
+2. **Convertir entre DTOs y entidades de dominio** usando AutoMapper
+3. **Validar los datos de entrada** antes de procesarlos
+4. **Gestionar transacciones** cuando sea necesario
+5. **Manejar excepciones** de forma apropiada
+6. **Aplicar autorizaciones** según los permisos del usuario
+
+## Patrones Comunes de Implementación
+
+### 1. Operaciones CRUD
+
+```csharp
+// CREATE
+public async Task<Guid> CreateAsync(CreateEntityDto dto)
+{
+    var entity = _mapper.Map<CreateEntityDto, Entity>(dto);
+    // O crear manualmente:
+    // var entity = new Entity(Guid.NewGuid(), dto.Name);
+    
+    await _repository.AddAsync(entity);
+    await _repository.SaveChangesAsync();
+    
+    return entity.Id;
+}
+
+// READ
+public async Task<EntityDto> GetByIdAsync(Guid id)
+{
+    var entity = await _repository.GetByIdAsync(id);
+    if (entity == null)
+    {
+        throw new EntityNotFoundException(nameof(Entity), id);
+    }
+    
+    return _mapper.Map<Entity, EntityDto>(entity);
+}
+
+// UPDATE
+public async Task UpdateAsync(Guid id, UpdateEntityDto dto)
+{
+    var entity = await _repository.GetByIdAsync(id);
+    if (entity == null)
+    {
+        throw new EntityNotFoundException(nameof(Entity), id);
+    }
+    
+    // Actualizar propiedades
+    _mapper.Map(dto, entity);
+    // O actualizar manualmente:
+    // entity.SetName(dto.Name);
+    
+    await _repository.UpdateAsync(entity);
+    await _repository.SaveChangesAsync();
+}
+
+// DELETE
+public async Task DeleteAsync(Guid id)
+{
+    var entity = await _repository.GetByIdAsync(id);
+    if (entity == null)
+    {
+        throw new EntityNotFoundException(nameof(Entity), id);
+    }
+    
+    await _repository.RemoveAsync(entity);
+    await _repository.SaveChangesAsync();
+}
+```
+
+### 2. Operaciones con Relaciones
+
+```csharp
+// Agregar una relación
+public async Task AddTreatmentToPatientAsync(Guid patientId, Guid treatmentId)
+{
+    var patient = await _patientRepository.GetByIdAsync(patientId);
+    if (patient == null)
+    {
+        throw new EntityNotFoundException(nameof(Patient), patientId);
+    }
+    
+    var treatment = await _treatmentRepository.GetByIdAsync(treatmentId);
+    if (treatment == null)
+    {
+        throw new EntityNotFoundException(nameof(Treatment), treatmentId);
+    }
+    
+    // La lógica de negocio se maneja en la entidad de dominio
+    patient.AddTreatment(treatment);
+    
+    await _patientRepository.UpdateAsync(patient);
+    await _patientRepository.SaveChangesAsync();
+}
+```
+
+### 3. Operaciones con Lógica Compleja
+
+```csharp
+// Programar una cita
+public async Task<Guid> ScheduleAppointmentAsync(CreateAppointmentDto dto)
+{
+    // Obtener entidades relacionadas
+    var patient = await _patientRepository.GetByIdAsync(dto.PatientId);
+    if (patient == null)
+    {
+        throw new EntityNotFoundException(nameof(Patient), dto.PatientId);
+    }
+    
+    var doctor = await _doctorRepository.GetByIdAsync(dto.DoctorId);
+    if (doctor == null)
+    {
+        throw new EntityNotFoundException(nameof(Doctor), dto.DoctorId);
+    }
+    
+    // Verificar disponibilidad del doctor
+    if (!await _appointmentRepository.IsDoctorAvailableAsync(
+        doctor.Id, dto.ScheduledTime, dto.Duration))
+    {
+        throw new BusinessException("El doctor no está disponible en ese horario");
+    }
+    
+    // Crear objeto valor para el rango de tiempo
+    var timeSlot = new TimeSlot(dto.ScheduledTime, dto.Duration);
+    
+    // Crear entidad usando constructor o factory
+    var appointment = new Appointment(
+        Guid.NewGuid(),
+        patient,
+        doctor,
+        timeSlot,
+        dto.TreatmentType);
+    
+    // Persistir
+    await _appointmentRepository.AddAsync(appointment);
+    await _appointmentRepository.SaveChangesAsync();
+    
+    // Notificar (podría usar eventos de dominio)
+    await _notificationService.SendAppointmentConfirmationAsync(appointment);
+    
+    return appointment.Id;
+}
+```
+
+## Convenciones de Nombrado
+
+- **Nombres de clases**: `<Entidad>AppService` (ej. `PatientAppService`)
+- **Nombres de interfaces**: `I<Entidad>AppService` (ej. `IPatientAppService`)
+- **Métodos de obtención**: `GetAsync`, `GetByIdAsync`, `GetAllAsync`
+- **Métodos de creación**: `CreateAsync`, `AddAsync`
+- **Métodos de actualización**: `UpdateAsync`
+- **Métodos de eliminación**: `DeleteAsync`, `RemoveAsync`
+- **Métodos de validación privados**: `Validate<Action><Entity>Dto`
+
+## Buenas Prácticas
+
+1. **Delegar lógica de negocio al dominio**: Los servicios deben orquestar, no implementar reglas
+2. **Usar AutoMapper para mapeos complejos**: Evitar mapeos manuales repetitivos
+3. **Validar DTOs antes de procesar**: Garantizar integridad de datos
+4. **Lanzar excepciones específicas**: Usar excepciones del dominio cuando sea apropiado
+5. **Transacciones por operación**: Una transacción por caso de uso
+6. **Métodos asincrónicos**: Usar async/await consistentemente
+7. **Documentar con XML**: Documentar métodos públicos con comentarios XML
+8. **Principio SOLID**: Seguir los principios SOLID especialmente SRP y DIP
+
+## Anti-patrones
+
+1. ❌ **Lógica de negocio en servicios**: Debe estar en el dominio
+2. ❌ **Acceso directo a la base de datos**: Usar siempre repositorios
+3. ❌ **Métodos enormes**: Dividir en métodos más pequeños y específicos
+4. ❌ **Validaciones inconsistentes**: Validar todos los DTOs de manera consistente
+5. ❌ **Mapeo manual excesivo**: Usar AutoMapper para mapeos repetitivos
+6. ❌ **Ignorar contexto de seguridad**: Verificar permisos cuando corresponda

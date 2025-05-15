@@ -1,0 +1,315 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para el Inyector de Dependencias
+
+## Propósito
+
+Este archivo define las reglas para implementar y utilizar el contenedor de inyección de dependencias en la capa de Infraestructura, siguiendo los principios SOLID, en particular el principio de inversión de dependencias.
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Infrastructure.DependencyInjection;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Odoonto.Application.Interfaces.Patients;
+using Odoonto.Application.Services.Patients;
+using Odoonto.Data.Contexts;
+using Odoonto.Data.Repositories.Patients;
+using Odoonto.Domain.Repositories.Patients;
+using Odoonto.Infrastructure.Configuration;
+using Odoonto.Infrastructure.Services;
+
+/// <summary>
+/// Clase para registrar todos los servicios de la aplicación
+/// </summary>
+public static class DependencyInjection
+{
+    /// <summary>
+    /// Registra todos los servicios de la aplicación
+    /// </summary>
+    public static IServiceCollection AddApplicationServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        // Registrar servicios de infraestructura
+        services.AddInfrastructureServices(configuration);
+        
+        // Registrar servicios de datos
+        services.AddDataServices(configuration);
+        
+        // Registrar servicios de aplicación
+        services.AddAppServices();
+        
+        return services;
+    }
+    
+    /// <summary>
+    /// Registra los servicios de infraestructura
+    /// </summary>
+    private static IServiceCollection AddInfrastructureServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        // Configuración de Firebase/Firestore
+        services.AddFirestoreServices(configuration);
+        
+        // Servicios transversales
+        services.AddScoped<IExceptionHandlingService, ExceptionHandlingService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        
+        return services;
+    }
+    
+    /// <summary>
+    /// Registra los servicios de datos
+    /// </summary>
+    private static IServiceCollection AddDataServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        // Contextos de datos
+        services.AddSingleton<IFirestoreContext, FirestoreContext>();
+        
+        // Repositorios
+        services.AddScoped<IPatientRepository, PatientRepository>();
+        services.AddScoped<IDoctorRepository, DoctorRepository>();
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+        
+        return services;
+    }
+    
+    /// <summary>
+    /// Registra los servicios de aplicación
+    /// </summary>
+    private static IServiceCollection AddAppServices(this IServiceCollection services)
+    {
+        // Servicios de aplicación
+        services.AddScoped<IPatientAppService, PatientAppService>();
+        services.AddScoped<IDoctorAppService, DoctorAppService>();
+        services.AddScoped<IAppointmentAppService, AppointmentAppService>();
+        services.AddScoped<ITreatmentAppService, TreatmentAppService>();
+        
+        // AutoMapper
+        services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+        
+        return services;
+    }
+}
+```
+
+## Organización por Módulos
+
+Para aplicaciones más grandes, se recomienda organizar la inyección de dependencias por módulos o funcionalidades:
+
+```csharp
+namespace Odoonto.Infrastructure.DependencyInjection;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+/// <summary>
+/// Extensiones de módulo para inyección de dependencias - Pacientes
+/// </summary>
+public static class PatientModule
+{
+    /// <summary>
+    /// Registra servicios relacionados con pacientes
+    /// </summary>
+    public static IServiceCollection AddPatientModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        // Repositorios
+        services.AddScoped<IPatientRepository, PatientRepository>();
+        
+        // Servicios de aplicación
+        services.AddScoped<IPatientAppService, PatientAppService>();
+        
+        // Otros servicios específicos del módulo
+        services.AddScoped<IPatientValidator, PatientValidator>();
+        services.AddScoped<IMedicalHistoryService, MedicalHistoryService>();
+        
+        return services;
+    }
+}
+
+/// <summary>
+/// Extensiones de módulo para inyección de dependencias - Citas
+/// </summary>
+public static class AppointmentModule
+{
+    /// <summary>
+    /// Registra servicios relacionados con citas
+    /// </summary>
+    public static IServiceCollection AddAppointmentModule(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        // Repositorios
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        
+        // Servicios de aplicación
+        services.AddScoped<IAppointmentAppService, AppointmentAppService>();
+        services.AddScoped<IAppointmentSchedulingService, AppointmentSchedulingService>();
+        
+        return services;
+    }
+}
+```
+
+Luego se pueden registrar todos los módulos en la clase principal de DI:
+
+```csharp
+public static IServiceCollection AddApplicationServices(
+    this IServiceCollection services,
+    IConfiguration configuration)
+{
+    // Registrar servicios de infraestructura común
+    services.AddInfrastructureServices(configuration);
+    
+    // Registrar módulos
+    services.AddPatientModule(configuration);
+    services.AddDoctorModule(configuration);
+    services.AddAppointmentModule(configuration);
+    services.AddTreatmentModule(configuration);
+    
+    // AutoMapper y servicios comunes
+    services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+    
+    return services;
+}
+```
+
+## Configuración Condicional
+
+A veces necesitamos registrar diferentes implementaciones según el entorno:
+
+```csharp
+public static IServiceCollection AddEnvironmentSpecificServices(
+    this IServiceCollection services,
+    IHostEnvironment environment,
+    IConfiguration configuration)
+{
+    if (environment.IsDevelopment())
+    {
+        // Implementaciones para desarrollo
+        services.AddScoped<IEmailService, DevelopmentEmailService>();
+        services.AddSingleton<ICacheService, InMemoryCacheService>();
+    }
+    else if (environment.IsProduction())
+    {
+        // Implementaciones para producción
+        services.AddScoped<IEmailService, SendGridEmailService>();
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("Redis");
+        });
+        services.AddSingleton<ICacheService, RedisCacheService>();
+    }
+    else
+    {
+        // Implementaciones para pruebas/staging
+        services.AddScoped<IEmailService, MockEmailService>();
+        services.AddSingleton<ICacheService, InMemoryCacheService>();
+    }
+    
+    return services;
+}
+```
+
+## Decoradores y Wrappers
+
+Para agregar funcionalidades transversales como caching o logging:
+
+```csharp
+// Registrar un servicio con un decorador
+services.AddScoped<IOriginalService, OriginalServiceImplementation>();
+services.Decorate<IOriginalService, CachingDecorator>();
+services.Decorate<IOriginalService, LoggingDecorator>();
+
+// Implementación de un decorador
+public class CachingDecorator : IOriginalService
+{
+    private readonly IOriginalService _inner;
+    private readonly ICacheService _cacheService;
+    
+    public CachingDecorator(IOriginalService inner, ICacheService cacheService)
+    {
+        _inner = inner;
+        _cacheService = cacheService;
+    }
+    
+    public async Task<Result> DoSomething(string input)
+    {
+        // Intentar obtener del caché
+        var cacheKey = $"service-result-{input}";
+        if (_cacheService.TryGetValue(cacheKey, out Result cachedResult))
+        {
+            return cachedResult;
+        }
+        
+        // Si no está en caché, llamar al servicio interno
+        var result = await _inner.DoSomething(input);
+        
+        // Guardar en caché
+        _cacheService.Set(cacheKey, result, TimeSpan.FromMinutes(10));
+        
+        return result;
+    }
+}
+```
+
+## Buenas Prácticas
+
+1. **Principio de inversión de dependencias**: Depender de abstracciones, no de implementaciones concretas
+2. **Principio de responsabilidad única**: Cada clase debe tener una única razón para cambiar
+3. **Usar tipos de registro apropiados**:
+   - `AddSingleton`: para servicios stateless compartidos en toda la aplicación
+   - `AddScoped`: para servicios que deben ser consistentes dentro de una solicitud/transacción
+   - `AddTransient`: para servicios ligeros sin estado que se crean cada vez
+4. **Organización modular**: Agrupar registros relacionados en módulos/extensiones
+5. **Configuración declarativa**: Configurar servicios usando opciones del patrón Options
+6. **Incluir validaciones**: Validar datos de configuración antes de usar
+
+## Anti-patrones a Evitar
+
+1. ❌ **Service Locator**: Evitar inyectar IServiceProvider para resolver dependencias en tiempo de ejecución
+2. ❌ **Dependencias concretas**: No depender de implementaciones concretas en constructores
+3. ❌ **Singleton con estado**: Evitar singletons con estado mutable compartido
+4. ❌ **Demasiadas dependencias**: Si un constructor tiene muchas dependencias, considerar refactorizar
+5. ❌ **Dependencias circulares**: Evitar que A dependa de B y B dependa de A
+6. ❌ **Inyección por propiedad**: Preferir inyección por constructor
+
+## Consideraciones Específicas para Odoonto
+
+### Servicios Principales
+
+Para Odoonto, estos son los servicios clave que deben registrarse:
+
+1. **Repositorios** (implementaciones concretas de interfaces del dominio):
+   - PatientRepository, DoctorRepository, AppointmentRepository, etc.
+
+2. **Servicios de aplicación** (orquestación de casos de uso):
+   - PatientAppService, AppointmentAppService, TreatmentAppService, etc.
+
+3. **Servicios de infraestructura** (funcionalidades técnicas):
+   - Firestore/Firebase, Autenticación, Email, etc.
+
+### Ejemplo para el Sistema Dental
+
+```csharp
+// Registrar servicios específicos del dominio dental
+services.AddScoped<IOdontogramRepository, OdontogramRepository>();
+services.AddScoped<IDentalChartService, DentalChartService>();
+services.AddScoped<ITreatmentPlanningService, TreatmentPlanningService>();
+
+// Servicios específicos para el módulo de agenda dental
+services.AddScoped<IAppointmentScheduler, DentalAppointmentScheduler>();
+services.AddScoped<IAvailabilityChecker, DoctorAvailabilityChecker>();
+```

@@ -1,0 +1,316 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para Contexto de Firebase
+
+## Propósito
+
+El contexto de Firebase en la capa de Datos actúa como un puente entre las implementaciones de repositorio y Firestore, proporcionando métodos para acceder y manipular colecciones y documentos, y manteniendo la configuración centralizada.
+
+## Convenciones de Nombrado
+
+- Nombre de clase: `FirebaseDbContext` o `FirestoreContext`
+- Métodos para colecciones: `GetCollection<T>`, `GetCollectionReference`
+- Métodos para documentos: `GetDocument<T>`, `GetDocumentReference`
+- Métodos de conversión: `ConvertToEntity<T>`, `ConvertToDocument`
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Data.Core.Firebase;
+
+using Google.Cloud.Firestore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Odoonto.Domain.Entities;
+using Odoonto.Infrastructure.Configuration.Firebase;
+
+/// <summary>
+/// Contexto de acceso a Firestore
+/// </summary>
+public class FirebaseDbContext
+{
+    private readonly FirestoreDb _firestoreDb;
+    private readonly Dictionary<string, object> _converters;
+    
+    /// <summary>
+    /// Constructor que obtiene la instancia de FirestoreDb
+    /// </summary>
+    public FirebaseDbContext()
+    {
+        // Obtener instancia de FirestoreDb desde la configuración
+        _firestoreDb = FirebaseConfiguration.Instance.GetFirestoreDb();
+        
+        if (_firestoreDb == null)
+        {
+            throw new InvalidOperationException("La base de datos Firestore no está inicializada. Asegúrese de que la configuración de Firebase sea correcta.");
+        }
+        
+        _converters = new Dictionary<string, object>();
+        RegisterConverters();
+    }
+    
+    /// <summary>
+    /// Propiedad para acceder directamente a FirestoreDb
+    /// </summary>
+    public FirestoreDb FirestoreDb => _firestoreDb;
+    
+    /// <summary>
+    /// Registra los convertidores para entidades específicas
+    /// </summary>
+    private void RegisterConverters()
+    {
+        // Registrar convertidores para cada entidad
+        RegisterConverter<Patient>("patients", new PatientConverter());
+        RegisterConverter<Doctor>("doctors", new DoctorConverter());
+        RegisterConverter<Appointment>("appointments", new AppointmentConverter());
+        RegisterConverter<Treatment>("treatments", new TreatmentConverter());
+        // ... más convertidores
+    }
+    
+    /// <summary>
+    /// Registra un convertidor para una entidad
+    /// </summary>
+    public void RegisterConverter<TEntity>(string collectionName, object converter)
+    {
+        string key = GetConverterKey<TEntity>(collectionName);
+        _converters[key] = converter;
+    }
+    
+    /// <summary>
+    /// Obtiene una referencia a una colección
+    /// </summary>
+    public CollectionReference GetCollectionReference(string collectionName)
+    {
+        return _firestoreDb.Collection(collectionName);
+    }
+    
+    /// <summary>
+    /// Obtiene una referencia a un documento
+    /// </summary>
+    public DocumentReference GetDocumentReference(string collectionName, string documentId)
+    {
+        return _firestoreDb.Collection(collectionName).Document(documentId);
+    }
+    
+    /// <summary>
+    /// Obtiene una colección con convertidor
+    /// </summary>
+    public CollectionReference GetCollection<TEntity>(string collectionName = null)
+    {
+        string resolvedCollection = collectionName ?? GetDefaultCollectionName<TEntity>();
+        string converterKey = GetConverterKey<TEntity>(resolvedCollection);
+        
+        if (!_converters.TryGetValue(converterKey, out object converterObj))
+        {
+            throw new InvalidOperationException($"No se encontró un convertidor para la entidad {typeof(TEntity).Name} en la colección {resolvedCollection}");
+        }
+        
+        // Obtener los métodos de conversión usando reflection
+        dynamic converter = converterObj;
+        Func<TEntity, object> toDocument = (Func<TEntity, object>)converter.ToDocument;
+        Func<object, TEntity> toDomainEntity = (Func<object, TEntity>)converter.ToDomainEntity;
+        
+        // Crear y retornar la colección con el convertidor configurado
+        return _firestoreDb.Collection(resolvedCollection)
+            .WithConverter(new FirestoreConverter<TEntity>
+            {
+                ToFirestore = (entity) => ConvertToFirestoreDocument(toDocument(entity)),
+                FromFirestore = (snapshot) => toDomainEntity(ConvertFromFirestoreDocument(snapshot))
+            });
+    }
+    
+    /// <summary>
+    /// Convierte un objeto a un documento Firestore
+    /// </summary>
+    private Dictionary<string, object> ConvertToFirestoreDocument(object document)
+    {
+        // Implementación para convertir el objeto a un Dictionary<string, object>
+        // Esto puede variar según la estructura del documento
+        if (document is Dictionary<string, object> dict)
+        {
+            return dict;
+        }
+        
+        // Si no es un diccionario, se puede usar serialización
+        var json = Newtonsoft.Json.JsonConvert.SerializeObject(document);
+        return Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+    }
+    
+    /// <summary>
+    /// Convierte un snapshot de Firestore a un objeto
+    /// </summary>
+    private object ConvertFromFirestoreDocument(DocumentSnapshot snapshot)
+    {
+        return snapshot.ToDictionary();
+    }
+    
+    /// <summary>
+    /// Obtiene la clave para buscar un convertidor
+    /// </summary>
+    private string GetConverterKey<T>(string collectionName)
+    {
+        return $"{typeof(T).FullName}:{collectionName}";
+    }
+    
+    /// <summary>
+    /// Obtiene el nombre de colección por defecto para una entidad
+    /// </summary>
+    private string GetDefaultCollectionName<T>()
+    {
+        // Convención: nombre de la clase en plural y lowercase
+        return typeof(T).Name.ToLowerInvariant() + "s";
+    }
+}
+```
+
+## Convertidores de Entidades
+
+Los convertidores transforman entre entidades de dominio y documentos de Firestore:
+
+```csharp
+/// <summary>
+/// Base para convertidores de entidades
+/// </summary>
+public interface IEntityConverter<TEntity>
+{
+    /// <summary>
+    /// Convierte una entidad de dominio a un documento para Firestore
+    /// </summary>
+    object ToDocument(TEntity entity);
+    
+    /// <summary>
+    /// Convierte un documento de Firestore a una entidad de dominio
+    /// </summary>
+    TEntity ToDomainEntity(object document);
+}
+
+/// <summary>
+/// Convertidor para entidad Patient
+/// </summary>
+public class PatientConverter : IEntityConverter<Patient>
+{
+    public object ToDocument(Patient entity)
+    {
+        return new Dictionary<string, object>
+        {
+            ["id"] = entity.Id.ToString(),
+            ["fullName"] = entity.FullName.Value,
+            ["email"] = entity.ContactInfo.Email,
+            ["phone"] = entity.ContactInfo.Phone,
+            ["birthDate"] = entity.BirthDate,
+            ["address"] = entity.Address,
+            ["gender"] = entity.Gender,
+            ["createdAt"] = entity.CreatedAt,
+            ["updatedAt"] = entity.UpdatedAt
+        };
+    }
+    
+    public Patient ToDomainEntity(object document)
+    {
+        var dict = (Dictionary<string, object>)document;
+        
+        var id = Guid.Parse(dict["id"].ToString());
+        var fullName = new FullName(dict["fullName"].ToString());
+        var contactInfo = new ContactInfo(
+            dict["email"].ToString(),
+            dict["phone"].ToString());
+        var birthDate = (DateTime)dict["birthDate"];
+        
+        var patient = new Patient(id, fullName, contactInfo, birthDate);
+        
+        // Propiedades opcionales
+        if (dict.TryGetValue("address", out var address))
+        {
+            patient.SetAddress(address.ToString());
+        }
+        
+        if (dict.TryGetValue("gender", out var gender))
+        {
+            patient.SetGender(gender.ToString());
+        }
+        
+        return patient;
+    }
+}
+```
+
+## Implementación de FirestoreConverter
+
+```csharp
+/// <summary>
+/// Convertidor personalizado para Firestore
+/// </summary>
+public class FirestoreConverter<T> : IFirestoreConverter<T>
+{
+    public Func<T, Dictionary<string, object>> ToFirestore { get; set; }
+    public Func<DocumentSnapshot, T> FromFirestore { get; set; }
+    
+    Dictionary<string, object> IFirestoreConverter<T>.ToFirestore(T value)
+    {
+        return ToFirestore(value);
+    }
+    
+    T IFirestoreConverter<T>.FromFirestore(DocumentSnapshot snapshot)
+    {
+        return FromFirestore(snapshot);
+    }
+}
+```
+
+## Uso en Repositorios
+
+```csharp
+public class PatientRepository : IPatientRepository
+{
+    private readonly FirebaseDbContext _context;
+    private readonly CollectionReference _collection;
+    
+    public PatientRepository(FirebaseDbContext context)
+    {
+        _context = context;
+        _collection = _context.GetCollection<Patient>();
+    }
+    
+    public async Task<Patient> GetByIdAsync(Guid id)
+    {
+        var snapshot = await _collection.Document(id.ToString()).GetSnapshotAsync();
+        
+        if (!snapshot.Exists)
+        {
+            return null;
+        }
+        
+        return snapshot.ConvertTo<Patient>();
+    }
+    
+    public async Task<IEnumerable<Patient>> GetAllAsync()
+    {
+        var snapshot = await _collection.GetSnapshotAsync();
+        return snapshot.Documents.Select(doc => doc.ConvertTo<Patient>());
+    }
+    
+    // Resto de métodos del repositorio...
+}
+```
+
+## Buenas Prácticas
+
+1. **Centralización**: Mantener toda la lógica de acceso a Firestore en el contexto
+2. **Registro de convertidores**: Registrar convertidores para cada entidad
+3. **Manejo adecuado de IDs**: Convertir entre Guid y string para IDs
+4. **Conversión tipada**: Usar genéricos para conversión fuertemente tipada
+5. **Manejo de errores**: Proporcionar mensajes de error significativos
+6. **Lazy loading**: Cargar referencias a otras entidades solo cuando sea necesario
+7. **Seguridad**: No exponer detalles de implementación de Firestore al dominio
+
+## Anti-patrones
+
+1. ❌ **Lógica específica de Firestore en repositorios**: Debe estar en el contexto
+2. ❌ **Strings literales para colecciones**: Usar constantes o métodos para nombres
+3. ❌ **Convertidores ad-hoc**: Centralizar la lógica de conversión
+4. ❌ **Filtración de API de Firebase**: No exponer clases de Firebase fuera del contexto
+5. ❌ **Queries complejas dispersas**: Centralizar la construcción de queries

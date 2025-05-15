@@ -26,7 +26,7 @@ namespace Odoonto.Domain.Models.Patients
         /// <summary>
         /// Género del paciente
         /// </summary>
-        public Gender Gender { get; private set; }
+        public GenderValue Gender { get; private set; }
 
         /// <summary>
         /// Información de contacto
@@ -59,7 +59,7 @@ namespace Odoonto.Domain.Models.Patients
         /// <summary>
         /// Constructor para crear un nuevo paciente
         /// </summary>
-        public Patient(FullName name, Date dateOfBirth, Gender gender, ContactInfo contact)
+        public Patient(FullName name, Date dateOfBirth, GenderValue gender, ContactInfo contact)
         {
             ValidatePatient(name, dateOfBirth);
 
@@ -75,7 +75,7 @@ namespace Odoonto.Domain.Models.Patients
         /// <summary>
         /// Actualiza la información básica del paciente
         /// </summary>
-        public void UpdateBasicInfo(FullName name, Date dateOfBirth, Gender gender, ContactInfo contact)
+        public void UpdateBasicInfo(FullName name, Date dateOfBirth, GenderValue gender, ContactInfo contact)
         {
             ValidatePatient(name, dateOfBirth);
 

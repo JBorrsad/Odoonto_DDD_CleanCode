@@ -1,6 +1,6 @@
 using System;
-using Odoonto.Domain.Core.Models;
 using Odoonto.Domain.Core.Models.Exceptions;
+using Odoonto.Domain.Core.Abstractions;
 
 namespace Odoonto.Domain.Models.Lesions
 {
@@ -46,35 +46,35 @@ namespace Odoonto.Domain.Models.Lesions
             }
 
             Name = name.Trim();
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para establecer la descripción
         public void SetDescription(string description)
         {
             Description = description?.Trim() ?? string.Empty;
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para establecer la categoría
         public void SetCategory(string category)
         {
             Category = category?.Trim() ?? string.Empty;
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para activar la lesión en el catálogo
         public void Activate()
         {
             IsActive = true;
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para desactivar la lesión en el catálogo
         public void Deactivate()
         {
             IsActive = false;
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
     }
 } 

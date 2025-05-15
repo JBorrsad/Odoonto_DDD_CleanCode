@@ -1,0 +1,268 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para Perfiles de AutoMapper
+
+## Propósito
+
+Los perfiles de AutoMapper en la capa de Aplicación tienen como objetivo definir las reglas de mapeo entre entidades de dominio y DTOs (Data Transfer Objects), facilitando la conversión entre los diferentes tipos de objetos utilizados en el sistema.
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Application.AutoMapper.Patients;
+
+using AutoMapper;
+using System;
+using Odoonto.Application.DTO.Patients;
+using Odoonto.Domain.Entities.Patients;
+using Odoonto.Domain.ValueObjects;
+
+/// <summary>
+/// Perfil de mapeo para la entidad Patient y sus DTOs relacionados
+/// </summary>
+public class PatientMappingProfile : Profile
+{
+    public PatientMappingProfile()
+    {
+        // Entity -> DTO (Read)
+        CreateMap<Patient, PatientDto>()
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName.Value))
+            .ForMember(dest => dest.ContactInfo, opt => opt.MapFrom(src => new ContactInfoDto 
+            { 
+                Email = src.ContactInfo.Email, 
+                Phone = src.ContactInfo.Phone 
+            }))
+            .ForMember(dest => dest.Age, opt => opt.MapFrom(src => CalculateAge(src.BirthDate)));
+
+        // Entity -> DTO (Query/List)
+        CreateMap<Patient, PatientQueryDto>()
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName.Value))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ContactInfo.Email))
+            .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.ContactInfo.Phone));
+
+        // DTO -> Entity (Create)
+        CreateMap<CreatePatientDto, Patient>()
+            .ConstructUsing((src, ctx) => new Patient(
+                Guid.NewGuid(),
+                new FullName(src.FullName),
+                new ContactInfo(src.Email, src.Phone),
+                DateTime.Parse(src.BirthDate)))
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address))
+            .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender));
+
+        // DTO -> Entity (Update)
+        // Para actualización, normalmente se hace caso por caso en el servicio
+        // ya que las entidades de dominio deberían encapsular su comportamiento
+    }
+
+    /// <summary>
+    /// Calcula la edad basada en la fecha de nacimiento
+    /// </summary>
+    private int CalculateAge(DateTime birthDate)
+    {
+        var today = DateTime.Today;
+        var age = today.Year - birthDate.Year;
+        
+        if (birthDate.Date > today.AddYears(-age))
+        {
+            age--;
+        }
+        
+        return age;
+    }
+}
+```
+
+## Tipos de Mapeos
+
+### 1. Entidad a DTO (Lectura)
+
+```csharp
+// Mapeo directo
+CreateMap<Doctor, DoctorDto>();
+
+// Mapeo con transformación de propiedades
+CreateMap<Appointment, AppointmentDto>()
+    .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Patient.FullName.Value))
+    .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Doctor.FullName.Value))
+    .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.TimeSlot.StartTime))
+    .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.TimeSlot.DurationMinutes));
+
+// Mapeo con lógica condicional
+CreateMap<Treatment, TreatmentDto>()
+    .ForMember(dest => dest.Status, opt => opt.MapFrom(src => 
+        src.CompletedDate.HasValue ? "Completado" : "Pendiente"))
+    .ForMember(dest => dest.DisplayPrice, opt => opt.MapFrom(src => 
+        $"{src.Price.Amount} {src.Price.Currency}"));
+```
+
+### 2. DTO a Entidad (Creación)
+
+```csharp
+// Usando constructor explícito
+CreateMap<CreateAppointmentDto, Appointment>()
+    .ConstructUsing((src, ctx) => new Appointment(
+        Guid.NewGuid(),
+        ctx.Mapper.Map<Patient>(src.Patient),
+        ctx.Mapper.Map<Doctor>(src.Doctor),
+        new TimeSlot(src.StartTime, src.Duration),
+        src.TreatmentType));
+
+// Mapeando a Value Objects
+CreateMap<CreateTreatmentDto, Treatment>()
+    .ConstructUsing((src, ctx) => new Treatment(
+        Guid.NewGuid(),
+        src.Name,
+        src.Description,
+        new Money(src.Price, src.Currency),
+        src.Duration));
+```
+
+### 3. Mapeo de Colecciones
+
+```csharp
+// Mapeo de colección de entidades a colección de DTOs
+CreateMap<IEnumerable<Appointment>, IEnumerable<AppointmentDto>>();
+
+// Mapeo explícito de colección
+CreateMap<Doctor, DoctorWithAppointmentsDto>()
+    .ForMember(dest => dest.Appointments, opt => opt.MapFrom(src => 
+        src.Appointments.Select(a => new AppointmentSummaryDto
+        {
+            Id = a.Id,
+            PatientName = a.Patient.FullName.Value,
+            ScheduledTime = a.TimeSlot.StartTime,
+            Duration = a.TimeSlot.DurationMinutes
+        })));
+```
+
+### 4. Mapeo de Value Objects
+
+```csharp
+// Mapeo de Value Object a tipos simples
+CreateMap<FullName, string>()
+    .ConvertUsing(src => src.Value);
+
+CreateMap<ContactInfo, ContactInfoDto>()
+    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+    .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone));
+
+// Mapeo a Value Object
+CreateMap<string, FullName>()
+    .ConvertUsing(src => new FullName(src));
+
+CreateMap<ContactInfoDto, ContactInfo>()
+    .ConstructUsing(src => new ContactInfo(src.Email, src.Phone));
+```
+
+## Convenciones de Nombrado
+
+- **Nombres de clases**: `<Entidad>MappingProfile` (ej. `PatientMappingProfile`)
+- **Namespace**: `Odoonto.Application.AutoMapper.<Funcionalidad>` (ej. `Odoonto.Application.AutoMapper.Patients`)
+- **Métodos de extensión**: Si se requieren transformaciones complejas, crear métodos de extensión con nombres descriptivos.
+
+## Organización
+
+Agrupar perfiles por:
+
+1. **Dominio o Entidad**: Un perfil por entidad principal (Patient, Doctor, Appointment)
+2. **Funcionalidad**: Un perfil por área funcional (UserManagement, Scheduling, Billing)
+
+## Buenas Prácticas
+
+1. **Encapsular lógica compleja** en métodos privados dentro del perfil
+2. **Respetar invariantes del dominio** al mapear de DTOs a entidades
+3. **Un perfil por entidad principal** para mantener el código manejable
+4. **Usar ConstructUsing para entidades** que requieran lógica de construcción específica
+5. **Ignorar propiedades** que no deban mapearse con `Ignore()`
+6. **Validar en capa de aplicación**, antes del mapeo a entidades de dominio
+7. **Documentar con XML** los perfiles y transformaciones complejas
+8. **Evitar mapeos circulares** para prevenir recursiones infinitas
+
+```csharp
+// Prevenir referencias circulares
+CreateMap<Doctor, DoctorDto>()
+    .ForMember(dest => dest.Appointments, opt => opt.MapFrom(src => src.Appointments))
+    .ForMember(dest => dest.Patients, opt => opt.Ignore());
+
+CreateMap<Patient, PatientDto>()
+    .ForMember(dest => dest.Appointments, opt => opt.MapFrom(src => src.Appointments))
+    .ForMember(dest => dest.Doctors, opt => opt.Ignore());
+```
+
+## Soluciones a Problemas Comunes
+
+### 1. Mapeo de Referencias Circulares
+
+Para evitar referencias circulares, usar DTOs específicos sin referencias circulares:
+
+```csharp
+// DTO sin referencia circular
+public class DoctorSummaryDto
+{
+    public Guid Id { get; set; }
+    public string FullName { get; set; }
+    public string Specialty { get; set; }
+}
+
+// Mapeo usando DTO resumido
+CreateMap<Doctor, DoctorSummaryDto>()
+    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName.Value));
+
+CreateMap<Appointment, AppointmentDto>()
+    .ForMember(dest => dest.Doctor, opt => opt.MapFrom(src => 
+        new DoctorSummaryDto
+        {
+            Id = src.Doctor.Id,
+            FullName = src.Doctor.FullName.Value,
+            Specialty = src.Doctor.Specialty
+        }));
+```
+
+### 2. Transformaciones Complejas
+
+Para transformaciones complejas, usar métodos de resolución:
+
+```csharp
+CreateMap<Odontogram, OdontogramDto>()
+    .ForMember(dest => dest.TeethStatus, opt => opt.MapFrom<TeethStatusResolver>());
+
+// Resolver personalizado
+public class TeethStatusResolver : IValueResolver<Odontogram, OdontogramDto, List<ToothStatusDto>>
+{
+    public List<ToothStatusDto> Resolve(Odontogram source, OdontogramDto destination, List<ToothStatusDto> destMember, ResolutionContext context)
+    {
+        var result = new List<ToothStatusDto>();
+        
+        foreach (var tooth in source.Teeth)
+        {
+            var status = new ToothStatusDto
+            {
+                Number = tooth.Number,
+                Status = tooth.HasLesion ? "Lesion" : tooth.IsTreated ? "Treated" : "Healthy",
+                Lesions = tooth.Lesions.Select(l => new LesionDto
+                {
+                    Type = l.Type,
+                    Surface = l.Surface,
+                    Severity = l.Severity
+                }).ToList()
+            };
+            
+            result.Add(status);
+        }
+        
+        return result;
+    }
+}
+```
+
+## Anti-patrones
+
+1. ❌ **Lógica de negocio en perfiles**: La lógica de negocio debe estar en el dominio
+2. ❌ **Perfiles gigantes**: Dividir en perfiles más pequeños y específicos
+3. ❌ **Mapeo bidireccional innecesario**: Definir solo los mapeos que se necesitan
+4. ❌ **Ignorar encapsulación del dominio**: Respetar métodos de construcción y modificación
+5. ❌ **Mutación de estado en mapeos**: Los mapeos deben ser puros y sin efectos secundarios

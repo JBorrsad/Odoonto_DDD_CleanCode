@@ -1,0 +1,114 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Principios de Clean Code y SOLID
+
+## 1. Principios SOLID
+
+### 1.1. Single Responsibility Principle (SRP)
+- Cada clase debe tener una única razón para cambiar
+- Signos de violación: clases grandes, métodos con múltiples responsabilidades
+- Exige separación clara entre capas y componentes
+
+### 1.2. Open/Closed Principle (OCP)
+- Las entidades deben estar abiertas para extensión, cerradas para modificación
+- Implementa nuevas funcionalidades mediante herencia o composición
+- Usa abstracciones (interfaces) para permitir extensibilidad
+
+### 1.3. Liskov Substitution Principle (LSP)
+- Las clases derivadas deben ser sustituibles por sus clases base
+- Las subclases no deben alterar comportamientos esperados de la clase padre
+- Evita excepciones del tipo "operación no soportada" en implementaciones
+
+### 1.4. Interface Segregation Principle (ISP)
+- Muchas interfaces específicas son mejores que una interfaz general
+- Los clientes no deben depender de interfaces que no usan
+- Crea interfaces cohesivas y enfocadas en una funcionalidad específica
+
+### 1.5. Dependency Inversion Principle (DIP)
+- Depende de abstracciones, no de implementaciones concretas
+- Las clases de alto nivel no deben depender de clases de bajo nivel
+- Usa inyección de dependencias para invertir el control
+
+## 2. Nomenclatura y Estilo
+
+### 2.1. Nombres Descriptivos
+- Nombres de clases: sustantivos en PascalCase (CategoryService, PatientEntity)
+- Nombres de métodos: verbos en PascalCase (GetById, UpdatePatient)
+- Nombres de variables: camelCase descriptivos (currentPatient, appointmentsList)
+- Evita abreviaturas no estándar y prefijos/sufijos innecesarios
+
+### 2.2. Estructura de Código
+- Líneas cortas (máximo 100 caracteres)
+- Métodos pequeños (menos de 20 líneas idealmente)
+- Clases cohesivas (menos de 300 líneas)
+- Un nivel máximo de anidación de 3
+
+### 2.3. Comentarios
+- Comentar el "por qué", no el "qué" o el "cómo"
+- Documentar APIs públicas con XML Comments o JSDoc
+- Evitar comentarios obvios o redundantes
+- Mantener los comentarios actualizados con el código
+
+## 3. Prácticas de Programación
+
+### 3.1. DRY (Don't Repeat Yourself)
+- Extraer código duplicado en métodos reutilizables
+- Crear abstracciones para patrones recurrentes
+- Establecer una única fuente de verdad para cada concepto
+
+### 3.2. KISS (Keep It Simple, Stupid)
+- Preferir soluciones simples sobre complejas
+- Evitar optimizaciones prematuras
+- Diseñar para el caso de uso actual, no para casos hipotéticos futuros
+
+### 3.3. YAGNI (You Aren't Gonna Need It)
+- No agregar funcionalidades hasta que sean necesarias
+- Evitar código "por si acaso"
+- Implementar solo lo que requieren los casos de uso actuales
+
+### 3.4. Fail Fast
+- Validar entradas al inicio de los métodos
+- Lanzar excepciones descriptivas ante condiciones inválidas
+- No ocultar errores o condiciones excepcionales
+
+## 4. Buenas Prácticas Específicas
+
+### 4.1. Inmutabilidad
+- Preferir objetos inmutables cuando sea posible
+- Usar setters privados y constructores/factory methods para inicialización
+- Devolver copias defensivas de colecciones internas
+
+### 4.2. Manejo de Excepciones
+- Crear jerarquía de excepciones específicas del dominio
+- Documentar excepciones esperadas en comentarios de método
+- Capturar excepciones solo cuando se pueda manejar adecuadamente
+
+### 4.3. Testing
+- Escribir pruebas unitarias para toda la lógica de negocio
+- Mantener pruebas independientes y deterministas
+- Seguir el patrón AAA (Arrange-Act-Assert)
+
+### 4.4. Revisión de Código
+- Revisar cada cambio para asegurar el cumplimiento de estos principios
+- Usar herramientas de análisis estático (linters)
+- Mantener discusiones constructivas centradas en el código, no en personas
+
+## 5. Firebase y React Best Practices
+
+### 5.1. Firebase
+- Aislar todo el código Firebase en la capa de Datos
+- Usar transacciones para operaciones atómicas
+- Implementar caching para reducir lecturas
+- Estructurar documentos para consultas eficientes
+
+### 5.2. React
+- Componentes pequeños y enfocados
+- Separar lógica (Presenters) de presentación (Views)
+- Usar TypeScript para definir interfaces y tipos
+- Aplicar principios DDD adaptados a frontend
+
+
+

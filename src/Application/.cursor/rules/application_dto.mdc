@@ -1,0 +1,307 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# DTOs (Application Layer)
+
+## Descripción
+
+Los Data Transfer Objects (DTOs) son objetos planos que transfieren datos entre la capa de presentación y la capa de aplicación. Se utilizan para evitar exponer las entidades del dominio y para optimizar la transferencia de datos.
+
+## Ubicación
+
+`src/Application/Odoonto.Application/DTO/{Nombre}/{Nombre}{Tipo}Dto.cs`
+
+Donde `{Tipo}` puede ser:
+- `Create`: Para creación
+- `Update`: Para actualización
+- `Read`: Para lectura
+- `Query`: Para consultas/listados (versión ligera)
+
+## Características Clave
+
+1. **Inmutabilidad**: Propiedades con getters y setters públicos pero sin lógica adicional
+2. **Estructura Plana**: Sin jerarquías complejas
+3. **Objetos Específicos**: DTOs diferentes por operación (crear, leer, actualizar)
+4. **Sin Lógica de Negocio**: Solo datos, nunca comportamiento
+5. **Validaciones de Anotaciones**: Para validación básica de formato
+
+## Implementación
+
+### Estructura Básica
+
+```csharp
+namespace Odoonto.Application.DTO.{Nombre}s;
+
+using System;
+using System.ComponentModel.DataAnnotations;
+
+/// <summary>
+/// DTO para crear un nuevo {Nombre}
+/// </summary>
+public class {Nombre}CreateDto
+{
+    /// <summary>
+    /// Identificador único
+    /// </summary>
+    [Required]
+    public Guid Id { get; set; }
+    
+    /// <summary>
+    /// Nombre 
+    /// </summary>
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; }
+    
+    // Más propiedades según necesidades
+}
+
+/// <summary>
+/// DTO para actualizar un {Nombre} existente
+/// </summary>
+public class {Nombre}UpdateDto
+{
+    /// <summary>
+    /// Nombre 
+    /// </summary>
+    [StringLength(100)]
+    public string Name { get; set; }
+    
+    // Más propiedades según necesidades
+}
+
+/// <summary>
+/// DTO para leer un {Nombre} completo
+/// </summary>
+public class {Nombre}ReadDto
+{
+    /// <summary>
+    /// Identificador único
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
+    /// Nombre 
+    /// </summary>
+    public string Name { get; set; }
+    
+    /// <summary>
+    /// Fecha de creación
+    /// </summary>
+    public DateTime CreatedAt { get; set; }
+    
+    /// <summary>
+    /// Fecha de última actualización
+    /// </summary>
+    public DateTime UpdatedAt { get; set; }
+    
+    // Más propiedades según necesidades
+    
+    /// <summary>
+    /// Colección de elementos relacionados
+    /// </summary>
+    public IEnumerable<OtroElementoDto> RelatedItems { get; set; }
+}
+
+/// <summary>
+/// DTO para listados/consultas de {Nombre} (versión ligera)
+/// </summary>
+public class {Nombre}QueryDto
+{
+    /// <summary>
+    /// Identificador único
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
+    /// Nombre 
+    /// </summary>
+    public string Name { get; set; }
+    
+    // Solo propiedades esenciales para listados
+}
+```
+
+## Ejemplo Concreto
+
+```csharp
+// src/Application/Odoonto.Application/DTO/Patients/PatientCreateDto.cs
+namespace Odoonto.Application.DTO.Patients;
+
+using System;
+using System.ComponentModel.DataAnnotations;
+
+/// <summary>
+/// DTO para crear un nuevo paciente
+/// </summary>
+public class PatientCreateDto
+{
+    /// <summary>
+    /// Identificador único
+    /// </summary>
+    [Required]
+    public Guid Id { get; set; }
+    
+    /// <summary>
+    /// Nombre completo del paciente
+    /// </summary>
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; }
+    
+    /// <summary>
+    /// Fecha de nacimiento
+    /// </summary>
+    [Required]
+    public DateTime BirthDate { get; set; }
+    
+    /// <summary>
+    /// Número de teléfono
+    /// </summary>
+    [Phone]
+    [StringLength(20)]
+    public string PhoneNumber { get; set; }
+    
+    /// <summary>
+    /// Correo electrónico
+    /// </summary>
+    [EmailAddress]
+    [StringLength(100)]
+    public string Email { get; set; }
+    
+    /// <summary>
+    /// Dirección postal
+    /// </summary>
+    public AddressDto Address { get; set; }
+    
+    /// <summary>
+    /// Historia médica relevante
+    /// </summary>
+    public string MedicalHistory { get; set; }
+}
+
+// src/Application/Odoonto.Application/DTO/Patients/PatientReadDto.cs
+namespace Odoonto.Application.DTO.Patients;
+
+using System;
+using System.Collections.Generic;
+using Odoonto.Application.DTO.Appointments;
+
+/// <summary>
+/// DTO para leer un paciente completo
+/// </summary>
+public class PatientReadDto
+{
+    /// <summary>
+    /// Identificador único
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
+    /// Nombre completo del paciente
+    /// </summary>
+    public string Name { get; set; }
+    
+    /// <summary>
+    /// Fecha de nacimiento
+    /// </summary>
+    public DateTime BirthDate { get; set; }
+    
+    /// <summary>
+    /// Edad calculada
+    /// </summary>
+    public int Age { get; set; }
+    
+    /// <summary>
+    /// Número de teléfono
+    /// </summary>
+    public string PhoneNumber { get; set; }
+    
+    /// <summary>
+    /// Correo electrónico
+    /// </summary>
+    public string Email { get; set; }
+    
+    /// <summary>
+    /// Dirección postal
+    /// </summary>
+    public AddressDto Address { get; set; }
+    
+    /// <summary>
+    /// Historia médica relevante
+    /// </summary>
+    public string MedicalHistory { get; set; }
+    
+    /// <summary>
+    /// Citas del paciente
+    /// </summary>
+    public IEnumerable<AppointmentQueryDto> Appointments { get; set; }
+    
+    /// <summary>
+    /// Fecha de creación
+    /// </summary>
+    public DateTime CreatedAt { get; set; }
+    
+    /// <summary>
+    /// Fecha de última actualización
+    /// </summary>
+    public DateTime UpdatedAt { get; set; }
+}
+
+// src/Application/Odoonto.Application/DTO/Patients/PatientQueryDto.cs
+namespace Odoonto.Application.DTO.Patients;
+
+using System;
+
+/// <summary>
+/// DTO para listados de pacientes (versión ligera)
+/// </summary>
+public class PatientQueryDto
+{
+    /// <summary>
+    /// Identificador único
+    /// </summary>
+    public Guid Id { get; set; }
+    
+    /// <summary>
+    /// Nombre completo del paciente
+    /// </summary>
+    public string Name { get; set; }
+    
+    /// <summary>
+    /// Edad calculada
+    /// </summary>
+    public int Age { get; set; }
+    
+    /// <summary>
+    /// Número de teléfono
+    /// </summary>
+    public string PhoneNumber { get; set; }
+    
+    /// <summary>
+    /// Próxima cita (si existe)
+    /// </summary>
+    public DateTime? NextAppointment { get; set; }
+}
+```
+
+## Principios y Buenas Prácticas
+
+1. **DTOs Específicos por Operación**: Crear DTOs separados para diferentes operaciones.
+2. **Validación con Anotaciones**: Usar `[Required]`, `[StringLength]`, etc. para validación básica.
+3. **Documentación XML**: Documentar todas las propiedades.
+4. **Nomenclatura Clara**: Usar sufijos descriptivos (CreateDto, ReadDto, etc.).
+5. **Simetría con Frontend**: Alinear los DTOs con los modelos del frontend cuando sea posible.
+6. **Sin Dependencias del Dominio**: Los DTOs no deben depender de entidades del dominio.
+
+## Anti-patrones a Evitar
+
+1. ❌ Reutilizar DTOs para distintas operaciones (crear/leer/actualizar)
+2. ❌ Incluir lógica de negocio en los DTOs
+3. ❌ Exponer detalles de implementación del dominio
+4. ❌ Mapeos manuales repetitivos (usar AutoMapper en su lugar)
+5. ❌ DTOs excesivamente grandes con toda la información
+6. ❌ Referencias circulares entre DTOs
+7. ❌ Falta de validaciones básicas

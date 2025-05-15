@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Odoonto.Domain.Core.Models;
 using Odoonto.Domain.Core.Models.Exceptions;
 using Odoonto.Domain.Models.ValueObjects;
+using Odoonto.Domain.Core.Abstractions;
+
 
 namespace Odoonto.Domain.Models.Doctors
 {

@@ -1,0 +1,183 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para Manejo de Excepciones en Infraestructura
+
+## Propósito
+
+El manejo de excepciones en la capa de Infraestructura se encarga de interceptar, registrar y traducir las excepciones del sistema a formatos adecuados para el usuario final, manteniendo la seguridad y proveyendo información útil para la depuración.
+
+## Convenciones de Nombrado
+
+- Middlewares: `<Propósito>Middleware` (ej. `GlobalExceptionMiddleware`, `LoggingMiddleware`)
+- Filtros: `<Propósito>Filter` (ej. `ApiExceptionFilter`, `ValidationFilter`)
+- Extensiones: `<Propósito>Extensions` (ej. `ExceptionHandlerExtensions`)
+
+## Estructura para Middleware de Excepciones
+
+```csharp
+namespace Odoonto.Infrastructure.ExceptionsHandler.Middlewares;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Odoonto.Domain.Exceptions;
+using System;
+using System.Net;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+/// <summary>
+/// Middleware para interceptar y manejar excepciones globalmente
+/// </summary>
+public class GlobalExceptionMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger<GlobalExceptionMiddleware> _logger;
+    private readonly bool _isDevelopment;
+
+    public GlobalExceptionMiddleware(
+        RequestDelegate next, 
+        ILogger<GlobalExceptionMiddleware> logger,
+        bool isDevelopment)
+    {
+        _next = next;
+        _logger = logger;
+        _isDevelopment = isDevelopment;
+    }
+
+    /// <summary>
+    /// Procesa la solicitud e intercepta excepciones
+    /// </summary>
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error no controlado: {Message}", ex.Message);
+            await HandleExceptionAsync(context, ex);
+        }
+    }
+
+    /// <summary>
+    /// Maneja la excepción y produce una respuesta HTTP adecuada
+    /// </summary>
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        context.Response.ContentType = "application/json";
+        
+        // Mapear tipo de excepción a código HTTP
+        (HttpStatusCode statusCode, string title) = MapExceptionToStatusCode(exception);
+        context.Response.StatusCode = (int)statusCode;
+        
+        // Crear respuesta de error
+        var response = new ErrorResponse
+        {
+            Status = context.Response.StatusCode,
+            Title = title,
+            Detail = exception.Message,
+            TraceId = context.TraceIdentifier,
+            // Solo incluir detalles técnicos en desarrollo
+            Technical = _isDevelopment ? new TechnicalDetails
+            {
+                ExceptionType = exception.GetType().Name,
+                StackTrace = exception.StackTrace,
+                InnerException = exception.InnerException?.Message
+            } : null
+        };
+        
+        // Serializar y enviar respuesta
+        return context.Response.WriteAsync(JsonSerializer.Serialize(response, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true
+        }));
+    }
+
+    /// <summary>
+    /// Mapea tipos de excepción a códigos de estado HTTP
+    /// </summary>
+    private (HttpStatusCode, string) MapExceptionToStatusCode(Exception exception)
+    {
+        return exception switch
+        {
+            EntityNotFoundException => (HttpStatusCode.NotFound, "Recurso no encontrado"),
+            ValidationException => (HttpStatusCode.BadRequest, "Datos inválidos"),
+            UnauthorizedAccessException => (HttpStatusCode.Unauthorized, "No autorizado"),
+            DuplicatedValueException => (HttpStatusCode.Conflict, "Conflicto de datos"),
+            WrongOperationException => (HttpStatusCode.BadRequest, "Operación inválida"),
+            _ => (HttpStatusCode.InternalServerError, "Error interno del servidor")
+        };
+    }
+}
+
+/// <summary>
+/// Estructura para la respuesta de error
+/// </summary>
+public class ErrorResponse
+{
+    public int Status { get; set; }
+    public string Title { get; set; }
+    public string Detail { get; set; }
+    public string TraceId { get; set; }
+    public TechnicalDetails Technical { get; set; }
+}
+
+/// <summary>
+/// Detalles técnicos para desarrolladores
+/// </summary>
+public class TechnicalDetails
+{
+    public string ExceptionType { get; set; }
+    public string StackTrace { get; set; }
+    public string InnerException { get; set; }
+}
+```
+
+## Extensiones para Registrar el Middleware
+
+```csharp
+namespace Odoonto.Infrastructure.ExceptionsHandler.Extensions;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Odoonto.Infrastructure.ExceptionsHandler.Middlewares;
+
+/// <summary>
+/// Extensiones para configurar el manejo de excepciones
+/// </summary>
+public static class ExceptionHandlerExtensions
+{
+    /// <summary>
+    /// Agrega el middleware de excepciones globales a la aplicación
+    /// </summary>
+    public static IApplicationBuilder UseGlobalExceptionHandler(
+        this IApplicationBuilder app,
+        IHostEnvironment environment)
+    {
+        return app.UseMiddleware<GlobalExceptionMiddleware>(environment.IsDevelopment());
+    }
+}
+```
+
+## Buenas Prácticas
+
+1. **Centralización**: Manejar excepciones de forma centralizada con middlewares
+2. **Logging detallado**: Registrar información suficiente para diagnóstico
+3. **Respuestas consistentes**: Usar formato estándar para respuestas de error
+4. **Ocultación de detalles técnicos**: Mostrar detalles técnicos solo en desarrollo
+5. **Mapeo apropiado**: Mapear tipos de excepción a códigos HTTP adecuados
+6. **Gestión de excepciones específicas**: Tratar de forma especial las excepciones de dominio
+
+## Anti-patrones
+
+1. ❌ **Revelar detalles internos**: No exponer mensajes de excepciones internas en producción
+2. ❌ **Try/catch excesivos**: Preferir middleware o filtros globales
+3. ❌ **Mensajes genéricos**: Proporcionar mensajes útiles para el usuario
+4. ❌ **Ignorar excepciones**: Siempre registrar y manejar apropiadamente
+5. ❌ **Mezclar con lógica de negocio**: Separar el manejo de excepciones

@@ -1,0 +1,126 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Consistencia de Namespaces y Resolución de Errores Relacionados
+
+## Estructura de Namespaces en el Proyecto Odoonto
+
+El proyecto Odoonto sigue una estructura de namespaces que refleja la arquitectura en capas y el diseño orientado al dominio:
+
+```
+Odoonto                           # Namespace raíz
+├── Domain                        # Capa de dominio
+│   ├── Core                      # Componentes fundamentales reutilizables
+│   │   ├── Abstractions          # Clases base abstractas (Entity, ValueObject...)
+│   │   ├── Models                # Modelos base
+│   │   │   └── Exceptions        # Excepciones de dominio
+│   ├── Models                    # Modelos/Entidades específicas del dominio
+│   │   ├── Patients              # Agrupadas por contexto
+│   │   ├── Doctors
+│   │   ├── Treatments
+│   │   └── ValueObjects          # Objetos de valor compartidos
+│   ├── Services                  # Servicios de dominio
+│   └── Repositories              # Interfaces de repositorio
+├── Application                   # Capa de aplicación
+├── Infrastructure                # Capa de infraestructura
+├── Data                          # Capa de datos
+└── Presentation                  # Capa de presentación
+```
+
+## Errores Comunes Relacionados con Namespaces
+
+### 1. Namespace incorrecto o incompleto
+
+**Error**: `The type or namespace name 'X' could not be found`
+
+**Resolución**:
+1. **Verificar la ubicación real** de la clase referenciada
+2. **Usar la ruta completa del namespace**
+   ```csharp
+   // INCORRECTO - Namespace parcial o incorrecto
+   using Odoonto.Domain;  // Demasiado general
+   using Odoonto.Core.Abstractions;  // Incompleto
+   
+   // CORRECTO - Namespace completo y preciso
+   using Odoonto.Domain.Core.Abstractions;
+   ```
+
+### 2. Referencias de extensión no encontradas
+
+**Error**: `'X' does not contain a definition for 'Y'`
+
+**Resolución**:
+1. **Verificar si es un método de extensión**
+2. **Importar explícitamente el namespace que contiene la extensión**
+   ```csharp
+   // Asegurar que se importa el namespace correcto
+   using Odoonto.Domain.Core.Abstractions;  // Contiene las extensiones
+   ```
+
+### 3. Colisiones de nombres
+
+**Error**: `'X' is an ambiguous reference`
+
+**Resolución**:
+1. **Utilizar nombres completamente calificados**
+   ```csharp
+   // En lugar de simplemente 'Entity'
+   Odoonto.Domain.Core.Abstractions.Entity entity;
+   ```
+2. **Usar alias de namespace para claridad**
+   ```csharp
+   using CoreAbs = Odoonto.Domain.Core.Abstractions;
+   
+   // Luego usar:
+   CoreAbs.Entity entity;
+   ```
+
+## Lineamientos para la Consistencia de Namespaces
+
+1. **Los namespaces deben reflejar estructura de carpetas**:
+   - La estructura física del proyecto debe coincidir con los namespaces
+   - Carpeta `Models/Patients` → namespace `Models.Patients`
+
+2. **Evitar importaciones genéricas**:
+   - Preferir imports específicos sobre comodines
+   ```csharp
+   // EVITAR
+   using Odoonto.Domain.Models.*;
+   
+   // PREFERIR
+   using Odoonto.Domain.Models.Patients;
+   using Odoonto.Domain.Models.Doctors;
+   ```
+
+3. **Mantener coherencia en la importación**:
+   - Ordenar imports alfabéticamente
+   - Agrupar imports por categoría (System primero, luego internos)
+   ```csharp
+   using System;
+   using System.Collections.Generic;
+   
+   using Odoonto.Domain.Core.Abstractions;
+   using Odoonto.Domain.Models.ValueObjects;
+   ```
+
+4. **Diagnosticar problemas de namespace**:
+   - Usar herramientas como el Analizador de Código Estático
+   - Revisar referencias y imports en todos los archivos afectados
+
+## Buenas Prácticas para Evitar Errores
+
+1. **Al crear nuevas clases**:
+   - Usar el namespace que coincida con la ubicación física
+   - Verificar que las clases base estén correctamente importadas
+
+2. **Al mover clases entre carpetas o proyectos**:
+   - Actualizar el namespace para reflejar la nueva ubicación
+   - Verificar y corregir todas las referencias a la clase
+
+3. **Al usar Entity o clases base**:
+   - Verificar siempre la ruta correcta del namespace
+   - Asegurar que el proyecto referencia al que contiene la definición
+   - Comprobar que el namespace existe exactamente como se espera
+

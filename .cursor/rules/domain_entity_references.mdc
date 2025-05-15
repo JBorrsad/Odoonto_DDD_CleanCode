@@ -1,0 +1,74 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Referencias a Entidades en la Capa de Dominio
+
+## Estructura de Proyectos en Capas
+
+En el proyecto Odoonto, las entidades de dominio deben referenciar correctamente las clases base de la capa Domain.Core:
+
+```
+/src
+  /Domain
+    /Odoonto.Domain.Core           # Classes base e interfaces fundamentales
+      /Abstractions                # Clases abstractas como Entity, ValueObject, etc.
+    /Odoonto.Domain                # Implementaciones específicas del dominio
+      /Models                      # Entidades y objetos de valor específicos
+```
+
+## Solución a Errores de Referencia de Entity
+
+Cuando una clase en Odoonto.Domain hereda de Entity, asegúrate de:
+
+1. **Agregar la referencia correcta al namespace**:
+   ```csharp
+   using Odoonto.Domain.Core.Abstractions;
+   ```
+
+2. **Verificar que el proyecto Odoonto.Domain tiene la referencia al proyecto Odoonto.Domain.Core**:
+   ```xml
+   <ItemGroup>
+     <ProjectReference Include="..\Odoonto.Domain.Core\Odoonto.Domain.Core.csproj" />
+   </ItemGroup>
+   ```
+
+3. **Comprobar la firma de los constructores**:
+   La clase Entity tiene:
+   - Un constructor sin parámetros: `protected Entity()`
+   - Un constructor que acepta un Guid: `protected Entity(Guid id)`
+
+4. **Para usar el método de extensión UpdateEditDate**:
+   - Usar la sintaxis `this.UpdateEditDate()` (con this explícito)
+   - Asegurar que se está importando `Odoonto.Domain.Core.Abstractions`
+
+5. **En caso de errores de compilación, verificar**:
+   - La clase base existe en el namespace especificado
+   - El constructor base está siendo llamado correctamente
+   - Las extensiones requeridas están disponibles y visibles
+
+## Ejemplo Correcto
+
+```csharp
+using System;
+using Odoonto.Domain.Core.Models.Exceptions;
+using Odoonto.Domain.Core.Abstractions;
+
+namespace Odoonto.Domain.Models.Patients
+{
+    public class Patient : Entity
+    {
+        private Patient(Guid id) : base(id)
+        {
+            // Inicialización
+        }
+        
+        public void UpdateSomething()
+        {
+            // Llamada correcta al método de extensión
+            this.UpdateEditDate();
+        }
+    }
+}
+

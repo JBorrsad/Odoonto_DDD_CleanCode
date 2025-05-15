@@ -34,7 +34,7 @@ namespace Odoonto.Domain.Services.Patients
         }
 
         public async Task<Guid> CreatePatientAsync(string firstName, string lastName, DateTime dateOfBirth,
-            Gender gender, string email, string phoneNumber, string address)
+            GenderValue gender, string email, string phoneNumber, string address)
         {
             // Validaciones
             if (string.IsNullOrWhiteSpace(firstName))
@@ -59,7 +59,7 @@ namespace Odoonto.Domain.Services.Patients
         }
 
         public async Task UpdatePatientInfoAsync(Guid id, string firstName, string lastName, DateTime dateOfBirth,
-            Gender gender, string email, string phoneNumber, string address)
+            GenderValue gender, string email, string phoneNumber, string address)
         {
             // Validaciones
             if (id == Guid.Empty)

@@ -1,0 +1,569 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Implementaciones de Repositorio (Data Layer)
+
+## Descripción
+
+Las implementaciones de repositorio en la capa de datos son las responsables de persistir y recuperar entidades del dominio en Firebase. Implementan las interfaces definidas en la capa de dominio, abstrayendo los detalles específicos de Firebase.
+
+## Ubicación
+
+`src/Data/Odoonto.Data/Repositories/{Nombre}Repository.cs`
+
+## Características Clave
+
+1. **Implementa Interfaz del Dominio**: Realiza la interfaz definida en el dominio
+2. **Encapsula Acceso a Firebase**: Abstrae todos los detalles de Firebase
+3. **Mapeo Bidireccional**: Convierte entre entidades de dominio y documentos de Firestore
+4. **Operaciones Asíncronas**: Todas las operaciones de I/O son asíncronas
+5. **Transacciones**: Gestiona transacciones para operaciones complejas
+6. **Consistencia**: Mantiene la consistencia del modelo de dominio
+
+## Implementación
+
+### Estructura Básica
+
+```csharp
+namespace Odoonto.Data.Repositories;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Google.Cloud.Firestore;
+using Odoonto.Data.Core.Firebase;
+using Odoonto.Domain.Models.{Carpeta};
+using Odoonto.Domain.Repositories;
+
+/// <summary>
+/// Implementación del repositorio para {Nombre} usando Firebase
+/// </summary>
+public class {Nombre}Repository : I{Nombre}Repository
+{
+    private readonly FirestoreContext _context;
+    private readonly string _collectionName = "{nombre}s";
+    
+    /// <summary>
+    /// Constructor con inyección de dependencias
+    /// </summary>
+    public {Nombre}Repository(FirestoreContext context)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+    }
+    
+    /// <summary>
+    /// Obtiene una entidad por su ID
+    /// </summary>
+    public async Task<{Nombre}> GetById(Guid id)
+    {
+        // Obtener documento de Firestore
+        DocumentSnapshot snapshot = await _context.GetDocumentAsync(_collectionName, id.ToString());
+        
+        // Si no existe, retornar null
+        if (snapshot == null || !snapshot.Exists)
+        {
+            return null;
+        }
+        
+        // Mapear documento a entidad
+        return MapToEntity(snapshot);
+    }
+    
+    /// <summary>
+    /// Obtiene todas las entidades
+    /// </summary>
+    public async Task<IEnumerable<{Nombre}>> GetAll()
+    {
+        // Obtener todos los documentos de la colección
+        IEnumerable<DocumentSnapshot> snapshots = await _context.GetCollectionAsync(_collectionName);
+        
+        // Mapear cada documento a una entidad
+        return snapshots
+            .Where(snapshot => snapshot.Exists)
+            .Select(MapToEntity)
+            .ToList();
+    }
+    
+    /// <summary>
+    /// Crea una nueva entidad
+    /// </summary>
+    public async Task Create({Nombre} entity)
+    {
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+        
+        // Mapear entidad a documento
+        Dictionary<string, object> data = MapToDocument(entity);
+        
+        // Persistir en Firestore
+        await _context.SetDocumentAsync(_collectionName, entity.Id.ToString(), data);
+    }
+    
+    /// <summary>
+    /// Actualiza una entidad existente
+    /// </summary>
+    public async Task Update({Nombre} entity)
+    {
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+        
+        // Verificar si existe
+        if (!await Exists(entity.Id))
+        {
+            throw new InvalidOperationException($"{Nombre} with ID {entity.Id} not found.");
+        }
+        
+        // Mapear entidad a documento
+        Dictionary<string, object> data = MapToDocument(entity);
+        
+        // Actualizar en Firestore
+        await _context.UpdateDocumentAsync(_collectionName, entity.Id.ToString(), data);
+    }
+    
+    /// <summary>
+    /// Elimina una entidad
+    /// </summary>
+    public async Task Delete(Guid id)
+    {
+        // Eliminar de Firestore
+        await _context.DeleteDocumentAsync(_collectionName, id.ToString());
+    }
+    
+    /// <summary>
+    /// Verifica si existe una entidad
+    /// </summary>
+    public async Task<bool> Exists(Guid id)
+    {
+        return await _context.DocumentExistsAsync(_collectionName, id.ToString());
+    }
+    
+    /// <summary>
+    /// Operación específica de consulta
+    /// </summary>
+    public async Task<IEnumerable<{Nombre}>> FindBy(string criteria)
+    {
+        // Construir consulta
+        Query query = _context.CreateQuery(_collectionName)
+            .WhereEqualTo("someField", criteria);
+            
+        // Ejecutar consulta
+        QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+        
+        // Mapear resultados
+        return querySnapshot.Documents
+            .Select(doc => MapToEntity(doc))
+            .ToList();
+    }
+    
+    /// <summary>
+    /// Mapea un documento de Firestore a una entidad de dominio
+    /// </summary>
+    private {Nombre} MapToEntity(DocumentSnapshot snapshot)
+    {
+        if (!snapshot.Exists)
+        {
+            return null;
+        }
+        
+        // Extraer ID del documento
+        Guid id = Guid.Parse(snapshot.Id);
+        
+        // Crear entidad usando Factory Method
+        {Nombre} entity = {Nombre}.Create(id);
+        
+        // Configurar propiedades
+        string name = snapshot.GetValue<string>("name");
+        if (!string.IsNullOrEmpty(name))
+        {
+            entity.SetName(name);
+        }
+        
+        // Configurar más propiedades según el modelo...
+        
+        // Cargar relaciones si es necesario
+        // (Esto podría requerir consultas adicionales a Firestore)
+        
+        return entity;
+    }
+    
+    /// <summary>
+    /// Mapea una entidad de dominio a un documento de Firestore
+    /// </summary>
+    private Dictionary<string, object> MapToDocument({Nombre} entity)
+    {
+        // Crear diccionario con propiedades
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            ["name"] = entity.Name,
+            // Más propiedades según el modelo...
+            ["createdAt"] = entity.CreatedAt,
+            ["updatedAt"] = entity.UpdatedAt
+        };
+        
+        // Agregar propiedades de relaciones si es necesario
+        
+        return data;
+    }
+}
+```
+
+## Ejemplo Concreto
+
+```csharp
+// src/Data/Odoonto.Data/Repositories/PatientRepository.cs
+namespace Odoonto.Data.Repositories;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Google.Cloud.Firestore;
+using Odoonto.Data.Core.Firebase;
+using Odoonto.Domain.Models.Patients;
+using Odoonto.Domain.Models.ValueObjects;
+using Odoonto.Domain.Repositories;
+
+/// <summary>
+/// Implementación del repositorio para Patient usando Firebase
+/// </summary>
+public class PatientRepository : IPatientRepository
+{
+    private readonly FirestoreContext _context;
+    private readonly string _collectionName = "patients";
+    private readonly string _appointmentsCollection = "appointments";
+    
+    /// <summary>
+    /// Constructor con inyección de dependencias
+    /// </summary>
+    public PatientRepository(FirestoreContext context)
+    {
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+    }
+    
+    /// <summary>
+    /// Obtiene un paciente por su ID
+    /// </summary>
+    public async Task<Patient> GetById(Guid id)
+    {
+        // Obtener documento principal
+        DocumentSnapshot snapshot = await _context.GetDocumentAsync(_collectionName, id.ToString());
+        
+        if (snapshot == null || !snapshot.Exists)
+        {
+            return null;
+        }
+        
+        // Mapear a entidad
+        Patient patient = MapToEntity(snapshot);
+        
+        // Cargar citas asociadas
+        await LoadAppointments(patient);
+        
+        return patient;
+    }
+    
+    /// <summary>
+    /// Obtiene todos los pacientes
+    /// </summary>
+    public async Task<IEnumerable<Patient>> GetAll()
+    {
+        IEnumerable<DocumentSnapshot> snapshots = await _context.GetCollectionAsync(_collectionName);
+        
+        List<Patient> patients = snapshots
+            .Where(snapshot => snapshot.Exists)
+            .Select(MapToEntity)
+            .ToList();
+            
+        // Cargar citas para cada paciente
+        foreach (Patient patient in patients)
+        {
+            await LoadAppointments(patient);
+        }
+        
+        return patients;
+    }
+    
+    /// <summary>
+    /// Busca pacientes por nombre
+    /// </summary>
+    public async Task<IEnumerable<Patient>> FindByName(string name)
+    {
+        // Convertir a minúsculas para búsqueda insensible a mayúsculas
+        string lowercaseName = name.ToLower();
+        
+        // Firestore no soporta LIKE, usamos donde el nombre comienza con el criterio
+        Query query = _context.CreateQuery(_collectionName)
+            .WhereGreaterThanOrEqualTo("nameLowercase", lowercaseName)
+            .WhereLessThanOrEqualTo("nameLowercase", lowercaseName + "\uf8ff");
+            
+        QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+        
+        List<Patient> patients = querySnapshot.Documents
+            .Select(doc => MapToEntity(doc))
+            .ToList();
+            
+        // Cargar citas para cada paciente
+        foreach (Patient patient in patients)
+        {
+            await LoadAppointments(patient);
+        }
+        
+        return patients;
+    }
+    
+    /// <summary>
+    /// Busca un paciente por email
+    /// </summary>
+    public async Task<Patient> FindByEmail(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            return null;
+        }
+        
+        Query query = _context.CreateQuery(_collectionName)
+            .WhereEqualTo("email", email);
+            
+        QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+        
+        if (querySnapshot.Count == 0)
+        {
+            return null;
+        }
+        
+        Patient patient = MapToEntity(querySnapshot.Documents.First());
+        await LoadAppointments(patient);
+        
+        return patient;
+    }
+    
+    /// <summary>
+    /// Crea un nuevo paciente
+    /// </summary>
+    public async Task Create(Patient patient)
+    {
+        if (patient == null)
+        {
+            throw new ArgumentNullException(nameof(patient));
+        }
+        
+        Dictionary<string, object> data = MapToDocument(patient);
+        
+        // Persistir en Firestore
+        await _context.SetDocumentAsync(_collectionName, patient.Id.ToString(), data);
+    }
+    
+    /// <summary>
+    /// Actualiza un paciente existente
+    /// </summary>
+    public async Task Update(Patient patient)
+    {
+        if (patient == null)
+        {
+            throw new ArgumentNullException(nameof(patient));
+        }
+        
+        Dictionary<string, object> data = MapToDocument(patient);
+        
+        // Actualizar en Firestore
+        await _context.UpdateDocumentAsync(_collectionName, patient.Id.ToString(), data);
+    }
+    
+    /// <summary>
+    /// Elimina un paciente
+    /// </summary>
+    public async Task Delete(Guid id)
+    {
+        // Iniciar transacción
+        await _context.RunTransactionAsync(async transaction =>
+        {
+            // Eliminar citas asociadas primero
+            QuerySnapshot appointmentsSnapshot = await _context.CreateQuery(_appointmentsCollection)
+                .WhereEqualTo("patientId", id.ToString())
+                .GetSnapshotAsync();
+                
+            foreach (DocumentSnapshot appointmentSnapshot in appointmentsSnapshot.Documents)
+            {
+                transaction.Delete(appointmentSnapshot.Reference);
+            }
+            
+            // Luego eliminar el paciente
+            transaction.Delete(_context.GetDocumentReference(_collectionName, id.ToString()));
+        });
+    }
+    
+    /// <summary>
+    /// Verifica si existe un paciente
+    /// </summary>
+    public async Task<bool> Exists(Guid id)
+    {
+        return await _context.DocumentExistsAsync(_collectionName, id.ToString());
+    }
+    
+    /// <summary>
+    /// Obtiene pacientes con citas para un doctor
+    /// </summary>
+    public async Task<IEnumerable<Patient>> GetPatientsWithAppointmentsForDoctor(Guid doctorId)
+    {
+        // Primero obtener todas las citas para el doctor
+        QuerySnapshot appointmentsSnapshot = await _context.CreateQuery(_appointmentsCollection)
+            .WhereEqualTo("doctorId", doctorId.ToString())
+            .GetSnapshotAsync();
+            
+        // Extraer IDs de pacientes únicos
+        HashSet<string> patientIds = new HashSet<string>();
+        foreach (DocumentSnapshot snapshot in appointmentsSnapshot.Documents)
+        {
+            string patientId = snapshot.GetValue<string>("patientId");
+            if (!string.IsNullOrEmpty(patientId))
+            {
+                patientIds.Add(patientId);
+            }
+        }
+        
+        // Obtener pacientes por sus IDs
+        List<Patient> patients = new List<Patient>();
+        foreach (string patientId in patientIds)
+        {
+            Patient patient = await GetById(Guid.Parse(patientId));
+            if (patient != null)
+            {
+                patients.Add(patient);
+            }
+        }
+        
+        return patients;
+    }
+    
+    /// <summary>
+    /// Mapea un documento de Firestore a una entidad Patient
+    /// </summary>
+    private Patient MapToEntity(DocumentSnapshot snapshot)
+    {
+        if (!snapshot.Exists)
+        {
+            return null;
+        }
+        
+        Guid id = Guid.Parse(snapshot.Id);
+        
+        Patient patient = Patient.Create(id);
+        
+        // Mapear propiedades básicas
+        patient.SetName(snapshot.GetValue<string>("name"));
+        
+        if (snapshot.TryGetValue<DateTime>("birthDate", out DateTime birthDate))
+        {
+            patient.SetBirthDate(birthDate);
+        }
+        
+        // Mapear contacto
+        string phoneNumber = snapshot.GetValue<string>("phoneNumber");
+        string email = snapshot.GetValue<string>("email");
+        patient.SetContact(phoneNumber, email);
+        
+        // Mapear dirección si existe
+        if (snapshot.TryGetValue<Dictionary<string, object>>("address", out var addressData))
+        {
+            Address address = new Address(
+                addressData.GetValueOrDefault("street") as string,
+                addressData.GetValueOrDefault("city") as string,
+                addressData.GetValueOrDefault("state") as string,
+                addressData.GetValueOrDefault("zipCode") as string,
+                addressData.GetValueOrDefault("country") as string
+            );
+            
+            patient.SetAddress(address);
+        }
+        
+        // Mapear historia médica
+        string medicalHistory = snapshot.GetValue<string>("medicalHistory");
+        if (!string.IsNullOrEmpty(medicalHistory))
+        {
+            patient.SetMedicalHistory(medicalHistory);
+        }
+        
+        return patient;
+    }
+    
+    /// <summary>
+    /// Mapea una entidad Patient a un documento de Firestore
+    /// </summary>
+    private Dictionary<string, object> MapToDocument(Patient patient)
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            ["name"] = patient.Name,
+            ["nameLowercase"] = patient.Name?.ToLower(),
+            ["birthDate"] = patient.BirthDate,
+            ["phoneNumber"] = patient.PhoneNumber,
+            ["email"] = patient.Email,
+            ["medicalHistory"] = patient.MedicalHistory,
+            ["createdAt"] = patient.CreatedAt,
+            ["updatedAt"] = patient.UpdatedAt
+        };
+        
+        // Mapear dirección si existe
+        if (patient.Address != null)
+        {
+            data["address"] = new Dictionary<string, object>
+            {
+                ["street"] = patient.Address.Street,
+                ["city"] = patient.Address.City,
+                ["state"] = patient.Address.State,
+                ["zipCode"] = patient.Address.ZipCode,
+                ["country"] = patient.Address.Country
+            };
+        }
+        
+        return data;
+    }
+    
+    /// <summary>
+    /// Carga las citas asociadas a un paciente
+    /// </summary>
+    private async Task LoadAppointments(Patient patient)
+    {
+        if (patient == null)
+        {
+            return;
+        }
+        
+        // Obtener citas donde el paciente es el actual
+        QuerySnapshot appointmentsSnapshot = await _context.CreateQuery(_appointmentsCollection)
+            .WhereEqualTo("patientId", patient.Id.ToString())
+            .GetSnapshotAsync();
+            
+        // Cargar citas a través del servicio de citas
+        // Nota: Esto es simplificado, en una implementación real
+        // podría utilizar el repositorio de citas para mapear documentos a entidades
+    }
+}
+```
+
+## Principios y Buenas Prácticas
+
+1. **Abstracción de Firebase**: Usar el contexto para acceder a Firebase, nunca directamente.
+2. **Transacciones Atómicas**: Usar transacciones para operaciones que afectan múltiples documentos.
+3. **Mapeo Explícito**: Implementar métodos de mapeo claros entre documentos y entidades.
+4. **Carga Diferida**: Cargar relaciones solo cuando sea necesario.
+5. **Manejo de Errores**: Capturar y traducir errores específicos de Firebase.
+6. **Consultas Eficientes**: Diseñar consultas para minimizar lecturas y escrituras.
+7. **Validación de Entrada**: Validar argumentos antes de operar.
+
+## Anti-patrones a Evitar
+
+1. ❌ Acceso directo a Firebase fuera de los repositorios
+2. ❌ Manipulación directa de propiedades de entidades (usar métodos de entidad)
+3. ❌ Consultas ineficientes que recuperan demasiados documentos
+4. ❌ Mapeos incompletos que pierden datos
+5. ❌ Operaciones sincrónicas bloqueantes
+6. ❌ Falta de manejo de transacciones para operaciones complejas
+7. ❌ Mezclar lógica de negocio con lógica de persistencia

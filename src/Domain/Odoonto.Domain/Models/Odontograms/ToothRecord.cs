@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Odoonto.Domain.Core.Models;
 using Odoonto.Domain.Core.Models.Exceptions;
 using Odoonto.Domain.Models.ValueObjects;
+using Odoonto.Domain.Core.Abstractions;
 
 namespace Odoonto.Domain.Models.Odontograms
 {
@@ -70,7 +70,7 @@ namespace Odoonto.Domain.Models.Odontograms
             ValidateToothSurfaces(lesionRecord.AffectedSurfaces);
 
             _lesionRecords.Add(lesionRecord);
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para añadir un procedimiento completado
@@ -83,7 +83,7 @@ namespace Odoonto.Domain.Models.Odontograms
             ValidateToothSurfaces(procedure.TreatedSurfaces);
 
             _completedProcedures.Add(procedure);
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para validar superficies dentales

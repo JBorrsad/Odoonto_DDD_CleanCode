@@ -25,13 +25,13 @@ namespace Odoonto.Domain.Services.Patients
         /// Crea un nuevo paciente
         /// </summary>
         Task<Guid> CreatePatientAsync(string firstName, string lastName, DateTime dateOfBirth,
-            Gender gender, string email, string phoneNumber, string address);
+            GenderValue gender, string email, string phoneNumber, string address);
 
         /// <summary>
         /// Actualiza la información básica de un paciente
         /// </summary>
         Task UpdatePatientInfoAsync(Guid id, string firstName, string lastName, DateTime dateOfBirth,
-            Gender gender, string email, string phoneNumber, string address);
+            GenderValue gender, string email, string phoneNumber, string address);
 
         /// <summary>
         /// Actualiza el historial médico de un paciente

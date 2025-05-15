@@ -6310,24 +6310,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jborras\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\juan-\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\Odoonto.Infrastructure.InversionOfControl.csproj",
+      "projectUniqueName": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\Odoonto.Infrastructure.InversionOfControl.csproj",
       "projectName": "Odoonto.Infrastructure.InversionOfControl",
-      "projectPath": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\Odoonto.Infrastructure.InversionOfControl.csproj",
-      "packagesPath": "C:\\Users\\jborras\\.nuget\\packages\\",
-      "outputPath": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\obj\\",
+      "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\Odoonto.Infrastructure.InversionOfControl.csproj",
+      "packagesPath": "C:\\Users\\juan-\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.InversionOfControl\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\jborras\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\juan-\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6335,23 +6330,24 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj": {
-              "projectPath": "C:\\Repos\\Odoonto\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj"
+            "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj": {
+              "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Application\\Odoonto.Application\\Odoonto.Application.csproj"
             },
-            "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj": {
-              "projectPath": "C:\\Repos\\Odoonto\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj"
+            "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj": {
+              "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Data\\Odoonto.Data\\Odoonto.Data.csproj"
             },
-            "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
-              "projectPath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj"
+            "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
+              "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj"
             },
-            "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj": {
-              "projectPath": "C:\\Repos\\Odoonto\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj"
+            "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj": {
+              "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj"
             }
           }
         }
@@ -6396,7 +6392,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

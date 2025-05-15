@@ -1,0 +1,191 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para Controladores API
+
+## Propósito
+
+Los controladores API son el punto de entrada para las operaciones HTTP en la capa de presentación. Actúan como intermediarios entre los clientes HTTP y los servicios de aplicación, traduciendo las solicitudes HTTP en llamadas a métodos de aplicación y transformando los resultados de vuelta en respuestas HTTP.
+
+## Convenciones de Nombrado
+
+- Nombres de clases: `<Entidad>Controller` (ej. `PatientsController`, `AppointmentsController`)
+- Nombres de métodos: Acciones HTTP claras (ej. `GetAll`, `GetById`, `Create`, `Update`, `Delete`)
+- Nombres de parámetros: Coincidentes con el modelo de datos (ej. `patientId`, `createPatientDto`)
+- Namespaces: `Odoonto.UI.Server.Controllers.<Funcionalidad>` (ej. `Odoonto.UI.Server.Controllers.Patients`)
+
+## Estructura Estándar
+
+```csharp
+namespace Odoonto.UI.Server.Controllers.Patients;
+
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Odoonto.Application.DTO.Patients;
+using Odoonto.Application.Interfaces.Patients;
+using Odoonto.Domain.Exceptions;
+
+/// <summary>
+/// Controlador para gestión de pacientes
+/// </summary>
+[ApiController]
+[Route("api/[controller]")]
+[Produces("application/json")]
+public class PatientsController : ControllerBase
+{
+    private readonly IPatientAppService _patientAppService;
+
+    public PatientsController(IPatientAppService patientAppService)
+    {
+        _patientAppService = patientAppService;
+    }
+
+    /// <summary>
+    /// Obtiene todos los pacientes
+    /// </summary>
+    /// <returns>Lista de pacientes</returns>
+    /// <response code="200">Retorna la lista de pacientes</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<PatientDto>), 200)]
+    public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
+    {
+        var patients = await _patientAppService.GetAllAsync();
+        return Ok(patients);
+    }
+
+    /// <summary>
+    /// Obtiene un paciente por su ID
+    /// </summary>
+    /// <param name="id">ID del paciente</param>
+    /// <returns>Datos del paciente</returns>
+    /// <response code="200">Retorna el paciente encontrado</response>
+    /// <response code="404">Si el paciente no existe</response>
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(PatientDto), 200)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<PatientDto>> GetById(Guid id)
+    {
+        try
+        {
+            var patient = await _patientAppService.GetByIdAsync(id);
+            return Ok(patient);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Crea un nuevo paciente
+    /// </summary>
+    /// <param name="patientDto">Datos del paciente a crear</param>
+    /// <returns>Ruta al nuevo recurso creado</returns>
+    /// <response code="201">Retorna la ruta al nuevo paciente</response>
+    /// <response code="400">Si los datos proporcionados no son válidos</response>
+    [HttpPost]
+    [ProducesResponseType(201)]
+    [ProducesResponseType(400)]
+    public async Task<ActionResult> Create([FromBody] CreatePatientDto patientDto)
+    {
+        try
+        {
+            var id = await _patientAppService.CreateAsync(patientDto);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Actualiza un paciente existente
+    /// </summary>
+    /// <param name="id">ID del paciente a actualizar</param>
+    /// <param name="patientDto">Datos actualizados del paciente</param>
+    /// <returns>Sin contenido si la operación fue exitosa</returns>
+    /// <response code="204">Si la actualización fue exitosa</response>
+    /// <response code="404">Si el paciente no existe</response>
+    /// <response code="400">Si los datos proporcionados no son válidos</response>
+    [HttpPut("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(400)]
+    public async Task<ActionResult> Update(Guid id, [FromBody] UpdatePatientDto patientDto)
+    {
+        try
+        {
+            await _patientAppService.UpdateAsync(id, patientDto);
+            return NoContent();
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (ValidationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Elimina un paciente
+    /// </summary>
+    /// <param name="id">ID del paciente a eliminar</param>
+    /// <returns>Sin contenido si la operación fue exitosa</returns>
+    /// <response code="204">Si la eliminación fue exitosa</response>
+    /// <response code="404">Si el paciente no existe</response>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        try
+        {
+            await _patientAppService.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+}
+```
+
+## Buenas Prácticas
+
+1. **Controladores ligeros**: Delegar toda la lógica de negocio a servicios de aplicación
+2. **Separación de responsabilidades**: Controladores solo deben ocuparse de la comunicación HTTP
+3. **Manejo de errores consistente**: Usar try/catch para mapear excepciones a códigos HTTP
+4. **Respuestas HTTP apropiadas**: Usar los códigos de estado correctos (200, 201, 204, 400, 404, etc.)
+5. **Documentación completa**: Documentar todos los endpoints con XML para Swagger
+6. **Agrupación lógica**: Organizar controladores por dominio o funcionalidad
+7. **Validación básica**: Realizar validaciones básicas de formato en el controlador
+8. **Versionado de API**: Implementar versionado cuando sea necesario
+
+## Anti-patrones
+
+1. ❌ **Lógica de negocio en controladores**: Toda la lógica debe estar en servicios de aplicación
+2. ❌ **Acceso directo a repositorios**: Siempre usar servicios de aplicación
+3. ❌ **Falta de manejo de errores**: Siempre manejar excepciones y mapearlas a HTTP
+4. ❌ **Métodos enormes**: Mantener los métodos concisos y enfocados
+5. ❌ **Dependencias excesivas**: Inyectar solo los servicios necesarios
+6. ❌ **Respuestas inconsistentes**: Mantener formato consistente en todas las respuestas

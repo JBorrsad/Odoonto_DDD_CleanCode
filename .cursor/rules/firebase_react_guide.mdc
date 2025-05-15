@@ -1,0 +1,217 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Integración Firebase y React con DDD
+
+## 1. Firebase en la Arquitectura DDD
+
+### 1.1. Principios Generales
+
+- Firebase es una tecnología de persistencia y debe estar **completamente aislada** en la capa de Datos
+- El resto de capas (Dominio, Aplicación, Presentación) **no deben conocer** Firebase
+- La comunicación con Firebase se abstrae a través de interfaces de repositorio definidas en el Dominio
+- La capa de Datos implementa estas interfaces utilizando Firebase
+- Solo la capa de Infraestructura debe conocer las credenciales y configuración de Firebase
+
+### 1.2. Estructura de Datos en Firestore
+
+La estructura de colecciones en Firestore debe seguir estas convenciones:
+
+```
+/patients/{patientId}                 # Datos principales de pacientes
+/doctors/{doctorId}                   # Datos principales de doctores
+/treatments/{treatmentId}             # Catálogo de tratamientos
+/appointments/{appointmentId}         # Citas
+/odontograms/{patientId}              # Odontogramas por paciente
+/working-schedules/{doctorId}         # Horarios de trabajo por doctor
+```
+
+### 1.3. Reglas de Seguridad
+
+- Implementar reglas de seguridad que validen la integridad de datos
+- Asegurar que solo usuarios autenticados puedan leer/escribir
+- Limitar el acceso a datos sensibles según roles
+- Implementar validación de esquema en las reglas
+
+### 1.4. Implementación en Repositorios
+
+Los repositorios en la capa de Datos deben seguir estos principios:
+
+- Abstraer completamente la API de Firebase
+- Implementar mapeadores entre documentos Firestore y entidades de dominio
+- Manejar transacciones para operaciones que afecten a múltiples documentos
+- Implementar caché para reducir lecturas y mejorar rendimiento
+- Manejar correctamente errores específicos de Firebase
+
+## 2. React con Patrón MVP y DDD
+
+### 2.1. Estructura de Carpetas Frontend
+
+```
+src/Presentation/Odoonto.UI.Client/src/
+├── models/                 # Models (Datos y comportamiento)
+├── views/                  # Views (Componentes React puros)
+├── presenters/             # Presenters (Lógica de presentación)
+├── services/               # Services (Comunicación con API)
+│   ├── api/                # Implementaciones de servicios API
+│   └── interfaces/         # Interfaces de servicio
+├── utils/                  # Utilidades y helpers
+├── assets/                 # Recursos estáticos
+└── App.tsx                 # Punto de entrada
+```
+
+### 2.2. Patrón MVP en React
+
+El patrón Model-View-Presenter aplicado a React debe seguir:
+
+1. **Models**:
+   - Definen la estructura de datos
+   - Implementan reglas de negocio simples del lado cliente
+   - Son inmutables (TypeScript interfaces/types o clases)
+
+2. **Views**:
+   - Componentes React puros (functional components)
+   - No contienen lógica de negocio
+   - Reciben props y emiten eventos
+   - Utilizan hooks personalizados para acceder a Presenters
+
+3. **Presenters**:
+   - Gestionan el estado de la aplicación
+   - Procesan la lógica de UI
+   - Se comunican con los Services para obtener/enviar datos
+   - Adaptan los datos para las Views
+
+4. **Services**:
+   - Encapsulan la comunicación con APIs
+   - Abstraen detalles de HTTP
+   - Realizan transformaciones básicas de datos
+
+### 2.3. Comunicación Backend-Frontend
+
+- Las APIs siguen principios REST
+- Los endpoints se corresponden con casos de uso
+- Los DTOs definen la estructura de datos entre backend y frontend
+- Implementar manejo centralizado de errores
+
+## 3. Ejemplo de Implementación 
+
+### 3.1. Modelo en React (TypeScript)
+
+```typescript
+// src/models/patient.model.ts
+export interface PatientReadModel {
+  id: string;
+  name: string;
+  birthDate: Date;
+  email: string;
+  phoneNumber: string;
+  // Más propiedades...
+}
+
+export interface PatientCreateModel {
+  name: string;
+  birthDate: Date;
+  email: string;
+  phoneNumber: string;
+  // Más propiedades...
+}
+```
+
+### 3.2. Servicio en React
+
+```typescript
+// src/services/api/patient.service.ts
+import { PatientReadModel, PatientCreateModel } from '../../models/patient.model';
+
+export class PatientService {
+  private apiUrl = '/api/patients';
+  
+  async getAll(): Promise<PatientReadModel[]> {
+    const response = await fetch(this.apiUrl);
+    if (!response.ok) throw new Error('Failed to fetch patients');
+    return await response.json();
+  }
+  
+  async create(patient: PatientCreateModel): Promise<string> {
+    const response = await fetch(this.apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(patient)
+    });
+    if (!response.ok) throw new Error('Failed to create patient');
+    const id = /* extraer ID de la respuesta */;
+    return id;
+  }
+  
+  // Más métodos...
+}
+```
+
+### 3.3. Firebase en el Repositorio (C#)
+
+```csharp
+// src/Data/Odoonto.Data/Repositories/PatientRepository.cs
+public class PatientRepository : IPatientRepository
+{
+    private readonly FirestoreDb _db;
+    private readonly string _collectionName = "patients";
+
+    public PatientRepository(FirestoreDb db)
+    {
+        _db = db;
+    }
+
+    public async Task<Patient> GetById(Guid id)
+    {
+        DocumentSnapshot snapshot = await _db.Collection(_collectionName).Document(id.ToString()).GetSnapshotAsync();
+        if (!snapshot.Exists) return null;
+        
+        // Convertir documento a entidad
+        Patient patient = new Patient(Guid.Parse(snapshot.Id));
+        patient.SetName(snapshot.GetValue<string>("name"));
+        // Más mapeos...
+        
+        return patient;
+    }
+    
+    public async Task Create(Patient patient)
+    {
+        // Mapear entidad a documento
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            ["name"] = patient.Name,
+            // Más propiedades...
+            ["createdAt"] = DateTime.UtcNow,
+            ["updatedAt"] = DateTime.UtcNow
+        };
+        
+        await _db.Collection(_collectionName).Document(patient.Id.ToString()).SetAsync(data);
+    }
+    
+    // Más métodos...
+}
+```
+
+## 4. Buenas Prácticas Adicionales
+
+### 4.1. Autenticación y Autorización
+
+- Usar Firebase Authentication para gestionar usuarios
+- Implementar JWT para comunicación entre frontend y backend
+- Definir roles de usuario y permisos basados en estos
+- Centralizar lógica de autorización en middleware
+
+### 4.2. Manejo de Datos Offline 
+
+- Implementar sincronización offline en frontend
+- Usar FirebaseFirestore en modo offline-first
+- Implementar resolución de conflictos
+
+### 4.3. Optimización de Rendimiento
+
+- Limitar tamaño de documentos Firestore
+- Implementar paginación para colecciones grandes
+- Usar consultas compuestas con índices
+- Implementar caché en servicios de frontend

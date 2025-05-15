@@ -1,0 +1,312 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para Configuración de Infraestructura
+
+## Propósito
+
+Este archivo define las reglas para la capa de Infraestructura en el contexto de la configuración de servicios externos, en particular para Firebase y otros proveedores de servicios.
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Infrastructure.Configuration;
+
+using System;
+using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Firebase.Database;
+using Firebase.Auth;
+using Firebase.Storage;
+using Odoonto.Infrastructure.Exceptions;
+
+/// <summary>
+/// Configuración para los servicios de Firebase
+/// </summary>
+public static class FirebaseConfig
+{
+    /// <summary>
+    /// Configura y registra los servicios de Firebase en el contenedor de DI
+    /// </summary>
+    public static IServiceCollection AddFirebaseServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        // Obtener configuración
+        var firebaseSection = configuration.GetSection("Firebase");
+        var apiKey = firebaseSection["ApiKey"] ?? 
+            throw new ConfigurationException("Firebase ApiKey not configured");
+        var authDomain = firebaseSection["AuthDomain"] ?? 
+            throw new ConfigurationException("Firebase AuthDomain not configured");
+        var databaseUrl = firebaseSection["DatabaseUrl"] ?? 
+            throw new ConfigurationException("Firebase DatabaseUrl not configured");
+        var storageBucket = firebaseSection["StorageBucket"] ?? 
+            throw new ConfigurationException("Firebase StorageBucket not configured");
+        var projectId = firebaseSection["ProjectId"] ?? 
+            throw new ConfigurationException("Firebase ProjectId not configured");
+        
+        // Validar configuración
+        if (string.IsNullOrWhiteSpace(apiKey) || 
+            string.IsNullOrWhiteSpace(authDomain) || 
+            string.IsNullOrWhiteSpace(databaseUrl))
+        {
+            throw new ConfigurationException("Firebase configuration is incomplete");
+        }
+        
+        // Registrar cliente de Firebase Authentication
+        services.AddSingleton(provider => new FirebaseAuthClient(new FirebaseAuthConfig
+        {
+            ApiKey = apiKey,
+            AuthDomain = authDomain,
+            Providers = new[] { FirebaseAuthProvider.EmailAndPassword }
+        }));
+        
+        // Registrar cliente de Firebase Realtime Database
+        services.AddSingleton(provider => new FirebaseClient(
+            databaseUrl,
+            new FirebaseOptions
+            {
+                AuthTokenAsyncFactory = async () => await GetAuthTokenAsync(provider, apiKey)
+            }));
+        
+        // Registrar cliente de Firebase Storage
+        services.AddSingleton(provider => new FirebaseStorage(
+            storageBucket,
+            new FirebaseStorageOptions
+            {
+                AuthTokenAsyncFactory = async () => await GetAuthTokenAsync(provider, apiKey)
+            }));
+        
+        return services;
+    }
+    
+    /// <summary>
+    /// Método auxiliar para obtener token de autenticación
+    /// </summary>
+    private static async Task<string> GetAuthTokenAsync(
+        IServiceProvider provider, 
+        string apiKey)
+    {
+        // Implementar lógica para obtener token de autenticación
+        // Por ejemplo, utilizando un servicio de autenticación registrado
+        var authClient = provider.GetRequiredService<FirebaseAuthClient>();
+        
+        // Aquí idealmente se usaría un usuario de servicio o un enfoque de seguridad adecuado
+        // Nota: Esto es simplificado para el ejemplo
+        try
+        {
+            return await Task.FromResult("service-account-token");
+        }
+        catch (Exception ex)
+        {
+            throw new AuthenticationException("Failed to authenticate with Firebase", ex);
+        }
+    }
+}
+```
+
+## Patrones de Configuración
+
+### Configuración basada en IConfiguration
+
+```csharp
+public static IServiceCollection AddCustomConfiguration(
+    this IServiceCollection services,
+    IConfiguration configuration)
+{
+    // Binding a una clase de opciones
+    services.Configure<FirebaseOptions>(configuration.GetSection("Firebase"));
+    
+    // Validación de configuración
+    var requiredSettings = new[] { "ApiKey", "AuthDomain", "DatabaseUrl" };
+    foreach (var setting in requiredSettings)
+    {
+        if (string.IsNullOrEmpty(configuration[$"Firebase:{setting}"]))
+        {
+            throw new ConfigurationException($"Required setting Firebase:{setting} is missing");
+        }
+    }
+    
+    return services;
+}
+```
+
+### Configuración Condicional
+
+```csharp
+public static IServiceCollection AddDatabaseServices(
+    this IServiceCollection services,
+    IConfiguration configuration)
+{
+    var databaseType = configuration["Database:Type"] ?? "Firebase";
+    
+    switch (databaseType.ToLowerInvariant())
+    {
+        case "firebase":
+            services.AddFirebaseServices(configuration);
+            break;
+        
+        case "sqlserver":
+            services.AddSqlServerServices(configuration);
+            break;
+            
+        case "mongo":
+            services.AddMongoServices(configuration);
+            break;
+            
+        default:
+            throw new ConfigurationException($"Unsupported database type: {databaseType}");
+    }
+    
+    return services;
+}
+```
+
+### Configuración basada en Entorno
+
+```csharp
+public static IServiceCollection AddEnvironmentSpecificServices(
+    this IServiceCollection services,
+    IHostEnvironment environment,
+    IConfiguration configuration)
+{
+    if (environment.IsDevelopment())
+    {
+        // Configuraciones específicas para desarrollo
+        services.AddSingleton<IEmailSender, DevelopmentEmailSender>();
+        
+        // Emulador de Firebase para desarrollo
+        services.AddSingleton(new FirebaseClient(
+            configuration["Firebase:EmulatorUrl"] ?? "http://localhost:9000"));
+    }
+    else if (environment.IsProduction())
+    {
+        // Configuraciones específicas para producción
+        services.AddSingleton<IEmailSender, ProductionEmailSender>();
+        
+        // Firebase real para producción
+        services.AddFirebaseServices(configuration);
+    }
+    else if (environment.IsStaging())
+    {
+        // Configuraciones para staging
+    }
+    
+    return services;
+}
+```
+
+## Buenas Prácticas
+
+1. **Extensiones de IServiceCollection**: Implementar como métodos de extensión para facilitar composición
+2. **Validación temprana**: Validar configuración durante el startup para fallar rápido
+3. **Abstracción de proveedor**: Abstraer proveedores específicos detrás de interfaces propias
+4. **Separación por archivo**: Un archivo por proveedor o grupo lógico de configuración
+5. **Uso de Options Pattern**: Usar IOptions<T> para configuraciones inyectables
+6. **Secretos seguros**: No hardcodear credenciales, usar user secrets o variables de entorno
+7. **Configuración jerárquica**: Usar secciones anidadas para organizar configuración relacionada
+
+## Anti-patrones a Evitar
+
+1. ❌ **Hardcodear credenciales**: Nunca incluir credenciales directamente en el código
+2. ❌ **Mezclar configuración y lógica**: Mantener las clases de configuración enfocadas
+3. ❌ **Ignorar entornos**: No usar la misma configuración en todos los entornos
+4. ❌ **Falta de validación**: Siempre validar valores críticos al inicio
+5. ❌ **Dependencias circulares**: Evitar que servicios de configuración dependan entre sí
+
+## Configuración de Firestore para Odoonto
+
+### Ejemplo Concreto
+
+```csharp
+namespace Odoonto.Infrastructure.Configuration;
+
+using System;
+using Google.Cloud.Firestore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Odoonto.Infrastructure.Exceptions;
+
+/// <summary>
+/// Configuración para Firestore en el contexto de Odoonto
+/// </summary>
+public static class FirestoreConfig
+{
+    /// <summary>
+    /// Agrega los servicios de Firestore al contenedor de DI
+    /// </summary>
+    public static IServiceCollection AddFirestoreServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var firestoreSection = configuration.GetSection("Firestore");
+        var projectId = firestoreSection["ProjectId"] ?? 
+            throw new ConfigurationException("Firestore ProjectId not configured");
+        var credentialsPath = firestoreSection["CredentialsPath"];
+        
+        // Crear y registrar FirestoreDb
+        FirestoreDb firestoreDb;
+        
+        if (!string.IsNullOrEmpty(credentialsPath) && File.Exists(credentialsPath))
+        {
+            // Usar archivo de credenciales
+            var credentials = GoogleCredential.FromFile(credentialsPath);
+            firestoreDb = new FirestoreDbBuilder
+            {
+                ProjectId = projectId,
+                Credential = credentials
+            }.Build();
+        }
+        else if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS")))
+        {
+            // Usar credenciales de variable de entorno
+            firestoreDb = FirestoreDb.Create(projectId);
+        }
+        else
+        {
+            throw new ConfigurationException(
+                "Firestore credentials not found. Set GOOGLE_APPLICATION_CREDENTIALS environment variable or provide CredentialsPath");
+        }
+        
+        services.AddSingleton(firestoreDb);
+        
+        // Registrar clases específicas para la gestión de colecciones en Firestore
+        services.AddSingleton<IFirestoreCollectionProvider, FirestoreCollectionProvider>();
+        
+        return services;
+    }
+}
+
+/// <summary>
+/// Proveedor de colecciones de Firestore para Odoonto
+/// </summary>
+public interface IFirestoreCollectionProvider
+{
+    CollectionReference GetPatientsCollection();
+    CollectionReference GetDoctorsCollection();
+    CollectionReference GetAppointmentsCollection();
+    CollectionReference GetTreatmentsCollection();
+    CollectionReference GetOdontogramsCollection();
+}
+
+/// <summary>
+/// Implementación del proveedor de colecciones de Firestore
+/// </summary>
+public class FirestoreCollectionProvider : IFirestoreCollectionProvider
+{
+    private readonly FirestoreDb _firestoreDb;
+    
+    public FirestoreCollectionProvider(FirestoreDb firestoreDb)
+    {
+        _firestoreDb = firestoreDb ?? throw new ArgumentNullException(nameof(firestoreDb));
+    }
+    
+    public CollectionReference GetPatientsCollection() => _firestoreDb.Collection("patients");
+    public CollectionReference GetDoctorsCollection() => _firestoreDb.Collection("doctors");
+    public CollectionReference GetAppointmentsCollection() => _firestoreDb.Collection("appointments");
+    public CollectionReference GetTreatmentsCollection() => _firestoreDb.Collection("treatments");
+    public CollectionReference GetOdontogramsCollection() => _firestoreDb.Collection("odontograms");
+}

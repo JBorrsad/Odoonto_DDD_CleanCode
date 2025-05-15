@@ -1,0 +1,229 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Entidades de Dominio (Domain Entities)
+
+Las entidades de dominio son objetos con identidad y ciclo de vida que encapsulan la lógica y las reglas de negocio. Deben ser ricas en comportamiento y proteger su estado.
+
+## Principios Clave
+
+1. **Encapsulamiento**: Propiedades con getters públicos y setters privados o protegidos.
+2. **Validación interna**: Las entidades validan sus propios invariantes.
+3. **Métodos factoría**: Uso de métodos estáticos Create() para instanciar entidades válidas.
+4. **Comportamiento rico**: Las entidades implementan comportamiento de dominio, no son estructuras pasivas.
+5. **Herencia de Entity**: Todas las entidades heredan de la clase base Entity.
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Domain.Models.Categories;
+
+using System;
+using System.Collections.Generic;
+using Odoonto.Domain.Core.Models;
+using Odoonto.Domain.Core.Models.Exceptions;
+
+/// <summary>
+/// Representa una [descripción de la entidad y su propósito en el dominio]
+/// </summary>
+public class Category : Entity
+{
+    // Propiedades con getters públicos y setters privados
+    public string Name { get; private set; }
+    
+    // Colecciones privadas para mantener el encapsulamiento
+    private readonly List<Flow> _flows;
+    
+    // Acceso de solo lectura a las colecciones internas
+    public IReadOnlyCollection<Flow> Flows => _flows.AsReadOnly();
+    
+    // Constructor privado - solo accesible desde el método factory
+    private Category(Guid id) : base(id)
+    {
+        _flows = new List<Flow>();
+    }
+    
+    // Método factory estático para crear instancias válidas
+    public static Category Create(Guid id)
+    {
+        if (id == Guid.Empty)
+        {
+            throw new InvalidValueException("El ID de categoría no puede estar vacío.");
+        }
+        
+        Category category = new Category(id);
+        category.UpdateEditDate();
+        return category;
+    }
+    
+    // Métodos públicos que implementan comportamiento de negocio
+    public void SetName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new InvalidValueException("El nombre de la categoría no puede estar vacío.");
+        }
+        
+        Name = name;
+        UpdateEditDate();
+    }
+    
+    // Métodos para gestionar relaciones y mantener la integridad
+    public void AddFlow(Flow flow)
+    {
+        if (flow == null)
+        {
+            throw new ArgumentNullException(nameof(flow));
+        }
+        
+        if (_flows.Contains(flow))
+        {
+            throw new InvalidOperationException("Este flujo ya está asociado a la categoría.");
+        }
+        
+        _flows.Add(flow);
+        flow.SetCategory(Id);
+        UpdateEditDate();
+    }
+    
+    public void RemoveFlow(Flow flow)
+    {
+        if (flow == null)
+        {
+            throw new ArgumentNullException(nameof(flow));
+        }
+        
+        if (!_flows.Contains(flow))
+        {
+            throw new InvalidOperationException("Este flujo no está asociado a la categoría.");
+        }
+        
+        _flows.Remove(flow);
+        flow.RemoveCategory();
+        UpdateEditDate();
+    }
+}
+```
+
+## Ejemplos de Implementación
+
+### Entidad Patient
+
+```csharp
+public class Patient : Entity
+{
+    public FullName Name { get; private set; }
+    public DateTime DateOfBirth { get; private set; }
+    public Gender Gender { get; private set; }
+    public ContactInfo ContactInfo { get; private set; }
+    private readonly Odontogram _odontogram;
+    
+    public Odontogram Odontogram => _odontogram;
+    
+    private Patient(Guid id) : base(id)
+    {
+        _odontogram = new Odontogram();
+    }
+    
+    public static Patient Create(Guid id)
+    {
+        return new Patient(id);
+    }
+    
+    public void SetPersonalInfo(FullName name, DateTime dateOfBirth, Gender gender)
+    {
+        if (name == null)
+            throw new InvalidValueException("El nombre no puede ser nulo");
+            
+        if (dateOfBirth > DateTime.Today)
+            throw new InvalidValueException("La fecha de nacimiento no puede ser futura");
+            
+        Name = name;
+        DateOfBirth = dateOfBirth;
+        Gender = gender;
+        UpdateEditDate();
+    }
+    
+    public void SetContactInfo(ContactInfo contactInfo)
+    {
+        ContactInfo = contactInfo ?? throw new InvalidValueException("La información de contacto no puede ser nula");
+        UpdateEditDate();
+    }
+    
+    // Otros métodos de comportamiento...
+}
+```
+
+### Entidad Doctor
+
+```csharp
+public class Doctor : Entity
+{
+    public FullName Name { get; private set; }
+    public string Specialty { get; private set; }
+    private readonly WeeklyAvailability _availability;
+    
+    public IWeeklyAvailability Availability => _availability;
+    
+    private Doctor(Guid id) : base(id)
+    {
+        _availability = new WeeklyAvailability();
+    }
+    
+    public static Doctor Create(Guid id)
+    {
+        return new Doctor(id);
+    }
+    
+    public void SetName(FullName name)
+    {
+        Name = name ?? throw new InvalidValueException("El nombre no puede ser nulo");
+        UpdateEditDate();
+    }
+    
+    public void SetSpecialty(string specialty)
+    {
+        if (string.IsNullOrWhiteSpace(specialty))
+            throw new InvalidValueException("La especialidad no puede estar vacía");
+            
+        Specialty = specialty;
+        UpdateEditDate();
+    }
+    
+    public void AddAvailabilitySlot(DayOfWeek day, TimeRange timeRange)
+    {
+        _availability.AddSlot(day, timeRange);
+        UpdateEditDate();
+    }
+    
+    // Otros métodos para gestionar disponibilidad...
+}
+```
+
+## Invariantes Comunes
+
+- Los identificadores de entidades deben ser siempre valores UUID válidos (no Guid.Empty).
+- Las propiedades requeridas no pueden ser nulas o vacías (nombres, fechas obligatorias, etc.).
+- Las fechas de nacimiento no pueden ser futuras.
+- Las relaciones entre entidades deben mantenerse consistentes en ambos sentidos.
+- Las citas no pueden superponerse para un mismo doctor o paciente.
+
+## Patrones Recomendados
+
+1. **Factory Methods**: Usar `Create()` para instanciar entidades válidas
+2. **Private Setters**: Proteger el estado con setters privados
+3. **Expose Collections as ReadOnly**: Exponer colecciones como IReadOnlyCollection
+4. **Behavior Methods**: Implementar métodos que ejecuten comportamiento de dominio
+5. **Guard Clauses**: Validar precondiciones al inicio de los métodos
+6. **Update Audit Trail**: Actualizar fechas de auditoría (UpdateEditDate) tras cambios
+
+## Antipatrones a Evitar
+
+1. ❌ **Propiedades con setters públicos**
+2. ❌ **Entidades anémicas sin comportamiento**
+3. ❌ **Validación fuera de la entidad (en servicios)**
+4. ❌ **Manipulación directa de colecciones internas**
+5. ❌ **Constructores públicos sin validación**
+

@@ -1,0 +1,83 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Resolución Sistemática de Errores de Compilación
+
+## Enfoque Estructurado para Errores de Compilación
+
+Antes de solucionar errores en el código, especialmente con arquitecturas complejas como DDD, es necesario adoptar un enfoque sistemático:
+
+## 1. Identificación Correcta del Error
+
+Para errores de tipo `CS0246` (The type or namespace name '...' could not be found):
+
+1. **Verificar el árbol de dependencias**:
+   - ¿El proyecto referencia correctamente otros proyectos?
+   - ¿La clase/namespace existe realmente donde se espera?
+
+2. **Examinar la cadena de herencia**:
+   - Las clases base (como `Entity`) deben estar accesibles y referenciadas correctamente
+   - Los namespaces deben ser exactamente los correctos (ej. `Odoonto.Domain.Core.Abstractions` vs `Odoonto.Domain.Core.Models`)
+
+## 2. Proceso de Resolución
+
+Sigue estos pasos en orden:
+
+1. **Verificar el proyecto y su estructura**:
+   - Examinar el archivo `.csproj` para ver las referencias
+   - Confirmar que las dependencias requeridas están referenciadas
+
+2. **Verificar los 'using'**:
+   - No asumir namespaces - verificar en el código fuente
+   - Usar espacios de nombres completos
+
+3. **Verificar implementaciones**:
+   - Examinar la definición de la clase base o interfaz
+   - Ajustar constructores y métodos para que coincidan con la definición
+
+4. **Revisar errores relacionados**:
+   - La resolución de un error puede afectar otros
+   - Actualizar todas las clases afectadas sistemáticamente
+
+## 3. Solución de Linter vs. Solución de Compilación
+
+**Diferencias importantes**:
+- Un error de linter puede permitir que el código compile pero no sea correcto
+- Un error de compilación impide la ejecución del código
+
+**Procedimiento para errores persistentes**:
+1. Solucionar los problemas a nivel de arquitectura/proyecto primero
+2. Luego abordar errores individuales en archivos
+3. Crear unidades de prueba para verificar las correcciones
+
+## 4. Patrones Comunes de Error en Proyectos DDD
+
+### Referencia a Entity
+Problema: `The type or namespace name 'Entity' could not be found`
+```csharp
+// INCORRECTO - Namespace incompleto o incorrecto
+using Odoonto.Domain.Core;
+public class Patient : Entity {}
+
+// CORRECTO - Namespace completo y específico
+using Odoonto.Domain.Core.Abstractions;
+public class Patient : Entity {}
+```
+
+### Método de extensión no encontrado
+Problema: `'X' does not contain a definition for 'UpdateEditDate'`
+```csharp
+// INCORRECTO - No usa this o no importa el namespace con extensiones
+UpdateEditDate();
+
+// CORRECTO - Usa this explícitamente
+this.UpdateEditDate();
+
+// Asegurando el namespace correcto
+using Odoonto.Domain.Core.Abstractions;
+```
+
+Asegúrate de solucionar los problemas estructurales antes de intentar corregir errores individuales en los archivos.
+

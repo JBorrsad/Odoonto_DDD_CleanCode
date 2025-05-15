@@ -1,7 +1,7 @@
 using System;
-using Odoonto.Domain.Core.Models;
 using Odoonto.Domain.Core.Models.Exceptions;
 using Odoonto.Domain.Models.ValueObjects;
+using Odoonto.Domain.Core.Abstractions;
 
 namespace Odoonto.Domain.Models.Treatments
 {
@@ -48,28 +48,28 @@ namespace Odoonto.Domain.Models.Treatments
             }
 
             Name = name.Trim();
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para establecer la descripción
         public void SetDescription(string description)
         {
             Description = description?.Trim() ?? string.Empty;
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para establecer el precio
         public void SetPrice(Money price)
         {
             Price = price ?? throw new InvalidValueException("El precio no puede ser nulo.");
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para establecer el precio con valores primitivos
         public void SetPrice(decimal amount, string currency)
         {
             Price = new Money(amount, currency);
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para establecer la duración estimada
@@ -81,7 +81,7 @@ namespace Odoonto.Domain.Models.Treatments
             }
 
             EstimatedDuration = duration;
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para establecer la duración estimada en minutos
@@ -93,14 +93,14 @@ namespace Odoonto.Domain.Models.Treatments
             }
 
             EstimatedDuration = TimeSpan.FromMinutes(minutes);
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
 
         // Método para establecer la categoría
         public void SetCategory(string category)
         {
             Category = category?.Trim() ?? string.Empty;
-            UpdateEditDate();
+            this.UpdateEditDate();
         }
     }
 } 

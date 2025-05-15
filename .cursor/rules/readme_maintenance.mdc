@@ -1,0 +1,137 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Mantenimiento de Documentación README
+
+## 1. Propósito
+
+Cada capa y subcapa del proyecto debe mantener un archivo README.md actualizado que sirva como:
+- Documentación de la arquitectura
+- Guía para desarrolladores
+- Registro de componentes implementados
+- Lista de tareas pendientes (TODOs)
+
+## 2. Estructura Estándar para READMEs
+
+### 2.1. README de Capa Principal
+
+Los README de capas principales (Domain, Application, Data, Infrastructure, Presentation) deben seguir esta estructura:
+
+```markdown
+# Capa de [Nombre de la Capa]
+
+## Descripción
+[Descripción breve sobre el propósito de la capa]
+
+## Responsabilidades
+- [Lista de responsabilidades]
+
+## Estructura
+```
+[Esquema de carpetas]
+```
+
+## Componentes Principales
+- [Lista de componentes implementados]
+
+## Reglas de Implementación
+- [Reglas específicas para esta capa]
+
+## Componentes Pendientes (TODO)
+- [Lista de componentes pendientes]
+```
+
+### 2.2. README de Subcapa o Módulo
+
+```markdown
+# [Nombre del Módulo]
+
+## Propósito
+[Descripción del propósito del módulo]
+
+## Componentes
+- [Lista de componentes implementados]
+
+## Interacciones
+- [Cómo interactúa con otros módulos]
+
+## Pendientes (TODO)
+- [Lista de tareas pendientes]
+```
+
+## 3. Mantenimiento de TODOs
+
+### 3.1. Formato de TODOs
+
+Los TODOs deben seguir este formato:
+```
+- [ ] Implementar [nombre del componente]
+  - Descripción: [breve descripción]
+  - Prioridad: [Alta/Media/Baja]
+  - Dependencias: [componentes de los que depende]
+```
+
+### 3.2. Actualización de TODOs
+
+- Al crear un nuevo componente, agregar su TODO en el README correspondiente
+- Al implementar un componente, marcar su TODO como completado cambiando `[ ]` a `[x]`
+- Al finalizar un componente, moverlo de la sección "Pendientes" a "Componentes Principales"
+
+## 4. READMEs por Capa
+
+### 4.1. README de Dominio (src/Domain/README.md)
+
+Debe incluir:
+- Descripción de las entidades de dominio
+- Interfaces de repositorio
+- Value objects
+- Servicios de dominio
+- Agregados y relaciones
+
+### 4.2. README de Aplicación (src/Application/README.md)
+
+Debe incluir:
+- DTOs implementados
+- Servicios de aplicación
+- Perfiles de AutoMapper
+- Validaciones
+
+### 4.3. README de Datos (src/Data/README.md)
+
+Debe incluir:
+- Repositorios implementados
+- Contexto de Firebase
+- Mapeos entre entidades y documentos
+- Estrategias de persistencia
+
+### 4.4. README de Infraestructura (src/Infrastructure/README.md)
+
+Debe incluir:
+- Configuraciones
+- Inyectores de dependencias
+- Servicios transversales
+- Manejo de excepciones
+
+### 4.5. README de Presentación (src/Presentation/README.md)
+
+Debe incluir:
+- Controladores API
+- Estructura de frontend
+- Componentes de UI
+- Rutas y navegación
+
+## 5. Mantenimiento Automático
+
+### 5.1. Reglas para Actualizaciones
+
+1. Al crear un nuevo componente en una capa, se debe actualizar su README
+2. Al completar todos los TODOs de un módulo, actualizar su estado en el README de la capa
+3. Cuando se modifique sustancialmente una capa, actualizar la documentación
+
+### 5.2. Revisión Periódica
+
+- Revisar mensualmente todos los READMEs para asegurar que estén actualizados
+- Actualizar prioridades de TODOs según evolucione el proyecto
+- Documentar decisiones arquitectónicas importantes en los READMEs

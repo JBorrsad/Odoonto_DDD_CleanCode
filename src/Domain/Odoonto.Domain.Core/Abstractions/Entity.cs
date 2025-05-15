@@ -23,6 +23,24 @@ namespace Odoonto.Domain.Core.Abstractions
         public DateTime UpdatedAt { get; set; }
 
         /// <summary>
+        /// Constructor sin parámetros para serialización
+        /// </summary>
+        protected Entity()
+        {
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Constructor con ID específico
+        /// </summary>
+        /// <param name="id">Identificador único de la entidad</param>
+        protected Entity(Guid id) : this()
+        {
+            Id = id;
+        }
+
+        /// <summary>
         /// Verifica si dos entidades son iguales comparando sus identificadores
         /// </summary>
         public override bool Equals(object obj)

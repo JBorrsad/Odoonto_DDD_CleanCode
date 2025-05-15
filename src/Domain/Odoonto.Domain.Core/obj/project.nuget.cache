@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qq084HgniUcAKTnON8cUUjNgXeUq65gQeFN3D6Ly2u8iQwB/WrkC8fqWll4Ft8cSwh8gvgCI0nORNvnfQB1JxQ==",
+  "dgSpecHash": "oTg979QmTiY=",
   "success": true,
-  "projectFilePath": "C:\\Repos\\Odoonto\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj",
+  "projectFilePath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

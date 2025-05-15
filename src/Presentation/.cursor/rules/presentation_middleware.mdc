@@ -1,0 +1,429 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para Middleware en la Capa de Presentación
+
+## Propósito
+
+Los middlewares en ASP.NET Core permiten interceptar y procesar solicitudes HTTP antes de que lleguen a los controladores o después de que se genere una respuesta. Se utilizan para implementar funcionalidades transversales como logging, manejo de excepciones, autenticación y más.
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Presentation.API.Middleware;
+
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+
+/// <summary>
+/// Middleware para registro de solicitudes y respuestas
+/// </summary>
+public class RequestLoggingMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger<RequestLoggingMiddleware> _logger;
+    
+    /// <summary>
+    /// Constructor con inyección de dependencias
+    /// </summary>
+    public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
+    {
+        _next = next ?? throw new ArgumentNullException(nameof(next));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+    
+    /// <summary>
+    /// Método de invocación del middleware
+    /// </summary>
+    public async Task InvokeAsync(HttpContext context)
+    {
+        // Código que se ejecuta antes de la siguiente etapa
+        var requestId = Guid.NewGuid().ToString();
+        var requestInfo = $"{context.Request.Method} {context.Request.Path}";
+        var timestamp = DateTime.UtcNow;
+        
+        _logger.LogInformation($"Request {requestId} started: {requestInfo} at {timestamp}");
+        
+        // Agregar información a los encabezados para correlación
+        context.Response.Headers.Add("X-Request-Id", requestId);
+        
+        try
+        {
+            // Llamar al siguiente middleware en la pipeline
+            await _next(context);
+            
+            // Código que se ejecuta después de la siguiente etapa (en caso exitoso)
+            var duration = DateTime.UtcNow - timestamp;
+            _logger.LogInformation($"Request {requestId} completed with status {context.Response.StatusCode} in {duration.TotalMilliseconds}ms");
+        }
+        catch (Exception ex)
+        {
+            // Código que se ejecuta en caso de error
+            _logger.LogError(ex, $"Request {requestId} failed after {(DateTime.UtcNow - timestamp).TotalMilliseconds}ms");
+            throw; // Re-lanzar para que lo maneje el middleware de excepciones
+        }
+    }
+}
+```
+
+## Extensiones para Registro de Middleware
+
+Crear una extensión para facilitar el registro en Startup:
+
+```csharp
+namespace Odoonto.Presentation.API.Extensions;
+
+using Microsoft.AspNetCore.Builder;
+using Odoonto.Presentation.API.Middleware;
+
+/// <summary>
+/// Extensiones para registrar middlewares personalizados
+/// </summary>
+public static class MiddlewareExtensions
+{
+    /// <summary>
+    /// Agrega el middleware de logging de solicitudes
+    /// </summary>
+    public static IApplicationBuilder UseRequestLogging(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<RequestLoggingMiddleware>();
+    }
+    
+    /// <summary>
+    /// Agrega el middleware de manejo de excepciones
+    /// </summary>
+    public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder app)
+    {
+        return app.UseMiddleware<ExceptionHandlingMiddleware>();
+    }
+}
+```
+
+## Middleware para Manejo de Excepciones
+
+```csharp
+namespace Odoonto.Presentation.API.Middleware;
+
+using System;
+using System.Net;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Odoonto.Domain.Exceptions;
+using Odoonto.Infrastructure.Exceptions;
+
+/// <summary>
+/// Middleware que maneja excepciones de manera global y las convierte en respuestas HTTP apropiadas
+/// </summary>
+public class ExceptionHandlingMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    private readonly IHostEnvironment _environment;
+    
+    /// <summary>
+    /// Constructor con inyección de dependencias
+    /// </summary>
+    public ExceptionHandlingMiddleware(
+        RequestDelegate next, 
+        ILogger<ExceptionHandlingMiddleware> logger,
+        IHostEnvironment environment)
+    {
+        _next = next ?? throw new ArgumentNullException(nameof(next));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _environment = environment ?? throw new ArgumentNullException(nameof(environment));
+    }
+    
+    /// <summary>
+    /// Método de invocación del middleware
+    /// </summary>
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            // Llamar al siguiente middleware
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            // Manejar la excepción
+            await HandleExceptionAsync(context, ex);
+        }
+    }
+    
+    /// <summary>
+    /// Método para manejar las excepciones y convertirlas en respuestas HTTP
+    /// </summary>
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        // Registrar la excepción
+        _logger.LogError(exception, "An unhandled exception occurred");
+        
+        // Variables para la respuesta
+        HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
+        string message = "Se produjo un error interno. Por favor, inténtelo de nuevo más tarde.";
+        object details = null;
+        
+        // Determinar el código de estado y mensaje según el tipo de excepción
+        switch (exception)
+        {
+            case EntityNotFoundException notFoundEx:
+                statusCode = HttpStatusCode.NotFound;
+                message = notFoundEx.Message;
+                break;
+                
+            case ValidationException validationEx:
+                statusCode = HttpStatusCode.BadRequest;
+                message = validationEx.Message;
+                // Incluir detalles de validación si están disponibles
+                if (validationEx.Errors?.Count > 0)
+                {
+                    details = validationEx.Errors;
+                }
+                break;
+                
+            case BusinessRuleException businessEx:
+                statusCode = HttpStatusCode.Conflict;
+                message = businessEx.Message;
+                break;
+                
+            case AuthenticationException authEx:
+                statusCode = HttpStatusCode.Unauthorized;
+                message = "No autorizado para realizar esta operación.";
+                break;
+                
+            case UnauthorizedAccessException unauthorizedEx:
+                statusCode = HttpStatusCode.Forbidden;
+                message = "No tiene permisos para acceder a este recurso.";
+                break;
+                
+            case ConfigurationException configEx:
+                statusCode = HttpStatusCode.InternalServerError;
+                message = "Error de configuración del servidor.";
+                // Registrar error crítico para configuración
+                _logger.LogCritical(configEx, "Configuration error occurred");
+                break;
+                
+            case RepositoryException repoEx:
+                statusCode = HttpStatusCode.InternalServerError;
+                message = "Error al acceder a los datos.";
+                break;
+                
+            // Otros tipos de excepciones específicas...
+            
+            default:
+                // Excepción no manejada específicamente
+                statusCode = HttpStatusCode.InternalServerError;
+                // No exponer detalles internos en producción
+                if (_environment.IsDevelopment())
+                {
+                    message = exception.Message;
+                    details = new
+                    {
+                        StackTrace = exception.StackTrace,
+                        Source = exception.Source,
+                        InnerException = exception.InnerException?.Message
+                    };
+                }
+                break;
+        }
+        
+        // Configurar la respuesta HTTP
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)statusCode;
+        
+        // Crear objeto de respuesta
+        var response = new
+        {
+            statusCode = (int)statusCode,
+            message,
+            details,
+            // Incluir un ID de error para correlación con logs (opcional)
+            errorId = Guid.NewGuid().ToString()
+        };
+        
+        // Serializar y escribir la respuesta
+        var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = _environment.IsDevelopment()
+        });
+        
+        await context.Response.WriteAsync(jsonResponse);
+    }
+}
+```
+
+## Middleware para Autenticación Personalizada
+
+```csharp
+namespace Odoonto.Presentation.API.Middleware;
+
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Odoonto.Infrastructure.Services;
+
+/// <summary>
+/// Middleware para autenticación personalizada basada en token API
+/// </summary>
+public class ApiKeyAuthenticationMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly IApiKeyValidator _apiKeyValidator;
+    
+    public ApiKeyAuthenticationMiddleware(
+        RequestDelegate next, 
+        IApiKeyValidator apiKeyValidator)
+    {
+        _next = next ?? throw new ArgumentNullException(nameof(next));
+        _apiKeyValidator = apiKeyValidator ?? throw new ArgumentNullException(nameof(apiKeyValidator));
+    }
+    
+    public async Task InvokeAsync(HttpContext context)
+    {
+        // Verificar si se proporciona un API key
+        if (!context.Request.Headers.TryGetValue("X-API-KEY", out var apiKeyHeaderValues))
+        {
+            // No hay API key, continuar pipeline (pero no autenticado)
+            await _next(context);
+            return;
+        }
+        
+        var apiKey = apiKeyHeaderValues.ToString();
+        
+        // Validar API key
+        var apiKeyInfo = await _apiKeyValidator.ValidateAsync(apiKey);
+        if (apiKeyInfo != null)
+        {
+            // API key válido, crear identidad
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, apiKeyInfo.ClientName),
+                new Claim(ClaimTypes.NameIdentifier, apiKeyInfo.ClientId.ToString()),
+                new Claim("ApiKeyId", apiKeyInfo.ApiKeyId.ToString())
+            };
+            
+            // Agregar roles si están disponibles
+            if (apiKeyInfo.Roles != null)
+            {
+                foreach (var role in apiKeyInfo.Roles)
+                {
+                    claims = claims.Append(new Claim(ClaimTypes.Role, role)).ToArray();
+                }
+            }
+            
+            var identity = new ClaimsIdentity(claims, "ApiKey");
+            context.User = new ClaimsPrincipal(identity);
+        }
+        
+        // Continuar con el siguiente middleware
+        await _next(context);
+    }
+}
+```
+
+## Middleware para Compresión de Respuestas
+
+```csharp
+// No necesitas implementar manualmente este middleware,
+// ASP.NET Core proporciona uno integrado que se configura así en Startup:
+
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    // Debe configurarse antes de otros middlewares que generan respuesta
+    app.UseResponseCompression();
+    
+    // Resto de la configuración...
+}
+
+public void ConfigureServices(IServiceCollection services)
+{
+    // Agregar y configurar compresión
+    services.AddResponseCompression(options =>
+    {
+        options.EnableForHttps = true;
+        options.Providers.Add<BrotliCompressionProvider>();
+        options.Providers.Add<GzipCompressionProvider>();
+    });
+    
+    services.Configure<BrotliCompressionProviderOptions>(options =>
+    {
+        options.Level = CompressionLevel.Fastest;
+    });
+    
+    services.Configure<GzipCompressionProviderOptions>(options =>
+    {
+        options.Level = CompressionLevel.Fastest;
+    });
+    
+    // Resto de los servicios...
+}
+```
+
+## Buenas Prácticas
+
+1. **Orden de registro**: El orden de registro de middlewares es crucial
+2. **Separar responsabilidades**: Cada middleware debe tener una responsabilidad única
+3. **Manejo de excepciones**: Usar try-catch para manejar excepciones durante el procesamiento
+4. **Extensiones para registro**: Crear métodos de extensión para facilitar el registro
+5. **Uso de ILogger**: Registrar información importante para diagnóstico
+6. **Inyección de dependencias**: Inyectar servicios necesarios en el constructor
+7. **Considerar rendimiento**: Los middlewares se ejecutan en cada solicitud
+
+## Orden Recomendado para Registro
+
+Este es el orden recomendado para registrar los middlewares en Startup.Configure:
+
+```csharp
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    // 1. Manejo de excepciones (primero para capturar excepciones en todos los middlewares)
+    app.UseGlobalExceptionHandler();
+    
+    // 2. Logging de solicitudes (después del manejo de excepciones para registrar todo)
+    app.UseRequestLogging();
+    
+    // 3. Compresión de respuestas (debe estar antes de los que generan contenido)
+    app.UseResponseCompression();
+    
+    // 4. HTTPS Redirection
+    app.UseHttpsRedirection();
+    
+    // 5. Archivos estáticos
+    app.UseStaticFiles();
+    
+    // 6. Middleware de enrutamiento
+    app.UseRouting();
+    
+    // 7. CORS
+    app.UseCors();
+    
+    // 8. Autenticación (antes de autorización)
+    app.UseAuthentication();
+    
+    // 9. Autorización
+    app.UseAuthorization();
+    
+    // 10. Endpoints
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+    });
+}
+```
+
+## Anti-patrones a Evitar
+
+1. ❌ **Middleware con múltiples responsabilidades**: Cada middleware debe tener un propósito claro
+2. ❌ **No manejar excepciones**: Siempre usar try-catch para evitar romper la pipeline
+3. ❌ **Operaciones bloqueantes**: Usar async/await para operaciones de I/O
+4. ❌ **Orden incorrecto**: El orden de registro afecta cómo se procesan las solicitudes
+5. ❌ **Demasiados middlewares**: Cada middleware agrega sobrecarga, usar con criterio
+6. ❌ **Lógica de negocio en middlewares**: Deben centrarse en aspectos de infraestructura

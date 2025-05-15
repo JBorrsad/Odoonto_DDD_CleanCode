@@ -12,3 +12,17 @@ C:\Repos\Odoonto\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Deb
 C:\Repos\Odoonto\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\refint\Odoonto.Infrastructure.Configuration.dll
 C:\Repos\Odoonto\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.pdb
 C:\Repos\Odoonto\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\ref\Odoonto.Infrastructure.Configuration.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\bin\Debug\net8.0\Firebase\firebase-credentials.json
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\bin\Debug\net8.0\Odoonto.Infrastructure.Configuration.deps.json
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\bin\Debug\net8.0\Odoonto.Infrastructure.Configuration.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\bin\Debug\net8.0\Odoonto.Infrastructure.Configuration.pdb
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.csproj.AssemblyReference.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.AssemblyInfoInputs.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.AssemblyInfo.cs
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.csproj.CoreCompileInputs.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.sourcelink.json
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\refint\Odoonto.Infrastructure.Configuration.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\Odoonto.Infrastructure.Configuration.pdb
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Configuration\obj\Debug\net8.0\ref\Odoonto.Infrastructure.Configuration.dll

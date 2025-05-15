@@ -1,0 +1,171 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Guía de la Capa de Infraestructura
+
+## Propósito
+
+La capa de Infraestructura proporciona implementaciones técnicas para las interfaces del dominio y servicios transversales. Es la capa más externa del sistema que conoce a todas las demás.
+
+## Estructura
+
+```
+src/Infrastructure/
+├── Odoonto.Infrastructure.InversionOfControl/
+│   ├── Inyectors/
+│       ├── ApplicationInyector.cs    # Inyección de servicios de aplicación
+│       ├── DataInyector.cs           # Inyección de repositorios
+│       ├── DomainInyector.cs         # Inyección de servicios de dominio
+│       ├── FirebaseInyector.cs       # Inyección de servicios Firebase
+│   ├── ServicesInyectorsExtensions.cs  # Extensiones para registrar servicios
+├── Odoonto.Infrastructure.Configuration/
+│   ├── Firebase/
+│       ├── FirebaseConfiguration.cs   # Configuración de Firebase
+├── Odoonto.Infrastructure.ExceptionsHandler/
+│   ├── Middlewares/
+│       ├── GlobalExceptionMiddleware.cs  # Middleware para excepciones
+```
+
+## Responsabilidades
+
+- **Configurar inyección de dependencias**: Registrar todas las implementaciones concretas
+- **Gestionar configuraciones externas**: Firebase, logging, autenticación
+- **Implementar cross-cutting concerns**: Aspectos transversales como excepciones, logging, seguridad
+- **Cablear capas**: Conectar las distintas capas de la aplicación respetando el principio de dependencia
+
+## Implementación de Inyectores
+
+Los inyectores registran las dependencias en el contenedor IoC:
+
+```csharp
+public static class ApplicationInyector
+{
+    public static void Inyect(IServiceCollection services)
+    {
+        // Registro de servicios de aplicación
+        services.AddScoped<IPatientAppService, PatientAppService>();
+        services.AddScoped<IDoctorAppService, DoctorAppService>();
+        services.AddScoped<IAppointmentAppService, AppointmentAppService>();
+        
+        // Registro de perfiles AutoMapper
+        RegisterAutoMapperProfiles(services);
+    }
+    
+    private static void RegisterAutoMapperProfiles(IServiceCollection services)
+    {
+        List<Type> profiles = new List<Type>
+        {
+            typeof(PatientMappingProfile),
+            typeof(DoctorMappingProfile),
+            typeof(AppointmentMappingProfile)
+        };
+        
+        services.AddAutoMapper(profiles.ToArray());
+    }
+}
+```
+
+## Implementación de Configuración de Firebase
+
+```csharp
+public class FirebaseConfiguration
+{
+    // Instancia singleton
+    private static readonly FirebaseConfiguration _instance = new();
+    public static FirebaseConfiguration Instance => _instance;
+    
+    // Cliente Firestore
+    private FirestoreDb _firestoreDb;
+    public FirestoreDb GetFirestoreDb() => _firestoreDb;
+    
+    // Método de inicialización
+    public void Initialize(string apiKey, string credentialsPath, string projectId)
+    {
+        if (File.Exists(credentialsPath))
+        {
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialsPath);
+            
+            if (string.IsNullOrEmpty(projectId))
+            {
+                string json = File.ReadAllText(credentialsPath);
+                var firebaseCredential = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                projectId = firebaseCredential["project_id"];
+            }
+            
+            _firestoreDb = FirestoreDb.Create(projectId);
+        }
+        else
+        {
+            throw new FileNotFoundException($"Firebase credentials file not found at: {credentialsPath}");
+        }
+    }
+}
+```
+
+## Manejo de Excepciones Globales
+
+```csharp
+public class GlobalExceptionMiddleware
+{
+    private readonly RequestDelegate _next;
+    private readonly ILogger<GlobalExceptionMiddleware> _logger;
+
+    public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
+    {
+        _next = next;
+        _logger = logger;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ha ocurrido un error no controlado");
+            await HandleExceptionAsync(context, ex);
+        }
+    }
+
+    private static Task HandleExceptionAsync(HttpContext context, Exception ex)
+    {
+        context.Response.ContentType = "application/json";
+        
+        // Mapeo de excepciones a códigos HTTP
+        context.Response.StatusCode = ex switch
+        {
+            EntityNotFoundException => 404,
+            InvalidOperationException => 400,
+            UnauthorizedAccessException => 401,
+            _ => 500
+        };
+
+        return context.Response.WriteAsJsonAsync(new 
+        {
+            type = ex.GetType().Name,
+            message = ex.Message,
+            stackTrace = context.Request.Headers["Environment"].FirstOrDefault() == "Development" ? ex.StackTrace : null
+        });
+    }
+}
+```
+
+## Buenas Prácticas
+
+1. **Principio de Inversión de Dependencias**: Usar interfaces definidas en el dominio
+2. **Ciclo de vida adecuado**: Usar Scoped para servicios y repositorios, Singleton para contextos
+3. **Separación de responsabilidades**: Cada inyector para un tipo de servicio
+4. **Configuración externalizada**: Leer configuraciones de appsettings.json
+5. **Manejo centralizado de errores**: Implementar middlewares para excepciones globales
+
+## Anti-patrones
+
+1. ❌ **Filtración de detalles técnicos**: No exponer detalles de Firebase al dominio
+2. ❌ **Dependencias circulares**: Evitar que las capas internas conozcan esta capa
+3. ❌ **Hardcoding de configuraciones**: No codificar credenciales o configuraciones
+4. ❌ **Ignorar ciclos de vida**: No mezclar singleton con servicios scoped sin precaución
+5. ❌ **Acoplamiento a frameworks**: No acoplar el dominio a frameworks externos

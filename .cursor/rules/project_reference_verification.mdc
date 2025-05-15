@@ -1,0 +1,110 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Verificación de Referencias entre Proyectos
+
+## Estructura de Proyecto DDD y Clean Architecture
+
+En una arquitectura DDD con múltiples proyectos, es crucial asegurar que las referencias entre proyectos estén correctamente configuradas:
+
+```
+Odoonto_DDD_CleanCode/
+├── src/
+│   ├── Domain/
+│   │   ├── Odoonto.Domain.Core/           # Abstracciones y contratos fundamentales
+│   │   └── Odoonto.Domain/                # Entidades, servicios, interfaces de dominio
+│   ├── Application/
+│   │   └── Odoonto.Application/           # Casos de uso, DTOs, interfaces
+│   ├── Infrastructure/
+│   │   ├── Odoonto.Infrastructure.*/      # Implementaciones técnicas
+│   │   └── Odoonto.Infrastructure.InversionOfControl/ # Registro de dependencias
+│   ├── Data/
+│   │   └── Odoonto.Data/                  # Implementaciones de repositorios
+│   └── Presentation/
+│       ├── Odoonto.UI.Server/             # API REST
+│       └── Odoonto.UI.Client/             # Frontend React
+```
+
+## Diagrama de Dependencias
+
+Flujo correcto de dependencias en la arquitectura:
+
+```
+Presentation → Application → Domain
+      ↑             ↑          ↑
+      |             |          |
+Infrastructure ─────┘          |
+      |                        |
+Data ─────────────────────────┘
+```
+
+## Verificación de Referencias
+
+Antes de realizar cambios en el código:
+
+1. **Examinar las referencias del proyecto**:
+   ```bash
+   # Ver todas las referencias de un proyecto específico
+   dotnet list src/Domain/Odoonto.Domain/Odoonto.Domain.csproj reference
+   ```
+
+2. **Verificar el archivo .csproj** para asegurar que incluye las referencias necesarias:
+   ```xml
+   <ItemGroup>
+     <!-- Por ejemplo, Odoonto.Domain debe referenciar a Odoonto.Domain.Core -->
+     <ProjectReference Include="..\Odoonto.Domain.Core\Odoonto.Domain.Core.csproj" />
+   </ItemGroup>
+   ```
+
+3. **Comprobar referencias transitivas**:
+   - Las dependencias indirectas pueden causar conflictos o errores ocultos
+   - Usa `dotnet list src/Path/To/Project.csproj reference --recursive`
+
+## Resolución de Problemas Típicos
+
+### Error de tipo no encontrado
+
+Si ves errores como `The type or namespace name 'X' could not be found`:
+
+1. **Verificar si la clase/namespace existe**:
+   - Buscar la definición real de la clase/namespace
+   - Confirmar el namespace exacto y la firma
+
+2. **Comprobar referencias del proyecto**:
+   - ¿El proyecto tiene referencia al proyecto que contiene la definición?
+   - ¿La referencia es circular? (esto causaría problemas)
+
+3. **Solución**:
+   - Agregar la referencia faltante
+   - Corregir los namespaces en los using
+   - Asegurar compilación exitosa del proyecto referenciado
+
+### Error de método no encontrado
+
+Si ves errores como `'X' does not contain a definition for 'Y'`:
+
+1. **Verificar si el método existe**:
+   - Examinar la definición completa de la clase o interfaz
+   - Buscar métodos de extensión en espacios de nombres relacionados
+
+2. **Solución**:
+   - Agregar los using correctos para métodos de extensión
+   - Corregir firmas de método (parámetros, tipos, etc.)
+   - Usar calificadores explícitos (this) cuando sea necesario
+
+## Lineamientos para Mantener Referencias Limpias
+
+1. **Seguir el principio de dependencia**:
+   - Capas internas (Domain) no deben referenciar capas externas
+   - Usar inyección de dependencias e interfaces
+
+2. **Mantener la coherencia de namespaces**:
+   - Namespaces deben reflejar la estructura de carpetas
+   - Seguir convenciones consistentes
+
+3. **Revisar después de refactorizaciones**:
+   - Cambiar namespaces o mover clases puede romper referencias
+   - Comprobar referencias del proyecto después de cambios estructurales
+

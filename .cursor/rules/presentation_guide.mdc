@@ -1,0 +1,339 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Guía de la Capa de Presentación
+
+## Propósito
+
+La capa de Presentación proporciona interfaces de usuario y APIs para interactuar con el sistema. Es la capa más externa que se comunica directamente con los usuarios o sistemas externos.
+
+## Estructura
+
+```
+src/Presentation/
+├── Odoonto.UI.Server/               # API REST con ASP.NET Core
+│   ├── Controllers/                 # Controladores API
+│   │   ├── Patients/
+│   │   ├── Doctors/
+│   │   ├── Appointments/
+│   │   ├── Treatments/
+│   ├── Middlewares/                 # Componentes de middleware
+│   │   ├── ErrorHandlingMiddleware.cs
+│   │   ├── LoggingMiddleware.cs
+│   ├── Program.cs                   # Configuración de la aplicación
+│   ├── appsettings.json             # Configuraciones
+├── Odoonto.UI.Client/               # Cliente React con TypeScript
+│   ├── src/
+│   │   ├── models/                  # Modelos de UI (M en MVP)
+│   │   ├── views/                   # Componentes visuales (V en MVP)
+│   │   ├── presenters/              # Lógica de presentación (P en MVP)
+│   │   ├── services/                # Servicios para comunicación con API
+```
+
+## Responsabilidades de la API Server
+
+- **Exponer endpoints REST**: Para consumo por clientes
+- **Validar peticiones HTTP**: Formato, autenticación, autorización
+- **Delegar lógica a servicios de aplicación**: Controladores ligeros
+- **Gestionar respuestas HTTP**: Códigos de estado, formatos
+- **Documentar API**: Mediante Swagger/OpenAPI
+
+## Implementación de Controladores API
+
+Los controladores siguen el patrón API REST con ASP.NET Core:
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+public class PatientsController : ControllerBase
+{
+    private readonly IPatientAppService _patientAppService;
+
+    public PatientsController(IPatientAppService patientAppService)
+    {
+        _patientAppService = patientAppService;
+    }
+
+    // GET api/patients
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<PatientDto>>> GetAll()
+    {
+        var patients = await _patientAppService.GetAllAsync();
+        return Ok(patients);
+    }
+
+    // GET api/patients/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<PatientDto>> GetById(Guid id)
+    {
+        try
+        {
+            var patient = await _patientAppService.GetByIdAsync(id);
+            return Ok(patient);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    // POST api/patients
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] CreatePatientDto patientDto)
+    {
+        try
+        {
+            var id = await _patientAppService.CreateAsync(patientDto);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    // PUT api/patients/{id}
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Update(Guid id, [FromBody] UpdatePatientDto patientDto)
+    {
+        try
+        {
+            await _patientAppService.UpdateAsync(id, patientDto);
+            return NoContent();
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    // DELETE api/patients/{id}
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        try
+        {
+            await _patientAppService.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+}
+```
+
+## Responsabilidades del Cliente (Patrón MVP)
+
+- **Modelos**: Representación de datos para la UI
+- **Vistas**: Componentes visuales puramente reactivos
+- **Presentadores**: Lógica de presentación y estado
+- **Servicios**: Comunicación con API REST
+
+## Patrón MVP en React con TypeScript
+
+### Modelo (Model)
+
+```typescript
+// src/models/patient.model.ts
+export interface PatientModel {
+    id: string;
+    fullName: string;
+    contactInfo: {
+        email: string;
+        phone: string;
+    };
+    birthDate: Date;
+}
+
+export interface CreatePatientModel {
+    fullName: string;
+    email: string;
+    phone: string;
+    birthDate: string;
+}
+```
+
+### Vista (View)
+
+```typescript
+// src/views/patients/PatientListView.tsx
+import React from 'react';
+import { PatientModel } from '../../models/patient.model';
+
+interface PatientListViewProps {
+    patients: PatientModel[];
+    loading: boolean;
+    onSelectPatient: (id: string) => void;
+    onAddPatient: () => void;
+}
+
+export const PatientListView: React.FC<PatientListViewProps> = ({ 
+    patients, 
+    loading, 
+    onSelectPatient, 
+    onAddPatient 
+}) => {
+    if (loading) {
+        return <div>Cargando pacientes...</div>;
+    }
+
+    return (
+        <div>
+            <h2>Listado de Pacientes</h2>
+            <button onClick={onAddPatient}>Nuevo Paciente</button>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {patients.map(patient => (
+                        <tr key={patient.id}>
+                            <td>{patient.fullName}</td>
+                            <td>{patient.contactInfo.email}</td>
+                            <td>{patient.contactInfo.phone}</td>
+                            <td>
+                                <button onClick={() => onSelectPatient(patient.id)}>
+                                    Ver detalles
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+```
+
+### Presentador (Presenter)
+
+```typescript
+// src/presenters/patients/usePatientListPresenter.ts
+import { useState, useEffect } from 'react';
+import { PatientModel } from '../../models/patient.model';
+import { PatientService } from '../../services/patient.service';
+import { useNavigate } from 'react-router-dom';
+
+export const usePatientListPresenter = () => {
+    const [patients, setPatients] = useState<PatientModel[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    
+    const navigate = useNavigate();
+    const patientService = new PatientService();
+    
+    const loadPatients = async () => {
+        setLoading(true);
+        try {
+            const data = await patientService.getAllPatients();
+            setPatients(data);
+            setError(null);
+        } catch (err) {
+            setError('Error al cargar los pacientes');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    useEffect(() => {
+        loadPatients();
+    }, []);
+    
+    const handleSelectPatient = (id: string) => {
+        navigate(`/patients/${id}`);
+    };
+    
+    const handleAddPatient = () => {
+        navigate('/patients/new');
+    };
+    
+    return {
+        patients,
+        loading,
+        error,
+        reload: loadPatients,
+        onSelectPatient: handleSelectPatient,
+        onAddPatient: handleAddPatient
+    };
+};
+```
+
+### Servicios API
+
+```typescript
+// src/services/patient.service.ts
+import axios from 'axios';
+import { PatientModel, CreatePatientModel } from '../models/patient.model';
+
+export class PatientService {
+    private baseUrl = '/api/patients';
+    
+    async getAllPatients(): Promise<PatientModel[]> {
+        const response = await axios.get<PatientModel[]>(this.baseUrl);
+        return response.data;
+    }
+    
+    async getPatientById(id: string): Promise<PatientModel> {
+        const response = await axios.get<PatientModel>(`${this.baseUrl}/${id}`);
+        return response.data;
+    }
+    
+    async createPatient(patient: CreatePatientModel): Promise<string> {
+        const response = await axios.post<string>(this.baseUrl, patient);
+        return response.data;
+    }
+    
+    async updatePatient(id: string, patient: Partial<PatientModel>): Promise<void> {
+        await axios.put(`${this.baseUrl}/${id}`, patient);
+    }
+    
+    async deletePatient(id: string): Promise<void> {
+        await axios.delete(`${this.baseUrl}/${id}`);
+    }
+}
+```
+
+## Buenas Prácticas
+
+### API REST
+
+1. **Controladores ligeros**: Delegar lógica a servicios de aplicación
+2. **Documentación con Swagger**: Documentar todos los endpoints
+3. **Mapeo de respuestas HTTP**: Códigos de estado adecuados
+4. **Validación en controladores**: Validar formato y requisitos básicos
+5. **Manejo adecuado de excepciones**: Convertir a respuestas HTTP entendibles
+
+### Frontend MVP
+
+1. **Vistas sin estado**: Componentes de presentación pura
+2. **Presentadores para la lógica**: Separar lógica de presentación
+3. **Servicios para APIs**: Centralizar comunicación con backend
+4. **Tipado fuerte**: Usar TypeScript para modelos y contratos
+5. **Pruebas unitarias**: Facilitar testing mediante separación de responsabilidades
+
+## Anti-patrones
+
+1. ❌ **Controladores con lógica de negocio**: Toda lógica debe estar en Application
+2. ❌ **Vistas con llamadas a APIs**: Usar presentadores para esto
+3. ❌ **DTOs mezclados entre capas**: Usar modelos específicos por capa
+4. ❌ **Servicios de dominio en controladores**: Sólo servicios de aplicación
+5. ❌ **Frontend acoplado a backend**: Comunicar sólo a través de APIs documentadas

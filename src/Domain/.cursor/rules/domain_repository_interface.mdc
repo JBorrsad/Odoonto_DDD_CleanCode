@@ -1,0 +1,276 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Reglas para Interfaces de Repositorio en el Dominio
+
+## Propósito
+
+Las interfaces de repositorio en el dominio definen contratos que abstraen el acceso a datos, permitiendo que la lógica de negocio se mantenga independiente de los detalles de persistencia. Estas interfaces son implementadas por la capa de datos.
+
+## Estructura Básica
+
+```csharp
+namespace Odoonto.Domain.Repositories.Patients;
+
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Odoonto.Domain.Entities.Patients;
+
+/// <summary>
+/// Interfaz para el repositorio de pacientes
+/// </summary>
+public interface IPatientRepository
+{
+    /// <summary>
+    /// Obtiene todos los pacientes
+    /// </summary>
+    Task<IEnumerable<Patient>> GetAllAsync();
+    
+    /// <summary>
+    /// Obtiene un paciente por su ID
+    /// </summary>
+    Task<Patient> GetByIdAsync(Guid id);
+    
+    /// <summary>
+    /// Obtiene pacientes por un criterio específico
+    /// </summary>
+    Task<IEnumerable<Patient>> FindAsync(Expression<Func<Patient, bool>> predicate);
+    
+    /// <summary>
+    /// Añade un nuevo paciente
+    /// </summary>
+    Task AddAsync(Patient patient);
+    
+    /// <summary>
+    /// Actualiza un paciente existente
+    /// </summary>
+    Task UpdateAsync(Patient patient);
+    
+    /// <summary>
+    /// Elimina un paciente
+    /// </summary>
+    Task RemoveAsync(Patient patient);
+    
+    /// <summary>
+    /// Guarda los cambios en la unidad de trabajo
+    /// </summary>
+    Task SaveChangesAsync();
+    
+    /// <summary>
+    /// Verifica si existe un paciente con el email dado
+    /// </summary>
+    Task<bool> ExistsByEmailAsync(string email);
+}
+```
+
+## Interfaz Genérica Base
+
+Es común definir una interfaz genérica base para operaciones comunes:
+
+```csharp
+namespace Odoonto.Domain.Repositories;
+
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+/// <summary>
+/// Interfaz base genérica para repositorios
+/// </summary>
+/// <typeparam name="T">Tipo de entidad</typeparam>
+public interface IRepository<T> where T : class
+{
+    /// <summary>
+    /// Obtiene todas las entidades
+    /// </summary>
+    Task<IEnumerable<T>> GetAllAsync();
+    
+    /// <summary>
+    /// Obtiene todas las entidades con un delegado para incluir relaciones
+    /// </summary>
+    Task<IEnumerable<T>> GetAllAsync(Func<IQueryable<T>, IQueryable<T>> includeFunc);
+    
+    /// <summary>
+    /// Obtiene una entidad por su ID
+    /// </summary>
+    Task<T> GetByIdAsync(Guid id);
+    
+    /// <summary>
+    /// Obtiene una entidad por su ID con un delegado para incluir relaciones
+    /// </summary>
+    Task<T> GetByIdAsync(Guid id, Func<IQueryable<T>, IQueryable<T>> includeFunc);
+    
+    /// <summary>
+    /// Obtiene entidades por un criterio específico
+    /// </summary>
+    Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+    
+    /// <summary>
+    /// Añade una nueva entidad
+    /// </summary>
+    Task AddAsync(T entity);
+    
+    /// <summary>
+    /// Actualiza una entidad existente
+    /// </summary>
+    Task UpdateAsync(T entity);
+    
+    /// <summary>
+    /// Elimina una entidad
+    /// </summary>
+    Task RemoveAsync(T entity);
+    
+    /// <summary>
+    /// Guarda los cambios en la unidad de trabajo
+    /// </summary>
+    Task SaveChangesAsync();
+}
+```
+
+## Interfaces de Repositorio Específicas
+
+Las interfaces específicas heredan de la interfaz genérica y añaden métodos específicos del dominio:
+
+```csharp
+namespace Odoonto.Domain.Repositories.Appointments;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Odoonto.Domain.Entities.Appointments;
+
+/// <summary>
+/// Interfaz para el repositorio de citas
+/// </summary>
+public interface IAppointmentRepository : IRepository<Appointment>
+{
+    /// <summary>
+    /// Obtiene las citas de un paciente
+    /// </summary>
+    Task<IEnumerable<Appointment>> GetByPatientIdAsync(Guid patientId);
+    
+    /// <summary>
+    /// Obtiene las citas de un doctor
+    /// </summary>
+    Task<IEnumerable<Appointment>> GetByDoctorIdAsync(Guid doctorId);
+    
+    /// <summary>
+    /// Obtiene las citas programadas en un rango de fechas
+    /// </summary>
+    Task<IEnumerable<Appointment>> GetByDateRangeAsync(DateTime start, DateTime end);
+    
+    /// <summary>
+    /// Verifica si un doctor está disponible en un horario específico
+    /// </summary>
+    Task<bool> IsDoctorAvailableAsync(Guid doctorId, DateTime startTime, int durationMinutes);
+    
+    /// <summary>
+    /// Verifica si un paciente tiene citas programadas en un horario específico
+    /// </summary>
+    Task<bool> HasPatientOverlappingAppointmentAsync(Guid patientId, DateTime startTime, int durationMinutes);
+}
+```
+
+## Métodos de Extensión
+
+Para operaciones comunes que involucran excepciones, es útil definir métodos de extensión:
+
+```csharp
+namespace Odoonto.Domain.Repositories.Extensions;
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Odoonto.Domain.Exceptions;
+
+/// <summary>
+/// Métodos de extensión para repositorios
+/// </summary>
+public static class RepositoryExtensions
+{
+    /// <summary>
+    /// Obtiene una entidad por su ID o lanza una excepción si no existe
+    /// </summary>
+    public static async Task<T> GetByIdOrThrowAsync<T>(
+        this IRepository<T> repository, 
+        Guid id) where T : class
+    {
+        var entity = await repository.GetByIdAsync(id);
+        
+        if (entity == null)
+        {
+            throw new EntityNotFoundException(typeof(T).Name, id);
+        }
+        
+        return entity;
+    }
+    
+    /// <summary>
+    /// Obtiene una entidad por su ID con relaciones incluidas o lanza una excepción si no existe
+    /// </summary>
+    public static async Task<T> GetByIdOrThrowAsync<T>(
+        this IRepository<T> repository, 
+        Guid id, 
+        Func<IQueryable<T>, IQueryable<T>> includeFunc) where T : class
+    {
+        var entity = await repository.GetByIdAsync(id, includeFunc);
+        
+        if (entity == null)
+        {
+            throw new EntityNotFoundException(typeof(T).Name, id);
+        }
+        
+        return entity;
+    }
+}
+```
+
+## Convenciones de Nombrado
+
+- **Nombres de interfaces**: `I<Entidad>Repository` (ej. `IPatientRepository`)
+- **Métodos de obtención**: `GetAllAsync`, `GetByIdAsync`, `FindAsync`
+- **Métodos de modificación**: `AddAsync`, `UpdateAsync`, `RemoveAsync`
+- **Métodos de consulta específicos**: `GetBy<Criterio>Async` (ej. `GetByPatientIdAsync`)
+- **Métodos de verificación**: `ExistsAsync`, `Is<Condición>Async` (ej. `IsDoctorAvailableAsync`)
+
+## Organización de Código
+
+- **Namespace**: `Odoonto.Domain.Repositories.<Contexto>` (ej. `Odoonto.Domain.Repositories.Patients`)
+- **Estructura de carpetas**:
+  ```
+  Domain/
+  ├── Repositories/
+  │   ├── IRepository.cs               # Interfaz genérica base
+  │   ├── Extensions/                  # Métodos de extensión
+  │   │   └── RepositoryExtensions.cs
+  │   ├── Patients/                    # Agrupado por contexto
+  │   │   └── IPatientRepository.cs
+  │   ├── Appointments/
+  │   │   └── IAppointmentRepository.cs
+  │   └── Treatments/
+  │       └── ITreatmentRepository.cs
+  ```
+
+## Buenas Prácticas
+
+1. **Persistencia agnostica**: No revelar tecnología de persistencia en las interfaces
+2. **Métodos asincrónicos**: Usar Task para todas las operaciones de repositorio
+3. **Métodos específicos del dominio**: Incluir métodos que expresen consultas de dominio
+4. **Sin ORMs en el dominio**: No referenciar Entity Framework u otros ORMs
+5. **Expresiones de consulta flexibles**: Usar Expression<Func<>> para consultas
+6. **Patrón de unidad de trabajo**: Incluir SaveChangesAsync para gestionar transacciones
+7. **Interfaces cohesivas**: Mantener interfaces enfocadas en una entidad o agregado
+8. **Métodos para incluir relaciones**: Permitir cargar relaciones cuando sea necesario
+
+## Anti-patrones
+
+1. ❌ **Exponer detalles de persistencia**: No revelar tecnologías como SQL o MongoDB
+2. ❌ **Repositorios con demasiadas responsabilidades**: Mantener enfoque en acceso a datos
+3. ❌ **Lógica de negocio en repositorios**: La lógica debe estar en entidades o servicios de dominio
+4. ❌ **Repositorios sin métodos asincrónicos**: Usar Task para operaciones de IO
+5. ❌ **Métodos que retornan IQueryable**: Preferir métodos con parámetros expresivos

@@ -1,0 +1,99 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Verificación del README de la Capa de Dominio
+
+Este documento define las reglas para verificar que el README.md de la capa Domain esté completo y actualizado.
+
+## Requisitos para el README
+
+El archivo README.md de la capa de Dominio debe contener:
+
+1. **Descripción general** de la capa y su propósito
+2. **Responsabilidades** de la capa de Dominio
+3. **Estructura** de carpetas y organización
+4. **Implementación Completada** con la lista de componentes implementados
+5. **TODO** con la lista de componentes pendientes por implementar
+
+## Entidades a Documentar
+
+Cuando implementes cualquiera de estos componentes, debes actualizarlo en el README.md:
+
+- **Entidades**: Patient, Doctor, Treatment, Appointment, Odontogram, ToothRecord, Lesion, PlannedProcedure, PerformedProcedure
+- **Value Objects**: FullName, ContactInfo, Money, TimeSlot, ToothSurface, etc.
+- **Interfaces de Repositorio**: IPatientRepository, IDoctorRepository, ITreatmentRepository, etc.
+
+## Ejemplo de Sección de Implementación Completada
+
+```markdown
+## Implementación Completada
+
+### Directrices implementadas:
+- Estructura base de entidades y value objects
+- Validaciones de dominio mediante métodos en entidades
+- Interfaces de repositorio para persistencia
+- Lógica de negocio encapsulada en entidades y servicios de dominio
+
+### Componentes implementados:
+- Patient (Entidad para representar al paciente dental)
+  - Datos personales y demográficos
+  - Historial médico básico
+- Doctor (Entidad para representar al odontólogo)
+  - Perfil profesional y especialidades
+  - Gestión de disponibilidad
+- FullName, ContactInfo, Date (Value Objects para conceptos comunes)
+  - Validación y formato consistente
+  - Comportamiento inmutable
+- IPatientRepository, IDoctorRepository (Interfaces de repositorio)
+  - Definición de operaciones de persistencia
+  - Abstracciones para búsquedas específicas
+```
+
+## Ejemplo de Sección TODO
+
+```markdown
+## TODO
+
+### Componentes pendientes por implementar:
+- IAppointmentRepository (Interfaz para gestión de citas)
+  - Validación de disponibilidad de horarios
+  - Manejo de conflictos de citas
+- ITreatmentRepository (Interfaz para catálogo de tratamientos)
+  - Búsqueda por categorías y precios
+  - Filtrado por especialidad dental
+- IOdontogramRepository (Interfaz para gestión del odontograma)
+  - Carga y guardado incremental
+  - Manejo de historial por diente
+
+### Consideraciones técnicas:
+- Definir estrategia de validación para entidades complejas
+- Implementar value objects para tipos específicos del dominio dental
+- Evaluar uso de especificaciones (specifications) para consultas complejas
+```
+
+## Reglas para Mantener Actualizado el README
+
+1. Cuando implementes una nueva entidad:
+   - Añádela a la sección "Implementación Completada"
+   - Elimínala de la sección "TODO" si estaba pendiente
+
+2. Cuando implementes un nuevo value object:
+   - Añádelo a la sección "Implementación Completada"
+   - Elimínalo de la sección "TODO" si estaba pendiente
+
+3. Cuando implementes una nueva interfaz de repositorio:
+   - Añádela a la sección "Implementación Completada"
+   - Elimínala de la sección "TODO" si estaba pendiente
+
+4. Cuando implementes interfaces de repositorio clave como IAppointmentRepository, ITreatmentRepository, o IOdontogramRepository:
+   - Actualiza la sección "TODO" eliminando ese elemento
+   - Añádelo a "Implementación Completada" con detalles específicos
+
+## Plantillas para Actualizar el README
+
+Puedes usar las plantillas disponibles para añadir secciones completas:
+
+- `Sección Implementación Completada para capa Domain`
+- `Sección TODO para capa Domain`
