@@ -10,18 +10,44 @@ namespace Odoonto.Application.DTOs.Doctors
     public class CreateDoctorDto
     {
         /// <summary>
-        /// Nombre del doctor (requerido)
+        /// Nombre (obligatorio)
         /// </summary>
         [Required(ErrorMessage = "El nombre es obligatorio")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "El nombre debe tener entre 2 y 50 caracteres")]
-        public string FirstName { get; set; }
-
+        [StringLength(50, ErrorMessage = "El nombre no puede exceder los 50 caracteres")]
+        public string FirstNames { get; set; }
+        
         /// <summary>
-        /// Apellidos del doctor (requerido)
+        /// Apellidos (obligatorio)
         /// </summary>
         [Required(ErrorMessage = "Los apellidos son obligatorios")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "Los apellidos deben tener entre 2 y 50 caracteres")]
-        public string LastName { get; set; }
+        [StringLength(50, ErrorMessage = "Los apellidos no pueden exceder los 50 caracteres")]
+        public string LastNames { get; set; }
+        
+        /// <summary>
+        /// Especialidad médica (obligatorio)
+        /// </summary>
+        [Required(ErrorMessage = "La especialidad es obligatoria")]
+        [StringLength(100, ErrorMessage = "La especialidad no puede exceder los 100 caracteres")]
+        public string Specialty { get; set; }
+        
+        /// <summary>
+        /// Teléfono (obligatorio)
+        /// </summary>
+        [Required(ErrorMessage = "El teléfono es obligatorio")]
+        [Phone(ErrorMessage = "El formato del teléfono no es válido")]
+        public string PhoneNumber { get; set; }
+        
+        /// <summary>
+        /// Correo electrónico (obligatorio)
+        /// </summary>
+        [Required(ErrorMessage = "El email es obligatorio")]
+        [EmailAddress(ErrorMessage = "El formato del email no es válido")]
+        public string Email { get; set; }
+        
+        /// <summary>
+        /// Dirección postal
+        /// </summary>
+        public string Address { get; set; }
 
         /// <summary>
         /// Número de licencia profesional (requerido)
@@ -31,25 +57,18 @@ namespace Odoonto.Application.DTOs.Doctors
         public string LicenseNumber { get; set; }
 
         /// <summary>
-        /// Especialidad del doctor (requerido)
-        /// </summary>
-        [Required(ErrorMessage = "La especialidad es obligatoria")]
-        [StringLength(50, ErrorMessage = "La especialidad no puede exceder los 50 caracteres")]
-        public string Specialty { get; set; }
-
-        /// <summary>
         /// Número de teléfono (opcional)
         /// </summary>
         [Phone(ErrorMessage = "El formato del número de teléfono no es válido")]
         [StringLength(20, ErrorMessage = "El teléfono no puede exceder los 20 caracteres")]
-        public string PhoneNumber { get; set; }
+        public string AdditionalPhoneNumber { get; set; }
 
         /// <summary>
         /// Correo electrónico (opcional)
         /// </summary>
         [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido")]
         [StringLength(100, ErrorMessage = "El email no puede exceder los 100 caracteres")]
-        public string Email { get; set; }
+        public string AdditionalEmail { get; set; }
 
         /// <summary>
         /// Horarios disponibles para citas

@@ -1,0 +1,16 @@
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.csproj.AssemblyReference.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.AssemblyInfoInputs.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.AssemblyInfo.cs
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.csproj.CoreCompileInputs.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.sourcelink.json
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\bin\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.deps.json
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\bin\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\bin\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.pdb
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\bin\Debug\net8.0\Odoonto.Domain.Core.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\bin\Debug\net8.0\Odoonto.Domain.Core.pdb
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto..D0992FAB.Up2Date
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\refint\Odoonto.Infrastructure.ExceptionsHandler.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\Odoonto.Infrastructure.ExceptionsHandler.pdb
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\obj\Debug\net8.0\ref\Odoonto.Infrastructure.ExceptionsHandler.dll

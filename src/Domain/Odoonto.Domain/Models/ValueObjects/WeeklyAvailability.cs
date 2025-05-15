@@ -22,7 +22,7 @@ namespace Odoonto.Domain.Models.ValueObjects
         {
             if (availability == null)
             {
-                throw new InvalidValueException("La disponibilidad no puede ser nula.");
+                throw new DomainException("La disponibilidad no puede ser nula.");
             }
 
             // Crear copia inmutable de la disponibilidad
@@ -68,7 +68,7 @@ namespace Odoonto.Domain.Models.ValueObjects
         {
             if (timeRange == null)
             {
-                throw new InvalidValueException("El rango de tiempo no puede ser nulo.");
+                throw new DomainException("El rango de tiempo no puede ser nulo.");
             }
 
             // Crear copia de la disponibilidad actual
@@ -91,16 +91,83 @@ namespace Odoonto.Domain.Models.ValueObjects
             return new WeeklyAvailability(newAvailability);
         }
 
+        // Agregar TimeSlot a la disponibilidad
+        public WeeklyAvailability AddTimeSlot(DayOfWeek day, TimeSlot timeSlot)
+        {
+            if (timeSlot == null)
+            {
+                throw new DomainException("El slot de tiempo no puede ser nulo.");
+            }
+
+            // Crear TimeRange a partir del TimeSlot
+            var timeRange = new TimeRange(
+                TimeSpan.FromHours(timeSlot.StartTime.Hour) + TimeSpan.FromMinutes(timeSlot.StartTime.Minute),
+                TimeSpan.FromHours(timeSlot.EndTime.Hour) + TimeSpan.FromMinutes(timeSlot.EndTime.Minute)
+            );
+
+            return AddTimeRange(day, timeRange);
+        }
+
         // Método para verificar disponibilidad en un día y rango específico
         public bool IsAvailable(DayOfWeek day, TimeSlot timeSlot)
         {
             if (timeSlot == null)
             {
-                throw new InvalidValueException("El período de tiempo no puede ser nulo.");
+                throw new DomainException("El período de tiempo no puede ser nulo.");
             }
 
             // Verificar si el período está dentro de algún rango disponible
             return _availability[day].Any(tr => tr.Contains(timeSlot));
+        }
+
+        // Método para verificar si un TimeSlot está dentro de la disponibilidad de un día específico
+        public bool IsWithinAvailability(DayOfWeek day, TimeSlot timeSlot)
+        {
+            if (timeSlot == null)
+            {
+                throw new DomainException("El período de tiempo no puede ser nulo.");
+            }
+
+            if (!_availability.ContainsKey(day))
+            {
+                return false;
+            }
+
+            return _availability[day].Any(tr => 
+            {
+                // Convertir TimeOnly a TimeSpan para comparar
+                var slotStartSpan = TimeSpan.FromHours(timeSlot.StartTime.Hour) + TimeSpan.FromMinutes(timeSlot.StartTime.Minute);
+                var slotEndSpan = TimeSpan.FromHours(timeSlot.EndTime.Hour) + TimeSpan.FromMinutes(timeSlot.EndTime.Minute);
+                
+                // El TimeSlot está dentro del rango si su inicio es >= al inicio del rango
+                // y su fin es <= al fin del rango
+                return slotStartSpan >= tr.StartTime && slotEndSpan <= tr.EndTime;
+            });
+        }
+        
+        // Obtiene los días que tienen al menos un rango de disponibilidad
+        public IEnumerable<DayOfWeek> GetDaysWithAvailability()
+        {
+            return _availability
+                .Where(kvp => kvp.Value.Count > 0)
+                .Select(kvp => kvp.Key);
+        }
+
+        // Obtiene los slots de tiempo disponibles para un día específico
+        public IEnumerable<TimeSlot> GetTimeSlots(DayOfWeek day)
+        {
+            if (!_availability.ContainsKey(day))
+            {
+                return Enumerable.Empty<TimeSlot>();
+            }
+
+            return _availability[day].Select(tr => 
+            {
+                // Convertir TimeSpan a TimeOnly para crear TimeSlot
+                var startTime = new TimeOnly((int)tr.StartTime.TotalHours, tr.StartTime.Minutes);
+                var endTime = new TimeOnly((int)tr.EndTime.TotalHours, tr.EndTime.Minutes);
+                return new TimeSlot(startTime, endTime);
+            });
         }
         
         // Valida que no haya superposición entre los rangos
@@ -114,7 +181,7 @@ namespace Odoonto.Domain.Models.ValueObjects
                 {
                     if (rangesList[i].Overlaps(rangesList[j]))
                     {
-                        throw new InvalidValueException($"El rango de tiempo se superpone con otro existente en {day}.");
+                        throw new DomainException($"El rango de tiempo se superpone con otro existente en {day}.");
                     }
                 }
             }

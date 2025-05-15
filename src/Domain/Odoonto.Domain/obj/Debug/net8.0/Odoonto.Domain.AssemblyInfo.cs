@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Odoonto.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+408d09cb12d02512f993ea22346b2f19dda0e0d1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7942eff9dc0d7ee1807fc735f4a23d2c46a0a3f9")]
 [assembly: System.Reflection.AssemblyProductAttribute("Odoonto.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Odoonto.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

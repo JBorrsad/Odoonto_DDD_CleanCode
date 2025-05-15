@@ -76,5 +76,45 @@ namespace Odoonto.Domain.Repositories
         /// <param name="searchTerm">Término de búsqueda para nombre o apellido</param>
         /// <returns>Lista de doctores que coinciden con el término de búsqueda</returns>
         Task<IEnumerable<Doctor>> SearchByNameAsync(string searchTerm);
+
+        /// <summary>
+        /// Obtiene todos los doctores
+        /// </summary>
+        Task<IEnumerable<Doctor>> GetAllAsync();
+        
+        /// <summary>
+        /// Obtiene un doctor por su ID
+        /// </summary>
+        Task<Doctor> GetByIdAsync(Guid id);
+        
+        /// <summary>
+        /// Obtiene doctores por especialidad
+        /// </summary>
+        Task<IEnumerable<Doctor>> GetBySpecialtyAsync(string specialty);
+        
+        /// <summary>
+        /// Crea un nuevo doctor
+        /// </summary>
+        Task CreateAsync(Doctor doctor);
+        
+        /// <summary>
+        /// Actualiza un doctor existente
+        /// </summary>
+        Task UpdateAsync(Doctor doctor);
+        
+        /// <summary>
+        /// Elimina un doctor
+        /// </summary>
+        Task DeleteAsync(Guid id);
+        
+        /// <summary>
+        /// Verifica si existe un doctor con el ID dado
+        /// </summary>
+        Task<bool> ExistsAsync(Guid id);
+        
+        /// <summary>
+        /// Obtiene doctores disponibles en una fecha y hora específicas
+        /// </summary>
+        Task<IEnumerable<Doctor>> GetAvailableDoctorsAsync(DateTime date, TimeOnly startTime, TimeOnly endTime);
     }
 } 

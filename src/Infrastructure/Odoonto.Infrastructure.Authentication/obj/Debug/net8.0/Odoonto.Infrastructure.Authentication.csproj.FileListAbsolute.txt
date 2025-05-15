@@ -1,0 +1,6 @@
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Authentication\obj\Debug\net8.0\Odoonto.Infrastructure.Authentication.csproj.AssemblyReference.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Authentication\obj\Debug\net8.0\Odoonto.Infrastructure.Authentication.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Authentication\obj\Debug\net8.0\Odoonto.Infrastructure.Authentication.AssemblyInfoInputs.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Authentication\obj\Debug\net8.0\Odoonto.Infrastructure.Authentication.AssemblyInfo.cs
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Authentication\obj\Debug\net8.0\Odoonto.Infrastructure.Authentication.csproj.CoreCompileInputs.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Authentication\obj\Debug\net8.0\Odoonto.Infrastructure.Authentication.sourcelink.json

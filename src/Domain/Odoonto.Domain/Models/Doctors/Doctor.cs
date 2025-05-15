@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using Odoonto.Domain.Core.Models;
+using Odoonto.Domain.Core.Abstractions;
 using Odoonto.Domain.Core.Models.Exceptions;
 using Odoonto.Domain.Models.ValueObjects;
-using Odoonto.Domain.Core.Abstractions;
-
 
 namespace Odoonto.Domain.Models.Doctors
 {
@@ -24,6 +21,7 @@ namespace Odoonto.Domain.Models.Doctors
         {
             // Inicialización de propiedades por defecto
             Specialty = string.Empty;
+            Availability = new WeeklyAvailability();
         }
 
         // Método factory para crear instancias válidas
@@ -31,7 +29,7 @@ namespace Odoonto.Domain.Models.Doctors
         {
             if (id == Guid.Empty)
             {
-                throw new InvalidValueException("El identificador del doctor no puede estar vacío.");
+                throw new DomainException("El identificador del doctor no puede estar vacío.");
             }
 
             var doctor = new Doctor(id);
@@ -44,12 +42,12 @@ namespace Odoonto.Domain.Models.Doctors
         {
             if (string.IsNullOrWhiteSpace(firstNames))
             {
-                throw new InvalidValueException("El nombre del doctor no puede estar vacío.");
+                throw new DomainException("El nombre del doctor no puede estar vacío.");
             }
 
             if (string.IsNullOrWhiteSpace(lastNames))
             {
-                throw new InvalidValueException("Los apellidos del doctor no pueden estar vacíos.");
+                throw new DomainException("Los apellidos del doctor no pueden estar vacíos.");
             }
 
             FullName = new FullName(firstNames, lastNames);
@@ -73,7 +71,7 @@ namespace Odoonto.Domain.Models.Doctors
         // Método para establecer la disponibilidad semanal
         public void SetAvailability(WeeklyAvailability availability)
         {
-            Availability = availability ?? throw new InvalidValueException("La disponibilidad no puede ser nula.");
+            Availability = availability ?? throw new DomainException("La disponibilidad no puede ser nula.");
             UpdateEditDate();
         }
 
@@ -85,7 +83,19 @@ namespace Odoonto.Domain.Models.Doctors
                 return false;
             }
 
-            return Availability.IsAvailable(date.DayOfWeek, timeSlot);
+            return Availability.IsWithinAvailability(date.DayOfWeek, timeSlot);
+        }
+
+        // Método para establecer la fecha de creación (usado para mapeo desde Firebase)
+        internal void SetCreatedAt(DateTime createdAt)
+        {
+            CreatedAt = createdAt;
+        }
+        
+        // Método para establecer la fecha de actualización (usado para mapeo desde Firebase)
+        internal void SetUpdatedAt(DateTime updatedAt)
+        {
+            UpdatedAt = updatedAt;
         }
     }
 } 

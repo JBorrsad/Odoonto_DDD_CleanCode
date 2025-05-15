@@ -1,37 +1,28 @@
 using System;
 using System.Collections.Generic;
+using Odoonto.Application.DTOs.Common;
 
 namespace Odoonto.Application.DTOs.Patients
 {
     /// <summary>
-    /// DTO para mostrar información de un paciente
+    /// DTO para representar un paciente completo
     /// </summary>
     public class PatientDto
     {
         /// <summary>
-        /// Identificador único del paciente
+        /// Identificador único
         /// </summary>
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Nombre del paciente
+        /// Nombre completo
         /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Apellidos del paciente
-        /// </summary>
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// Nombre completo (Nombre + Apellidos)
-        /// </summary>
-        public string FullName => $"{FirstName} {LastName}";
+        public string FullName { get; set; }
 
         /// <summary>
         /// Fecha de nacimiento
         /// </summary>
-        public DateTime DateOfBirth { get; set; }
+        public DateTime BirthDate { get; set; }
 
         /// <summary>
         /// Edad calculada
@@ -39,42 +30,22 @@ namespace Odoonto.Application.DTOs.Patients
         public int Age { get; set; }
 
         /// <summary>
-        /// Género del paciente
+        /// Información de contacto
         /// </summary>
-        public string Gender { get; set; }
+        public ContactInfoDto ContactInfo { get; set; }
 
         /// <summary>
-        /// Dirección postal
-        /// </summary>
-        public string Address { get; set; }
-
-        /// <summary>
-        /// Número de teléfono
-        /// </summary>
-        public string PhoneNumber { get; set; }
-
-        /// <summary>
-        /// Correo electrónico
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Historial médico
+        /// Historia médica
         /// </summary>
         public string MedicalHistory { get; set; }
 
         /// <summary>
-        /// Alergias del paciente
+        /// Próxima cita (si existe)
         /// </summary>
-        public List<string> Allergies { get; set; } = new List<string>();
+        public DateTime? NextAppointment { get; set; }
 
         /// <summary>
-        /// Notas adicionales
-        /// </summary>
-        public string Notes { get; set; }
-
-        /// <summary>
-        /// Fecha de creación del registro
+        /// Fecha de creación
         /// </summary>
         public DateTime CreatedAt { get; set; }
 

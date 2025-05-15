@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using Odoonto.Domain.Core.Abstractions;
 using Odoonto.Domain.Core.Models.Exceptions;
 using Odoonto.Domain.Models.ValueObjects;
-using Odoonto.Domain.Core.Abstractions;
 
 namespace Odoonto.Domain.Models.Treatments
 {
@@ -10,20 +11,26 @@ namespace Odoonto.Domain.Models.Treatments
     /// </summary>
     public class Treatment : Entity
     {
-        // Propiedades con getters públicos y setters privados
+        // Propiedades de dominio con getters públicos y setters privados
         public string Name { get; private set; }
         public string Description { get; private set; }
         public Money Price { get; private set; }
-        public TimeSpan EstimatedDuration { get; private set; }
+        public int DurationMinutes { get; private set; }
         public string Category { get; private set; }
+        
+        // Colecciones privadas
+        private readonly List<int> _requiredTeeth;
+        
+        // Propiedades de acceso público a colecciones como solo lectura
+        public IReadOnlyCollection<int> RequiredTeeth => _requiredTeeth.AsReadOnly();
 
         // Constructor privado - solo accesible desde método factory
         private Treatment(Guid id) : base(id)
         {
+            _requiredTeeth = new List<int>();
             Name = string.Empty;
             Description = string.Empty;
             Category = string.Empty;
-            EstimatedDuration = TimeSpan.Zero;
         }
 
         // Método factory para crear instancias válidas
@@ -31,7 +38,7 @@ namespace Odoonto.Domain.Models.Treatments
         {
             if (id == Guid.Empty)
             {
-                throw new InvalidValueException("El identificador del tratamiento no puede estar vacío.");
+                throw new DomainException("El identificador del tratamiento no puede estar vacío.");
             }
 
             var treatment = new Treatment(id);
@@ -39,68 +46,84 @@ namespace Odoonto.Domain.Models.Treatments
             return treatment;
         }
 
-        // Método para establecer el nombre
-        public void SetName(string name)
+        // Método para establecer la información básica del tratamiento
+        public void SetBasicInfo(string name, string description, string category)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new InvalidValueException("El nombre del tratamiento no puede estar vacío.");
+                throw new DomainException("El nombre del tratamiento no puede estar vacío.");
             }
 
             Name = name.Trim();
-            this.UpdateEditDate();
-        }
-
-        // Método para establecer la descripción
-        public void SetDescription(string description)
-        {
             Description = description?.Trim() ?? string.Empty;
-            this.UpdateEditDate();
+            Category = category?.Trim() ?? string.Empty;
+            
+            UpdateEditDate();
         }
 
         // Método para establecer el precio
         public void SetPrice(Money price)
         {
-            Price = price ?? throw new InvalidValueException("El precio no puede ser nulo.");
-            this.UpdateEditDate();
+            Price = price ?? throw new DomainException("El precio no puede ser nulo.");
+            UpdateEditDate();
         }
 
-        // Método para establecer el precio con valores primitivos
-        public void SetPrice(decimal amount, string currency)
+        // Método para establecer la duración
+        public void SetDuration(int durationMinutes)
         {
-            Price = new Money(amount, currency);
-            this.UpdateEditDate();
-        }
-
-        // Método para establecer la duración estimada
-        public void SetEstimatedDuration(TimeSpan duration)
-        {
-            if (duration <= TimeSpan.Zero)
+            if (durationMinutes <= 0)
             {
-                throw new InvalidValueException("La duración estimada debe ser mayor que cero.");
+                throw new DomainException("La duración debe ser mayor que cero.");
             }
 
-            EstimatedDuration = duration;
-            this.UpdateEditDate();
+            DurationMinutes = durationMinutes;
+            UpdateEditDate();
         }
 
-        // Método para establecer la duración estimada en minutos
-        public void SetEstimatedDurationInMinutes(int minutes)
+        // Método para agregar un diente requerido
+        public void AddRequiredTooth(int toothNumber)
         {
-            if (minutes <= 0)
+            if (toothNumber < 1 || toothNumber > 32)
             {
-                throw new InvalidValueException("La duración estimada debe ser mayor que cero.");
+                throw new DomainException("El número de diente debe estar entre 1 y 32.");
             }
 
-            EstimatedDuration = TimeSpan.FromMinutes(minutes);
-            this.UpdateEditDate();
+            if (!_requiredTeeth.Contains(toothNumber))
+            {
+                _requiredTeeth.Add(toothNumber);
+                UpdateEditDate();
+            }
         }
 
-        // Método para establecer la categoría
-        public void SetCategory(string category)
+        // Método para quitar un diente requerido
+        public void RemoveRequiredTooth(int toothNumber)
         {
-            Category = category?.Trim() ?? string.Empty;
-            this.UpdateEditDate();
+            if (_requiredTeeth.Contains(toothNumber))
+            {
+                _requiredTeeth.Remove(toothNumber);
+                UpdateEditDate();
+            }
+        }
+
+        // Método para limpiar la lista de dientes requeridos
+        public void ClearRequiredTeeth()
+        {
+            if (_requiredTeeth.Count > 0)
+            {
+                _requiredTeeth.Clear();
+                UpdateEditDate();
+            }
+        }
+
+        // Métodos para gestionar fechas internas (para mapeo en repositorios)
+        internal void SetCreatedAt(DateTime createdAt)
+        {
+            CreatedAt = createdAt;
+        }
+        
+        internal void SetUpdatedAt(DateTime updatedAt)
+        {
+            UpdatedAt = updatedAt;
         }
     }
 } 

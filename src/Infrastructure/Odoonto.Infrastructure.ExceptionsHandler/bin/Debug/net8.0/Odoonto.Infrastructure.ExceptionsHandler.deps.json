@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Odoonto.Infrastructure.ExceptionsHandler/1.0.0": {
+        "dependencies": {
+          "Odoonto.Domain.Core": "1.0.0"
+        },
+        "runtime": {
+          "Odoonto.Infrastructure.ExceptionsHandler.dll": {}
+        }
+      },
+      "Odoonto.Domain.Core/1.0.0": {
+        "runtime": {
+          "Odoonto.Domain.Core.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Odoonto.Infrastructure.ExceptionsHandler/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Odoonto.Domain.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Odoonto.Domain.Services.Appointments;
 using Odoonto.Domain.Services.Doctors;
 using Odoonto.Domain.Services.Patients;
+using System;
 
 namespace Odoonto.Infrastructure.InversionOfControl.Inyectors
 {

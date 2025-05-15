@@ -1,0 +1,16 @@
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\bin\Debug\net8.0\Odoonto.Infrastructure.Logging.deps.json
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\bin\Debug\net8.0\Odoonto.Infrastructure.Logging.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\bin\Debug\net8.0\Odoonto.Infrastructure.Logging.pdb
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\bin\Debug\net8.0\Odoonto.Domain.Core.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\bin\Debug\net8.0\Odoonto.Domain.Core.pdb
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto.Infrastructure.Logging.csproj.AssemblyReference.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto.Infrastructure.Logging.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto.Infrastructure.Logging.AssemblyInfoInputs.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto.Infrastructure.Logging.AssemblyInfo.cs
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto.Infrastructure.Logging.csproj.CoreCompileInputs.cache
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto.Infrastructure.Logging.sourcelink.json
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto..A457AE45.Up2Date
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto.Infrastructure.Logging.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\refint\Odoonto.Infrastructure.Logging.dll
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\Odoonto.Infrastructure.Logging.pdb
+C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Infrastructure\Odoonto.Infrastructure.Logging\obj\Debug\net8.0\ref\Odoonto.Infrastructure.Logging.dll

@@ -1,9 +1,3 @@
-C:\Repos\Odoonto\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.csproj.AssemblyReference.cache
-C:\Repos\Odoonto\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.GeneratedMSBuildEditorConfig.editorconfig
-C:\Repos\Odoonto\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.AssemblyInfoInputs.cache
-C:\Repos\Odoonto\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.AssemblyInfo.cs
-C:\Repos\Odoonto\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.csproj.CoreCompileInputs.cache
-C:\Repos\Odoonto\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.sourcelink.json
 C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.csproj.AssemblyReference.cache
 C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\juan-\Desktop\GitHub\Odoonto_DDD_CleanCode\src\Domain\Odoonto.Domain\obj\Debug\net8.0\Odoonto.Domain.AssemblyInfoInputs.cache

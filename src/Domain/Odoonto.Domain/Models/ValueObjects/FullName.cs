@@ -1,6 +1,4 @@
-using Odoonto.Domain.Core.Abstractions;
 using System;
-using System.Collections.Generic;
 using Odoonto.Domain.Core.Models.Exceptions;
 
 namespace Odoonto.Domain.Models.ValueObjects
@@ -8,31 +6,31 @@ namespace Odoonto.Domain.Models.ValueObjects
     /// <summary>
     /// Representa el nombre completo de una persona
     /// </summary>
-    public class FullName : ValueObject
+    public class FullName : IEquatable<FullName>
     {
         /// <summary>
         /// Nombres de la persona
         /// </summary>
-        public string FirstName { get; }
+        public string FirstNames { get; }
 
         /// <summary>
         /// Apellidos de la persona
         /// </summary>
-        public string LastName { get; }
+        public string LastNames { get; }
 
         /// <summary>
         /// Constructor para crear un nombre completo
         /// </summary>
-        public FullName(string firstName, string lastName)
+        public FullName(string firstNames, string lastNames)
         {
-            if (string.IsNullOrWhiteSpace(firstName))
-                throw new ArgumentException("El nombre no puede estar vacío", nameof(firstName));
+            if (string.IsNullOrWhiteSpace(firstNames))
+                throw new DomainException("Los nombres no pueden estar vacíos");
 
-            if (string.IsNullOrWhiteSpace(lastName))
-                throw new ArgumentException("Los apellidos no pueden estar vacíos", nameof(lastName));
+            if (string.IsNullOrWhiteSpace(lastNames))
+                throw new DomainException("Los apellidos no pueden estar vacíos");
 
-            FirstName = firstName.Trim();
-            LastName = lastName.Trim();
+            FirstNames = firstNames.Trim();
+            LastNames = lastNames.Trim();
         }
 
         /// <summary>
@@ -40,16 +38,60 @@ namespace Odoonto.Domain.Models.ValueObjects
         /// </summary>
         public override string ToString()
         {
-            return $"{FirstName} {LastName}";
+            return $"{FirstNames} {LastNames}";
         }
 
         /// <summary>
-        /// Componentes para comparación de igualdad
+        /// Implementación de IEquatable<FullName>
         /// </summary>
-        protected override IEnumerable<object> GetEqualityComponents()
+        public bool Equals(FullName other)
         {
-            yield return FirstName;
-            yield return LastName;
+            if (other is null) return false;
+            
+            return string.Equals(FirstNames, other.FirstNames, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(LastNames, other.LastNames, StringComparison.OrdinalIgnoreCase);
         }
+
+        /// <summary>
+        /// Implementación de IEquatable<FullName>
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            return obj is FullName other && Equals(other);
+        }
+
+        /// <summary>
+        /// Implementación de IEquatable<FullName>
+        /// </summary>
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(
+                FirstNames.ToLowerInvariant(), 
+                LastNames.ToLowerInvariant());
+        }
+
+        /// <summary>
+        /// Implementación de IEquatable<FullName>
+        /// </summary>
+        public static bool operator ==(FullName left, FullName right)
+        {
+            if (left is null) return right is null;
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Implementación de IEquatable<FullName>
+        /// </summary>
+        public static bool operator !=(FullName left, FullName right) => !(left == right);
+
+        /// <summary>
+        /// Devuelve el nombre completo con los apellidos primero
+        /// </summary>
+        public string FullNameWithLastNameFirst => $"{LastNames}, {FirstNames}";
+
+        /// <summary>
+        /// Devuelve el nombre completo con los nombres primero
+        /// </summary>
+        public string FullNameWithFirstNameFirst => $"{FirstNames} {LastNames}";
     }
 } 

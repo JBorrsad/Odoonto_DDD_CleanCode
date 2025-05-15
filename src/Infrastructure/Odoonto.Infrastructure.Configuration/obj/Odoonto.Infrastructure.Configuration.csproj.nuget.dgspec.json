@@ -50,25 +50,37 @@
               "target": "Package",
               "version": "[1.0.0, )"
             },
-            "FirebaseAdmin": {
+            "Firebase.Database": {
               "target": "Package",
-              "version": "[2.4.0, )"
-            },
-            "FirebaseDatabase.net": {
-              "target": "Package",
-              "version": "[4.2.0, )"
-            },
-            "FirebaseStorage.net": {
-              "target": "Package",
-              "version": "[1.0.3, )"
+              "version": "[1.0.0, )"
             },
             "Google.Cloud.Firestore": {
               "target": "Package",
               "version": "[3.5.1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[7.2.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.2.0, )"
             }
           },
           "imports": [

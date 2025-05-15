@@ -52,81 +52,11 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[13.0.1, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj",
-        "projectName": "Odoonto.Data.Core",
-        "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj",
-        "packagesPath": "C:\\Users\\juan-\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Data\\Odoonto.Data.Core\\obj\\",
-        "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "C:\\Users\\juan-\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {
-              "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj": {
-                "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj"
-              },
-              "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
-                "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        }
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "dependencies": {
-            "Google.Cloud.Firestore": {
+              "version": "[12.0.1, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
-              "version": "[3.5.1, )"
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -174,9 +104,6 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj": {
-                "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Data\\Odoonto.Data.Core\\Odoonto.Data.Core.csproj"
-              },
               "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj": {
                 "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain\\Odoonto.Domain.csproj"
               }
@@ -197,6 +124,20 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Google.Cloud.Firestore": {
+              "target": "Package",
+              "version": "[3.5.1, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -389,25 +330,37 @@
               "target": "Package",
               "version": "[1.0.0, )"
             },
-            "FirebaseAdmin": {
+            "Firebase.Database": {
               "target": "Package",
-              "version": "[2.4.0, )"
-            },
-            "FirebaseDatabase.net": {
-              "target": "Package",
-              "version": "[4.2.0, )"
-            },
-            "FirebaseStorage.net": {
-              "target": "Package",
-              "version": "[1.0.3, )"
+              "version": "[1.0.0, )"
             },
             "Google.Cloud.Firestore": {
               "target": "Package",
               "version": "[3.5.1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[7.2.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.2.0, )"
             }
           },
           "imports": [
@@ -422,6 +375,74 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.ExceptionsHandler\\Odoonto.Infrastructure.ExceptionsHandler.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.ExceptionsHandler\\Odoonto.Infrastructure.ExceptionsHandler.csproj",
+        "projectName": "Odoonto.Infrastructure.ExceptionsHandler",
+        "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.ExceptionsHandler\\Odoonto.Infrastructure.ExceptionsHandler.csproj",
+        "packagesPath": "C:\\Users\\juan-\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.ExceptionsHandler\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\juan-\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj": {
+                "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Domain\\Odoonto.Domain.Core\\Odoonto.Domain.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -466,6 +487,9 @@
               },
               "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj": {
                 "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.Configuration\\Odoonto.Infrastructure.Configuration.csproj"
+              },
+              "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.ExceptionsHandler\\Odoonto.Infrastructure.ExceptionsHandler.csproj": {
+                "projectPath": "C:\\Users\\juan-\\Desktop\\GitHub\\Odoonto_DDD_CleanCode\\src\\Infrastructure\\Odoonto.Infrastructure.ExceptionsHandler\\Odoonto.Infrastructure.ExceptionsHandler.csproj"
               }
             }
           }
@@ -485,13 +509,13 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "AutoMapper": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
-              "version": "[13.0.1, )"
+              "version": "[12.0.1, )"
             },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[8.0.2, )"
+              "version": "[8.0.0, )"
             }
           },
           "imports": [

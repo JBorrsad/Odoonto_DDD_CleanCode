@@ -9,24 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
-    <PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
-    <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
     <PackageReference Include="Google.Cloud.Firestore" Version="3.5.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\Odoonto.Application\Odoonto.Application.csproj" />
-    <ProjectReference Include="..\..\Data\Odoonto.Data.Core\Odoonto.Data.Core.csproj" />
+    <ProjectReference Include="..\..\Data\Odoonto.Data\Odoonto.Data.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Odoonto.Infrastructure.Configuration\Odoonto.Infrastructure.Configuration.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Odoonto.Infrastructure.InversionOfControl\Odoonto.Infrastructure.InversionOfControl.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Odoonto.Infrastructure.ExceptionsHandler\Odoonto.Infrastructure.ExceptionsHandler.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Odoonto.Infrastructure.Authentication\Odoonto.Infrastructure.Authentication.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Odoonto.Infrastructure.Logging\Odoonto.Infrastructure.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>

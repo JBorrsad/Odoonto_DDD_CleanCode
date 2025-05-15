@@ -1,122 +1,93 @@
-using Odoonto.Domain.Core.Abstractions;
 using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Odoonto.Domain.Core.Models.Exceptions;
 
 namespace Odoonto.Domain.Models.ValueObjects
 {
     /// <summary>
-    /// Value object que representa la información de contacto de una persona
+    /// Representa la información de contacto de una persona
     /// </summary>
-    public class ContactInfo : ValueObject
+    public class ContactInfo : IEquatable<ContactInfo>
     {
-        /// <summary>
-        /// Dirección postal
-        /// </summary>
         public string Address { get; }
-
-        /// <summary>
-        /// Número de teléfono
-        /// </summary>
         public string PhoneNumber { get; }
-
-        /// <summary>
-        /// Correo electrónico
-        /// </summary>
         public string Email { get; }
-
-        /// <summary>
-        /// Constructor para crear información de contacto
-        /// </summary>
+        
         public ContactInfo(string address, string phoneNumber, string email)
         {
-            // La dirección puede ser opcional
-            Address = address?.Trim() ?? string.Empty;
-
-            // Validar teléfono (formato simplificado para ejemplo)
-            if (!string.IsNullOrWhiteSpace(phoneNumber))
-            {
-                if (!Regex.IsMatch(phoneNumber.Trim(), @"^\+?[0-9\s\-\(\)]+$"))
-                    throw new ArgumentException("El formato del número de teléfono no es válido", nameof(phoneNumber));
+            // Validaciones
+            if (string.IsNullOrWhiteSpace(phoneNumber) && string.IsNullOrWhiteSpace(email))
+                throw new DomainException("Se debe proporcionar al menos un teléfono o email");
                 
-                PhoneNumber = phoneNumber.Trim();
-            }
-            else
-            {
-                PhoneNumber = string.Empty;
-            }
-
-            // Validar email (formato simplificado para ejemplo)
-            if (!string.IsNullOrWhiteSpace(email))
-            {
-                if (!Regex.IsMatch(email.Trim(), @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-                    throw new ArgumentException("El formato del correo electrónico no es válido", nameof(email));
+            if (!string.IsNullOrWhiteSpace(email) && !IsValidEmail(email))
+                throw new DomainException("El formato del email es inválido");
                 
-                Email = email.Trim();
-            }
-            else
-            {
-                Email = string.Empty;
-            }
+            if (!string.IsNullOrWhiteSpace(phoneNumber) && !IsValidPhoneNumber(phoneNumber))
+                throw new DomainException("El formato del teléfono es inválido");
+                
+            // Asignaciones
+            Address = address?.Trim();
+            PhoneNumber = phoneNumber?.Trim();
+            Email = email?.Trim().ToLowerInvariant();
         }
-
-        /// <summary>
-        /// Componentes para comparación de igualdad
-        /// </summary>
-        protected override IEnumerable<object> GetEqualityComponents()
+        
+        private bool IsValidEmail(string email)
         {
-            yield return Address;
-            yield return PhoneNumber;
-            yield return Email;
-        }
-
-        // Método para validar formato de número de teléfono
-        private static bool IsValidPhoneNumber(string phoneNumber)
-        {
-            // Simplificado para el ejemplo - ajustar según requisitos específicos
-            var normalizedNumber = NormalizePhoneNumber(phoneNumber);
-            return Regex.IsMatch(normalizedNumber, @"^\+?[0-9]{8,15}$");
-        }
-
-        // Método para normalizar número de teléfono
-        private static string NormalizePhoneNumber(string phoneNumber)
-        {
-            if (string.IsNullOrWhiteSpace(phoneNumber))
-                return string.Empty;
-
-            // Eliminar espacios, guiones y paréntesis
-            return Regex.Replace(phoneNumber, @"[\s\-\(\)]", "");
-        }
-
-        // Método para validar formato de email
-        private static bool IsValidEmail(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-                return false;
-
             try
             {
-                // Usar regex simple pero efectiva para validar emails
-                return Regex.IsMatch(email.Trim(),
-                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
-                    RegexOptions.IgnoreCase);
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
             }
             catch
             {
                 return false;
             }
         }
-
-        public override string ToString() => $"Email: {Email}, Teléfono: {PhoneNumber}";
-
-        // Operadores de comparación
+        
+        private bool IsValidPhoneNumber(string phoneNumber)
+        {
+            // Implementar validación según requisitos
+            return System.Text.RegularExpressions.Regex.IsMatch(
+                phoneNumber, @"^\+?[0-9]{8,15}$");
+        }
+        
+        public bool HasPhone => !string.IsNullOrWhiteSpace(PhoneNumber);
+        public bool HasEmail => !string.IsNullOrWhiteSpace(Email);
+        public bool HasAddress => !string.IsNullOrWhiteSpace(Address);
+        
+        // Implementación de IEquatable<ContactInfo>
+        public bool Equals(ContactInfo other)
+        {
+            if (other is null) return false;
+            
+            return string.Equals(PhoneNumber, other.PhoneNumber, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(Email, other.Email, StringComparison.OrdinalIgnoreCase) &&
+                   string.Equals(Address, other.Address, StringComparison.OrdinalIgnoreCase);
+        }
+        
+        public override bool Equals(object obj)
+        {
+            return obj is ContactInfo other && Equals(other);
+        }
+        
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(
+                PhoneNumber?.ToLowerInvariant(), 
+                Email?.ToLowerInvariant(),
+                Address?.ToLowerInvariant());
+        }
+        
         public static bool operator ==(ContactInfo left, ContactInfo right)
         {
             if (left is null) return right is null;
             return left.Equals(right);
         }
-
+        
         public static bool operator !=(ContactInfo left, ContactInfo right) => !(left == right);
+        
+        public override string ToString()
+        {
+            return $"Email: {Email}, Teléfono: {PhoneNumber}, Dirección: {Address}";
+        }
     }
 } 

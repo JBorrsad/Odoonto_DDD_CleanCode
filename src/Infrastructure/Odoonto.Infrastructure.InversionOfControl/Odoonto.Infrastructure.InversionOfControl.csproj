@@ -7,15 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Odoonto.Infrastructure.Configuration\Odoonto.Infrastructure.Configuration.csproj" />
     <ProjectReference Include="..\..\Application\Odoonto.Application\Odoonto.Application.csproj" />
     <ProjectReference Include="..\..\Data\Odoonto.Data\Odoonto.Data.csproj" />
     <ProjectReference Include="..\..\Domain\Odoonto.Domain\Odoonto.Domain.csproj" />
+    <ProjectReference Include="..\Odoonto.Infrastructure.Configuration\Odoonto.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\Odoonto.Infrastructure.ExceptionsHandler\Odoonto.Infrastructure.ExceptionsHandler.csproj" />
   </ItemGroup>
 
 </Project> 

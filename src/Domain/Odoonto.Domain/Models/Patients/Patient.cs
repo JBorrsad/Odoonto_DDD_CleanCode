@@ -5,6 +5,7 @@ using Odoonto.Domain.Core.Models.Exceptions;
 using Odoonto.Domain.Models.ValueObjects;
 using Odoonto.Domain.Models.Odontograms;
 using Odoonto.Domain.Core.Abstractions;
+using Odoonto.Domain.Models.Appointments;
 
 namespace Odoonto.Domain.Models.Patients
 {
@@ -16,22 +17,27 @@ namespace Odoonto.Domain.Models.Patients
         /// <summary>
         /// Nombre completo del paciente
         /// </summary>
-        public FullName Name { get; private set; }
+        public FullName FullName { get; private set; }
 
         /// <summary>
         /// Fecha de nacimiento
         /// </summary>
-        public Date DateOfBirth { get; private set; }
+        public DateTime BirthDate { get; private set; }
 
         /// <summary>
         /// Género del paciente
         /// </summary>
-        public GenderValue Gender { get; private set; }
+        public string Gender { get; private set; }
 
         /// <summary>
         /// Información de contacto
         /// </summary>
-        public ContactInfo Contact { get; private set; }
+        public ContactInfo ContactInfo { get; private set; }
+
+        /// <summary>
+        /// Dirección del paciente
+        /// </summary>
+        public Address Address { get; private set; }
 
         /// <summary>
         /// Historial de alergias
@@ -49,40 +55,54 @@ namespace Odoonto.Domain.Models.Patients
         public string Notes { get; private set; }
 
         /// <summary>
+        /// Colección de citas asociadas al paciente
+        /// </summary>
+        private readonly List<Appointment> _appointments;
+
+        /// <summary>
+        /// Colección de citas asociadas al paciente como solo lectura
+        /// </summary>
+        public IReadOnlyCollection<Appointment> Appointments => _appointments.AsReadOnly();
+
+        /// <summary>
         /// Constructor privado para serialización
         /// </summary>
-        private Patient() 
+        private Patient(Guid id) : base(id)
         {
             Allergies = new List<string>();
+            _appointments = new List<Appointment>();
+            MedicalHistory = string.Empty;
+            Gender = string.Empty;
         }
 
         /// <summary>
         /// Constructor para crear un nuevo paciente
         /// </summary>
-        public Patient(FullName name, Date dateOfBirth, GenderValue gender, ContactInfo contact)
+        public Patient(FullName name, DateTime birthDate, string gender, ContactInfo contact)
         {
-            ValidatePatient(name, dateOfBirth);
+            ValidatePatient(name, birthDate);
 
-            Name = name;
-            DateOfBirth = dateOfBirth;
-            Gender = gender;
-            Contact = contact;
+            FullName = name;
+            BirthDate = birthDate;
+            Gender = gender?.Trim() ?? string.Empty;
+            ContactInfo = contact;
             Allergies = new List<string>();
             MedicalHistory = string.Empty;
             Notes = string.Empty;
+            _appointments = new List<Appointment>();
         }
 
         /// <summary>
         /// Actualiza la información básica del paciente
         /// </summary>
-        public void UpdateBasicInfo(FullName name, Date dateOfBirth, GenderValue gender, ContactInfo contact)
+        public void UpdateBasicInfo(FullName name, DateTime birthDate, string gender, ContactInfo contact)
         {
-            ValidatePatient(name, dateOfBirth);
+            ValidatePatient(name, birthDate);
 
-            Name = name;
-            DateOfBirth = dateOfBirth;
-            Gender = gender;
-            Contact = contact;
+            FullName = name;
+            BirthDate = birthDate;
+            Gender = gender?.Trim() ?? string.Empty;
+            ContactInfo = contact;
         }
 
         /// <summary>
@@ -90,7 +110,7 @@ namespace Odoonto.Domain.Models.Patients
         /// </summary>
         public void UpdateMedicalHistory(string medicalHistory)
         {
-            MedicalHistory = medicalHistory ?? string.Empty;
+            MedicalHistory = medicalHistory?.Trim() ?? string.Empty;
         }
 
         /// <summary>
@@ -129,26 +149,50 @@ namespace Odoonto.Domain.Models.Patients
         public int CalculateAge()
         {
             var today = DateTime.Today;
-            var birthDate = DateOfBirth.Value;
-            var age = today.Year - birthDate.Year;
-
-            // Ajusta la edad si aún no ha llegado el cumpleaños este año
-            if (birthDate.Date > today.AddYears(-age))
+            var age = today.Year - BirthDate.Year;
+            
+            // Ajustar si el cumpleaños no ha ocurrido todavía este año
+            if (BirthDate.Date > today.AddYears(-age))
+            {
                 age--;
-
+            }
+            
             return age;
         }
 
-        private void ValidatePatient(FullName name, Date dateOfBirth)
+        /// <summary>
+        /// Establece la dirección del paciente
+        /// </summary>
+        public void SetAddress(Address address)
+        {
+            Address = address;
+        }
+
+        /// <summary>
+        /// Agrega una cita al historial del paciente
+        /// </summary>
+        public void AddAppointment(Appointment appointment)
+        {
+            if (appointment == null)
+            {
+                throw new DomainException("La cita no puede ser nula.");
+            }
+
+            if (_appointments.Contains(appointment))
+            {
+                throw new DomainException("Esta cita ya está asociada al paciente.");
+            }
+
+            _appointments.Add(appointment);
+        }
+
+        private void ValidatePatient(FullName name, DateTime birthDate)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name), "El nombre no puede ser nulo.");
 
-            if (dateOfBirth == null)
-                throw new ArgumentNullException(nameof(dateOfBirth), "La fecha de nacimiento no puede ser nula.");
-
-            if (dateOfBirth.Value > DateTime.Today)
-                throw new ArgumentException("La fecha de nacimiento no puede ser una fecha futura.", nameof(dateOfBirth));
+            if (birthDate > DateTime.Today)
+                throw new ArgumentException("La fecha de nacimiento no puede ser una fecha futura.", nameof(birthDate));
         }
     }
 } 

@@ -2,19 +2,31 @@ using System;
 using System.IO;
 using Firebase.Auth;
 using Firebase.Database;
-using Firebase.Storage;
+// Comentamos temporalmente la referencia a Firebase.Storage
+// using Firebase.Storage;
 using Google.Cloud.Firestore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace Odoonto.Infrastructure.Configuration.Firebase
 {
+    /// <summary>
+    /// Configuración para Firebase
+    /// </summary>
     public class FirebaseConfiguration
     {
-        private static FirebaseConfiguration? _instance;
-        private static readonly object _lock = new object();
+        // Instancia singleton
+        private static readonly FirebaseConfiguration _instance = new FirebaseConfiguration();
+        
+        /// <summary>
+        /// Obtiene la instancia singleton
+        /// </summary>
+        public static FirebaseConfiguration Instance => _instance;
+        
+        // Cliente Firestore
+        private FirestoreDb _firestoreDb;
         private ILogger<FirebaseConfiguration>? _logger;
-
+        
         public string ProjectId { get; private set; }
         public string WebApiKey { get; private set; }
         public string AuthDomain { get; private set; }
@@ -22,42 +34,28 @@ namespace Odoonto.Infrastructure.Configuration.Firebase
         public string StorageBucket { get; private set; }
         public string ServiceAccountKeyPath { get; private set; }
 
-        private FirestoreDb? _firestoreDb;
         private FirebaseAuthProvider? _authProvider;
         private FirebaseClient? _databaseClient;
-        private FirebaseStorage? _storage;
-
-        private FirebaseConfiguration(ILogger<FirebaseConfiguration>? logger = null)
+        // Comentamos temporalmente la propiedad de Storage
+        // private FirebaseStorage? _storage;
+        
+        private FirebaseConfiguration()
         {
-            _logger = logger;
-
-            // Valores por defecto - Deben ser sobrescritos con Initialize
-            ProjectId = "odoonto-e06a7";
-            WebApiKey = "";
-            AuthDomain = "odoonto-e06a7.firebaseapp.com";
-            DatabaseUrl = "https://odoonto-e06a7.firebaseio.com/";
-            StorageBucket = "odoonto-e06a7.appspot.com";
-
-            // Ruta relativa al directorio de ejecución
-            ServiceAccountKeyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                "firebase-credentials.json");
+            // Constructor privado para singleton
         }
-
-        public static FirebaseConfiguration Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    lock (_lock)
-                    {
-                        _instance ??= new FirebaseConfiguration();
-                    }
-                }
-                return _instance;
-            }
-        }
-
+        
+        /// <summary>
+        /// Obtiene la instancia de FirestoreDb
+        /// </summary>
+        /// <returns>Instancia de FirestoreDb</returns>
+        public FirestoreDb GetFirestoreDb() => _firestoreDb;
+        
+        /// <summary>
+        /// Inicializa la configuración de Firebase
+        /// </summary>
+        /// <param name="webApiKey">API Key de Firebase para autenticación web</param>
+        /// <param name="servicePath">Ruta al archivo de credenciales</param>
+        /// <param name="logger">Logger para registrar eventos</param>
         public void Initialize(string? webApiKey = null, string? servicePath = null, ILogger<FirebaseConfiguration>? logger = null)
         {
             if (logger != null)
@@ -95,10 +93,18 @@ namespace Odoonto.Infrastructure.Configuration.Firebase
                     ProjectId = credentialData.project_id.ToString();
                     _logger?.LogInformation("Usando ProjectId {projectId} de las credenciales", ProjectId);
                 }
+                else
+                {
+                    throw new InvalidOperationException("No se pudo encontrar project_id en el archivo de credenciales");
+                }
 
                 // Establecer la variable de entorno para el SDK de Firebase
                 Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", ServiceAccountKeyPath);
-                _logger?.LogInformation("Firebase configurado con credenciales en: {path}", ServiceAccountKeyPath);
+                
+                // Inicializar Firestore
+                _firestoreDb = FirestoreDb.Create(ProjectId);
+                
+                _logger?.LogInformation("Firebase configurado con éxito. ProjectId: {projectId}", ProjectId);
             }
             catch (Exception ex)
             {
@@ -106,24 +112,6 @@ namespace Odoonto.Infrastructure.Configuration.Firebase
                 _logger?.LogError(ex, errorMessage);
                 throw new InvalidOperationException(errorMessage, ex);
             }
-        }
-
-        public FirestoreDb GetFirestoreDb()
-        {
-            if (_firestoreDb == null)
-            {
-                try
-                {
-                    _firestoreDb = FirestoreDb.Create(ProjectId);
-                    _logger?.LogInformation("FirestoreDb creado correctamente para el proyecto {projectId}", ProjectId);
-                }
-                catch (Exception ex)
-                {
-                    _logger?.LogError(ex, "Error al crear FirestoreDb para el proyecto {projectId}", ProjectId);
-                    throw;
-                }
-            }
-            return _firestoreDb;
         }
 
         public FirebaseAuthProvider GetAuthProvider()
@@ -158,6 +146,8 @@ namespace Odoonto.Infrastructure.Configuration.Firebase
             return _databaseClient;
         }
 
+        // Comentamos temporalmente el método de Storage
+        /*
         public FirebaseStorage GetStorage()
         {
             if (_storage == null)
@@ -173,5 +163,6 @@ namespace Odoonto.Infrastructure.Configuration.Firebase
             }
             return _storage;
         }
+        */
     }
 }
